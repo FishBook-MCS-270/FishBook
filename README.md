@@ -8,8 +8,10 @@ An app to:
 
 ![image](https://user-images.githubusercontent.com/127157161/229957249-e806ae46-39be-4c55-ae30-1d98f31b903b.png)
 
-**List of Species 
-**| Species              | Category |
+---
+
+List of Species 
+| Species              | Category |
 |----------------------|----------|
 | Brook Trout          | Trout    |
 | Brown Trout          | Trout    |
