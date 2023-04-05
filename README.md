@@ -33,7 +33,6 @@ List of Species
 | Muskellunge          | Pike     |
 | Longnose Gar         | Gar      |
 | Shortnose Gar        | Gar      |
-| Shovelnose Sturgeon  | Oddball  |
 | Eelpout              | Oddball  |
 | Bowfin               | Oddball  |
 | Buffalo              | Oddball  |
