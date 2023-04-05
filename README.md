@@ -11,26 +11,27 @@ An app to:
 ---
 
 List of Species 
+
 | Species              | Category |
 |----------------------|----------|
-| Brook Trout          | Trout    |
-| Brown Trout          | Trout    |
-| Rainbow Trout        | Trout    |
-| Bullhead             | Catfish  |
-| Channel Catfish      | Catfish  |
-| Flathead Catfish     | Catfish  |
 | Bluegill             | Sunfish  |
 | Green Sunfish        | Sunfish  |
 | Pumpkinseed          | Sunfish  |
 | Rock Bass            | Sunfish  |
 | Largemouth           | Bass     |
 | Smallmouth           | Bass     |
-| Walleye              | Perch    |
-| Yellow Perch         | Perch    |
 | White Crappie        | Crappie  |
 | Black Crappie        | Crappie  |
+| Bullhead             | Catfish  |
+| Channel Catfish      | Catfish  |
+| Flathead Catfish     | Catfish  |
+| Yellow Perch         | Perch    |
+| Walleye              | Perch    |
 | Northern Pike        | Pike     |
 | Muskellunge          | Pike     |
+| Brook Trout          | Trout    |
+| Brown Trout          | Trout    |
+| Rainbow Trout        | Trout    |
 | Longnose Gar         | Gar      |
 | Shortnose Gar        | Gar      |
 | Eelpout              | Oddball  |
@@ -38,6 +39,7 @@ List of Species
 | Buffalo              | Oddball  |
 | Common Carp          | Oddball  |
 | White Bass           | Oddball  |
+| White Fish           | Oddball  |
 | Northern Hogsucker   | Oddball  |
 | Other                | Oddball  |
 
