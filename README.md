@@ -1,9 +1,15 @@
 # FishBook
 Senior Android Development Project
+An app to:
+* record your catch
+* find fishing spots
+* store your memories
+* catch em all
+
 ![image](https://user-images.githubusercontent.com/127157161/229957249-e806ae46-39be-4c55-ae30-1d98f31b903b.png)
 
-
-| Species              | Category |
+**List of Species 
+**| Species              | Category |
 |----------------------|----------|
 | Brook Trout          | Trout    |
 | Brown Trout          | Trout    |
