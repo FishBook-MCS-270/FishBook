@@ -14,6 +14,7 @@ import android.view.ViewGroup
  * Use the [camera.newInstance] factory method to
  * create an instance of this fragment.
  */
+//testing
 class Camera : Fragment() {
 
     override fun onCreateView(
