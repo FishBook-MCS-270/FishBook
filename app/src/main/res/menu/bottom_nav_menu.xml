@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+ <item android:id="@+id/fishdex"
+     android:title="FishDex"
+     android:icon="@drawable/fish_24"/>
+ <item android:id="@+id/camera"
+     android:title="Camera"
+     android:icon="@drawable/baseline_camera_outdoor_24"/>
+ <item android:id="@+id/gallery"
+     android:title="Gallery"
+     android:icon="@drawable/baseline_grid_view_24"/>
+</menu>
