@@ -20,10 +20,10 @@ List of Species
 | Green Sunfish        | Sunfish  |
 | Pumpkinseed          | Sunfish  |
 | Rock Bass            | Sunfish  |
-| Largemouth           | Bass     |
-| Smallmouth           | Bass     |
 | White Crappie        | Crappie  |
 | Black Crappie        | Crappie  |
+| Largemouth           | Bass     |
+| Smallmouth           | Bass     |
 | Bullhead             | Catfish  |
 | Channel Catfish      | Catfish  |
 | Flathead Catfish     | Catfish  |
