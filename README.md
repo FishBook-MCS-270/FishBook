@@ -1,5 +1,7 @@
 # FishBook
+
 Senior Android Development Project
+
 An app to:
 * record your catch
 * find fishing spots
