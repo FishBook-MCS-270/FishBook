@@ -31,6 +31,8 @@ List of Species
 | Black Crappie        | Crappie  |
 | Northern Pike        | Pike     |
 | Muskellunge          | Pike     |
+| Longnose Gar         | Gar      |
+| Shortnose Gar        | Gar      |
 | Shovelnose Sturgeon  | Oddball  |
 | Eelpout              | Oddball  |
 | Bowfin               | Oddball  |
