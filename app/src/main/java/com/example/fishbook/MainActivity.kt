@@ -19,8 +19,10 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigationView = findViewById(R.id.bottom_navigation)
 
+        //set camera as init fragment
         supportFragmentManager.beginTransaction().replace(R.id.container, cameraFragment).commit()
 
+        //replace fragment container on click
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.camera -> {
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction().replace(R.id.container, fishDexFragment).commit()
                     true
                 }
+
                 R.id.gallery -> {
                     supportFragmentManager.beginTransaction().replace(R.id.container, galleryFragment).commit()
                     true
