@@ -83,12 +83,6 @@ class Camera : Fragment() {
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        cameraLaunched = true
-    }
-
     private var takePhotoLauncher = registerForActivityResult(
         ActivityResultContracts.TakePicture()
     ) { didTakePhoto: Boolean ->
@@ -101,6 +95,3 @@ class Camera : Fragment() {
         }
     }
 }
-
-
-
