@@ -22,29 +22,44 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:gravity="center_horizontal">
-
-        <Button
-            android:id="@+id/species_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="@string/species_name"/>
 
         <ImageButton
             android:id="@+id/camera_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_margin="16dp"
+            android:layout_marginTop="16dp"
             android:src="@drawable/ic_camera" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/species_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="@string/species_name" />
+
+            <EditText
+                android:id="@+id/species_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:hint="Select species name" />
+
+        </LinearLayout>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginTop="16dp"
             android:text="@string/upload"/>
-    </LinearLayout>
 
+    </LinearLayout>
 
 </LinearLayout>
