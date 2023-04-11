@@ -1,15 +1,20 @@
 package com.example.fishbook
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import com.example.fishbook.databinding.ActivityStorageBinding
+import android.widget.BaseAdapter
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.example.fishbook.databinding.FragmentGalleryBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.launch
+import retrofit2.converter.scalars.ScalarsConverterFactory
 
 
 /**
@@ -17,39 +22,26 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
  * Use the [Gallery.newInstance] factory method to
  * create an instance of this fragment.
  */
+
 class Gallery : Fragment() {
-
-
     private var _binding: FragmentGalleryBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-
-
-
-
     ): View? {
-
-
-
         _binding = FragmentGalleryBinding.inflate(inflater, container, false)
-
-        binding.uploadbutton.setOnClickListener{
+        binding.uploadbutton.setOnClickListener {
             val intent = Intent(activity, storageActivity::class.java)
             startActivity(intent)
         }
-
         return binding.root
-
-
 
     }
 
-
-
-
-
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
