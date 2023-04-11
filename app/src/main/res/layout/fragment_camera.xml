@@ -9,8 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:orientation="vertical"
-        android:layout_marginEnd="16dp">
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/fish_image"
@@ -18,14 +17,49 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:background="@color/black" />
-
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/camera_button"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/ic_camera"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <ImageButton
+            android:id="@+id/camera_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_camera" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/species_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="@string/species_name" />
+
+            <EditText
+                android:id="@+id/species_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:hint="Select species name" />
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/upload"/>
+
+    </LinearLayout>
 
 </LinearLayout>
