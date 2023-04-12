@@ -6,15 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.appcompat.app.AlertDialog
 
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FishDex.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FishDex : Fragment() {
 
     private lateinit var fishAdapter: FishAdapter
@@ -29,13 +27,13 @@ class FishDex : Fragment() {
         // Initialize the fish species list with two fish instances
         fishList = listOf(
             FishSpecies(
-                caught_flag = true,
+                caught_flag = false,
                 species_name = "Bluegill",
                 fish_family = "Sunfish",
                 image = R.drawable.fish_sunbluegill
             ),
             FishSpecies(
-                caught_flag = true,
+                caught_flag = false,
                 species_name = "Green Sunfish",
                 fish_family = "Sunfish",
                 image = R.drawable.fish_sungreen
@@ -201,7 +199,9 @@ class FishDex : Fragment() {
             )
         )
 
-        fishAdapter = FishAdapter(fishList)
+        fishAdapter = FishAdapter(fishList) { fish ->
+            showFishDetailsDialog(fish)
+        }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
         recyclerView.apply {
@@ -211,5 +211,24 @@ class FishDex : Fragment() {
         }
 
         return view
+    }
+
+    //use Alert_dialog to create a pop-up for each fish.
+    private fun showFishDetailsDialog(fish: FishSpecies) {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_fish_details, null)
+        val fishDetailImage = dialogView.findViewById<ImageView>(R.id.fish_detail_image)
+        val fishDetailName = dialogView.findViewById<TextView>(R.id.fish_detail_name)
+        val fishDetailFamily = dialogView.findViewById<TextView>(R.id.fish_detail_family)
+
+        fishDetailImage.setImageResource(fish.image)
+        fishDetailName.text = fish.species_name
+        fishDetailFamily.text = fish.fish_family
+
+        AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setPositiveButton("Close") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 }
