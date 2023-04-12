@@ -1,5 +1,6 @@
 package com.example.fishbook
 
+
 data class FishSpecies(
     val caught_flag: Boolean,
     val species_name: String,
