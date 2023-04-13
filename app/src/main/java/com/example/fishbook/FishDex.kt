@@ -1,7 +1,9 @@
 package com.example.fishbook
 
-import FishAdapter
+import com.example.fishbook.FishAdapter
+import android.app.Application
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,224 +13,42 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+
 
 
 class FishDex : Fragment() {
 
     private lateinit var fishAdapter: FishAdapter
-    private lateinit var fishList: List<FishSpecies>
+    private val fishDexViewModel: FishDexViewModel by viewModels {
+        ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application as Application)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_fish_dex, container, false)
+        return inflater.inflate(R.layout.fragment_fish_dex, container, false)
+    }
 
-        // Initialize the fish species list with two fish instances
-        fishList = listOf(
-            FishSpecies(
-                caught_flag = false,
-                species_name = "Bluegill",
-                fish_family = "Sunfish",
-                image = R.drawable.fish_sunbluegill
-            ),
-            FishSpecies(
-                caught_flag = false,
-                species_name = "Green Sunfish",
-                fish_family = "Sunfish",
-                image = R.drawable.fish_sungreen
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "Pumpkinseed",
-                fish_family = "Sunfish",
-                image = R.drawable.fish_sunpumpkin
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "Rock Bass",
-                fish_family = "Sunfish",
-                image = R.drawable.fish_rockbass
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "Black Crappie",
-                fish_family = "Crappie",
-                image = R.drawable.fish_crappiebl
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "White Crappie",
-                fish_family = "Crappie",
-                image = R.drawable.fish_crappiewh
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "Largemouth Bass",
-                fish_family = "Bass",
-                image = R.drawable.fish_lmbass
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "Smallmouth Bass",
-                fish_family = "Bass",
-                image = R.drawable.fish_smbass
-            ),
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d("FishDex", "onViewCreated called")
 
-
-            FishSpecies(
-                caught_flag = true,
-                species_name = "Bullhead",
-                fish_family = "Catfish",
-                image = R.drawable.fish_bullheadcat
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "Channel Catfish",
-                fish_family = "Catfish",
-                image = R.drawable.fish_channelcat
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "Flathead Catfish",
-                fish_family = "Catfish",
-                image = R.drawable.fish_flatheadcat
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "Yellow Perch",
-                fish_family = "Perch",
-                image = R.drawable.fish_yellowperch
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "Walleye",
-                fish_family = "Perch",
-                image = R.drawable.fish_walleye
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "Northern Pike",
-                fish_family = "Pike",
-                image = R.drawable.fish_pike
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "Muskellunge",
-                fish_family = "Pike",
-                image = R.drawable.fish_musky
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "Brook Trout",
-                fish_family = "Trout",
-                image = R.drawable.fish_troutbrook
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "Brown Trout",
-                fish_family = "Trout",
-                image = R.drawable.fish_troutbrown
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "Rainbow Trout",
-                fish_family = "Trout",
-                image = R.drawable.fish_troutrainbow
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "Longnose Gar",
-                fish_family = "Gar",
-                image = R.drawable.fish_garln
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "Shortnose Gar",
-                fish_family = "Gar",
-                image = R.drawable.fish_garsn
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "Eelpout",
-                fish_family = "Oddball",
-                image = R.drawable.fish_eelpout
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "Bowfin",
-                fish_family = "Oddball",
-                image = R.drawable.fish_bowfin
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "Buffalo",
-                fish_family = "Oddball",
-                image = R.drawable.fish_buffalo
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "Common Carp",
-                fish_family = "Oddball",
-                image = R.drawable.fish_carp
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "Northern Hogsucker",
-                fish_family = "Oddball",
-                image = R.drawable.fish_hogsucker
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "White Bass",
-                fish_family = "Oddball",
-                image = R.drawable.fish_whitebass
-            ),
-            FishSpecies(
-                caught_flag = true,
-                species_name = "White Fish",
-                fish_family = "Oddball",
-                image = R.drawable.fish_whitefish
-            ),
-
-            FishSpecies(
-                caught_flag = true,
-                species_name = "Other",
-                fish_family = "Oddball",
-                image = R.drawable.fish_other
-            )
-        )
-
-        fishAdapter = FishAdapter(fishList) { fish ->
-            showFishDetailsDialog(fish)
-        }
-
+        // Set up the RecyclerView with an empty adapter
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
-        recyclerView.apply {
-            //assures that the layout is filled
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = fishAdapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        fishAdapter = FishAdapter(emptyList()) { fishId ->
+            val action = FishDexDirections.actionFishDexToSpecies(fishId)
+            findNavController().navigate(action)
         }
+        recyclerView.adapter = fishAdapter
 
-        return view
-    }
-
-    //use Alert_dialog to create a pop-up for each fish.
-    private fun showFishDetailsDialog(fish: FishSpecies) {
-        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_fish_details, null)
-        val fishDetailImage = dialogView.findViewById<ImageView>(R.id.fish_detail_image)
-        val fishDetailName = dialogView.findViewById<TextView>(R.id.fish_detail_name)
-        val fishDetailFamily = dialogView.findViewById<TextView>(R.id.fish_detail_family)
-
-        fishDetailImage.setImageResource(fish.image)
-        fishDetailName.text = fish.species_name
-        fishDetailFamily.text = fish.fish_family
-
-        AlertDialog.Builder(requireContext())
-            .setView(dialogView)
-            .setPositiveButton("Close") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
-    }
-}
+        fishDexViewModel.fishSpeciesList.observe(viewLifecycleOwner) { fishList ->
+            // Update the fishAdapter with the new fishList
+            fishAdapter.fishList = fishList
+            fishAdapter.notifyDataSetChanged()
+        }
+    }}

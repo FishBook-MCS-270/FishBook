@@ -1,0 +1,65 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/gallery">
+
+    <fragment
+        android:id="@+id/fishdex"
+        android:name="com.example.fishbook.FishDex"
+        android:label="FishDex"
+        tools:layout="@layout/fragment_fish_dex">
+        <action
+            android:id="@+id/action_fishDex_to_species"
+            app:destination="@id/speciesFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/gallery"
+        android:name="com.example.fishbook.Gallery"
+        android:label="Gallery"
+        tools:layout="@layout/fragment_gallery">
+        <action
+            android:id="@+id/action_galleryFragment_to_addRecordFragment"
+            app:destination="@id/addRecordFragment"/>
+        <action
+            android:id="@+id/action_galleryFragment_to_viewRecordFragment"
+            app:destination="@id/viewRecordFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/addRecordFragment"
+        android:name="com.example.fishbook.AddRecordFragment"
+        android:label="Add Record"
+        tools:layout="@layout/fragment_add_record"/>
+
+    <fragment
+        android:id="@+id/viewRecordFragment"
+        android:name="com.example.fishbook.ViewRecordFragment"
+        android:label="View Record"
+        tools:layout="@layout/fragment_view_record"/>
+    <fragment
+        android:id="@+id/speciesFragment"
+        android:name="com.example.fishbook.Species"
+        android:label="Species"
+        tools:layout="@layout/fragment_species">
+        <argument
+            android:name="fishSpeciesId"
+            app:argType="integer" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/camera"
+        android:name="com.example.fishbook.Camera"
+        android:label="Camera"
+        tools:layout="@layout/fragment_camera"/>
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.example.fishbook.Map"
+        android:label="Map"
+        tools:layout="@layout/fragment_map"/>
+
+</navigation>

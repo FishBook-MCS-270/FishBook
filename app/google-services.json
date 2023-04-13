@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "229340474698",
+    "project_id": "fishbook-7ad79",
+    "storage_bucket": "fishbook-7ad79.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:229340474698:android:f94ea18214190f29faa5b3",
+        "android_client_info": {
+          "package_name": "com.example.fishbook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "229340474698-utqob827et3nc7485ssvd0h7npmm8f53.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9nmoI6FvcTm7NxwUrzscuOhhoZ8ubtT0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "229340474698-utqob827et3nc7485ssvd0h7npmm8f53.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
