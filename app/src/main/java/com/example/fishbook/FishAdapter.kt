@@ -1,5 +1,8 @@
+package com.example.fishbook
+
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +14,10 @@ import com.example.fishbook.FishSpecies
 import com.example.fishbook.R
 
 class FishAdapter(
-    private val fishList: List<FishSpecies>,
-    //pass-in functionality, specify in fishdex fragment
-    private val onItemClickListener: (FishSpecies) -> Unit
+    var fishList: List<FishSpecies>, // Changed from List to MutableList
+    private val onItemClickListener: (Int) -> Unit
 ) : RecyclerView.Adapter<FishAdapter.FishViewHolder>() {
 
-    // ViewHolder for each fish in the RecyclerView
 
     inner class FishViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val fishImage: ImageView = itemView.findViewById(R.id.fish_image)
@@ -31,8 +32,10 @@ class FishAdapter(
 
     override fun onBindViewHolder(holder: FishViewHolder, position: Int) {
         val currentItem = fishList[position]
+        Log.d("FishAdapter", "Binding position: $position, species_name: ${currentItem.species_name}")
 
         holder.fishImage.setImageResource(currentItem.image)
+        holder.fishName.text = currentItem.species_name
 
         if (currentItem.caught_flag) {
             holder.fishName.text = currentItem.species_name
@@ -44,7 +47,7 @@ class FishAdapter(
         }
         //add on-clicklistener functionality
         holder.itemView.setOnClickListener {
-            onItemClickListener(currentItem)
+            onItemClickListener(currentItem.id)
         }
     }
     //for recylcer view to know how many to display

@@ -12,4 +12,8 @@
  <item android:id="@+id/gallery"
      android:title="Gallery"
      android:icon="@drawable/baseline_grid_view_24"/>
+
+ <item android:id="@+id/map"
+     android:title="Map"
+     android:icon="@drawable/baseline_map_24"/>
 </menu>
