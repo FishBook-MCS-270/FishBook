@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        SpeciesRepository.initialize(this)
         bottomNavigationView = findViewById(R.id.bottom_navigation)
 
         // Setup the bottom navigation view with the NavHostFragment

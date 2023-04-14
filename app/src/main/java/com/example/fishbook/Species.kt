@@ -1,23 +1,15 @@
 package com.example.fishbook
-
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import java.util.UUID
 
 
-class Species : Fragment() {
-    private var fishSpeciesId: Int = 0
+@Entity(tableName = "species_table")
+data class Species(
+    @PrimaryKey val id: UUID = UUID.randomUUID(),
+    val caught_flag: Boolean,
+    val species_name: String,
+    val fish_family: String,
+    val image: Int = 0
+)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val fishSpeciesId = requireArguments().getInt("fishSpeciesId")
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_species, container, false)
-        // Populate the UI with fish details
-        return view
-    }
-}
