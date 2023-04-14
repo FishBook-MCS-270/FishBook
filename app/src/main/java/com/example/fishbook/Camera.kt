@@ -69,7 +69,6 @@ class Camera : Fragment() {
         }
     }
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCameraBinding.inflate(layoutInflater, container, false)
 
@@ -118,6 +117,23 @@ class Camera : Fragment() {
             popup.show()
         }
 
+        binding.lakeButton.setOnClickListener{
+            // Popup of Lakes
+            val popup = PopupMenu(requireContext(), binding.lakeButton)
+
+            // Example names, use lakes from data
+            val lakeNames = arrayOf("Lake Nokomis", "Lake Vermillion", "Lake Minnetonka")
+
+            for (i in lakeNames.indices) {
+                popup.menu.add(lakeNames[i]).setOnMenuItemClickListener { menuItem ->
+                    // Set the text of the speciesEditText to the selected species
+                    binding.lakeEditText.setText(menuItem.title)
+                    true
+                }
+            }
+            popup.show()
+        }
+
         binding.uploadButton.setOnClickListener{
             uploadImage()
         }
@@ -157,7 +173,7 @@ class Camera : Fragment() {
                 // Store info in CatchDetails object
                 val catchDetails = CatchDetails(
                     species = binding.speciesEditText.text.toString(),
-                    lake = "",
+                    lake = binding.lakeEditText.text.toString(),
                     localUri = ImageUri.toString(),
                     remoteUri = remoteUri
                 )
@@ -177,6 +193,7 @@ class Camera : Fragment() {
             .addOnSuccessListener {
                 Log.i(TAG, "Successfully added catch details")
                 binding.speciesEditText.text.clear()
+                binding.lakeEditText.text.clear()
             }
             .addOnFailureListener {
                 Log.e(TAG, "Error adding document")
