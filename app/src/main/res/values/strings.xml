@@ -4,4 +4,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="upload">Upload</string>
     <string name="species_name">Species</string>
+    <string name="lake_hint">Select Lake</string>
+    <string name="lake_name">Lake</string>
+    <string name="species_hint">Select Species Name</string>
 </resources>
