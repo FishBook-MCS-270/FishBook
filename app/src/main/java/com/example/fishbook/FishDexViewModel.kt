@@ -1,49 +1,28 @@
 package com.example.fishbook
-import com.example.fishbook.R.drawable
 
-import  com.example.fishbook.SpeciesDatabase
-import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import com.example.fishbook.FishSpecies
-import com.example.fishbook.Species
-import kotlinx.coroutines.Dispatchers
 
 
-class FishDexViewModel(application: Application) : AndroidViewModel(application) {
-    private val fishSpeciesDao = SpeciesDatabase.getInstance(application).fishSpeciesDao()
-    private val _fishSpeciesList = MutableLiveData<List<FishSpecies>>()
-    val fishSpeciesList: LiveData<List<FishSpecies>> = _fishSpeciesList
+class FishDexViewModel : ViewModel() {
+    private val speciesRepository = SpeciesRepository.get()
+
+    private val _fishSpecies: MutableStateFlow<List<Species>> = MutableStateFlow(emptyList())
+    val fishSpecies: StateFlow<List<Species>>
+        get() = _fishSpecies.asStateFlow()
 
     init {
-        fetchFishSpecies()
-    }
-
-    private fun fetchFishSpecies() {
-        viewModelScope.launch(Dispatchers.IO) {
-            if (fishSpeciesDao.getFishSpeciesCount() == 0) {
-                populateInitialData()
+        viewModelScope.launch {
+            speciesRepository.prepopulateDatabase()
+            speciesRepository.getFishSpecies().collect {
+                _fishSpecies.value = it
             }
-            val fishList = fishSpeciesDao.getAllFishSpecies()
-        }
-    }
-
-
-
-    private suspend fun populateInitialData() {
-        // Create a list of fish species
-        val fishSpeciesList = listOf(
-            FishSpecies(
-                caught_flag = false,
-                species_name = "Bluegill",
-                fish_family = "Sunfish",
-                image = drawable.fish_sunbluegill
-            )
-        )
-
-        // Insert fish species into the database
-        fishSpeciesList.forEach { fish ->
-            fishSpeciesDao.insertFishSpecies(fish)
         }
     }
 }
+
