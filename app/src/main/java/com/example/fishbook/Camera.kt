@@ -1,7 +1,11 @@
 package com.example.fishbook
 
+import android.app.ProgressDialog
+import android.content.ContentValues.TAG
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,16 +13,20 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.example.fishbook.databinding.FragmentCameraBinding
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import java.io.File
+import java.text.SimpleDateFormat
 import java.util.*
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-
 
 /**
  * A simple [Fragment] subclass.
@@ -26,6 +34,14 @@ import java.util.*
  * create an instance of this fragment.
  */
 //testing
+
+data class CatchDetails(
+    var species: String = "",
+    var lake: String = "",
+    var remoteUri: String = "",
+    var localUri: String = ""
+)
+
 class Camera : Fragment() {
 
     private lateinit var binding: FragmentCameraBinding
@@ -33,6 +49,7 @@ class Camera : Fragment() {
     private var photoName: String? = null
     private lateinit var photoFile: File
     private var cameraLaunched = false
+    lateinit var ImageUri: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,14 +58,17 @@ class Camera : Fragment() {
             ActivityResultContracts.TakePicture()
         ) { didTakePhoto: Boolean ->
             if (didTakePhoto && photoName != null) {
-                binding.fishImage.setImageURI(FileProvider.getUriForFile(
+                val photoUri = FileProvider.getUriForFile(
                     requireContext(),
                     "com.example.fishbook.fileprovider",
                     photoFile
-                ))
+                )
+                ImageUri = photoUri // assign photoUri to ImageUri
+                binding.fishImage.setImageURI(photoUri)
             }
         }
     }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCameraBinding.inflate(layoutInflater, container, false)
@@ -67,7 +87,6 @@ class Camera : Fragment() {
             takePhotoLauncher.launch(photoUri)
             cameraLaunched = true
         }
-
         binding.cameraButton.setOnClickListener {
             photoName = "IMG_${Date()}.JPG"
             photoFile = File(
@@ -87,7 +106,7 @@ class Camera : Fragment() {
             val popup = PopupMenu(requireContext(), binding.speciesButton)
 
             // Example names, use species from data
-            val speciesNames = arrayOf("Salmon", "Trout", "Bass", "Tuna")
+            val speciesNames = arrayOf("Salmon", "Trout", "Bass")
 
             for (i in speciesNames.indices) {
                 popup.menu.add(speciesNames[i]).setOnMenuItemClickListener { menuItem ->
@@ -99,6 +118,9 @@ class Camera : Fragment() {
             popup.show()
         }
 
+        binding.uploadButton.setOnClickListener{
+            uploadImage()
+        }
         return binding.root
     }
 
@@ -112,5 +134,52 @@ class Camera : Fragment() {
                 photoFile
             ))
         }
+    }
+
+    private fun uploadImage() {
+        val progressDialog = ProgressDialog(requireContext())
+        progressDialog.setMessage("Uploading File...")
+        progressDialog.setCancelable(false)
+        progressDialog.show()
+
+        val formatter = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault())
+        val now = Date()
+        val fileName = formatter.format(now)
+        val storageReference = FirebaseStorage.getInstance().getReference("images/$fileName")
+
+        storageReference.putFile(ImageUri).addOnSuccessListener {
+            // Get the download URL of the uploaded image
+            storageReference.downloadUrl.addOnSuccessListener { uri ->
+                val remoteUri = uri.toString()
+                binding.fishImage.setImageURI(null)
+                Toast.makeText(requireContext(), "Successfully uploaded", Toast.LENGTH_SHORT).show()
+                if (progressDialog.isShowing) progressDialog.dismiss()
+                // Store info in CatchDetails object
+                val catchDetails = CatchDetails(
+                    species = binding.speciesEditText.text.toString(),
+                    lake = "",
+                    localUri = ImageUri.toString(),
+                    remoteUri = remoteUri
+                )
+                uploadCatchDetails(catchDetails)
+            }
+        }.addOnFailureListener {
+            if (progressDialog.isShowing) progressDialog.dismiss()
+            Toast.makeText(requireContext(), "Failed", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    private fun uploadCatchDetails(catchDetails: CatchDetails) {
+        val db = Firebase.firestore
+        db.collection("catchDetails")
+            .add(catchDetails)
+            .addOnSuccessListener {
+                Log.i(TAG, "Successfully added catch details")
+                binding.speciesEditText.text.clear()
+            }
+            .addOnFailureListener {
+                Log.e(TAG, "Error adding document")
+            }
     }
 }
