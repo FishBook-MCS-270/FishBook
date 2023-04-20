@@ -48,7 +48,6 @@ class Camera : Fragment() {
 
     private var photoName: String? = null
     private lateinit var photoFile: File
-    private var cameraLaunched = false
     lateinit var ImageUri: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,20 +71,6 @@ class Camera : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCameraBinding.inflate(layoutInflater, container, false)
 
-        if (!cameraLaunched) {
-            photoName = "IMG_${Date()}.JPG"
-            photoFile = File(
-                requireContext().applicationContext.filesDir,
-                photoName
-            )
-            val photoUri = FileProvider.getUriForFile(
-                requireContext(),
-                "com.example.fishbook.fileprovider",
-                photoFile
-            )
-            takePhotoLauncher.launch(photoUri)
-            cameraLaunched = true
-        }
         binding.cameraButton.setOnClickListener {
             photoName = "IMG_${Date()}.JPG"
             photoFile = File(
@@ -100,7 +85,7 @@ class Camera : Fragment() {
             takePhotoLauncher.launch(photoUri)
         }
 
-        binding.speciesButton.setOnClickListener{
+        /*binding.speciesButton.setOnClickListener{
             // Popup of name of species
             val popup = PopupMenu(requireContext(), binding.speciesButton)
 
@@ -115,9 +100,9 @@ class Camera : Fragment() {
                 }
             }
             popup.show()
-        }
+        }*/
 
-        binding.lakeButton.setOnClickListener{
+        /*binding.lakeButton.setOnClickListener{
             // Popup of Lakes
             val popup = PopupMenu(requireContext(), binding.lakeButton)
 
@@ -132,7 +117,7 @@ class Camera : Fragment() {
                 }
             }
             popup.show()
-        }
+        }*/
 
         binding.uploadButton.setOnClickListener{
             uploadImage()
