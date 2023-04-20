@@ -1,85 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".Camera">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/fish_image"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="400dp"
             android:scaleType="centerCrop"
-            android:background="@color/black" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+            android:background="@color/black"/>
 
         <ImageButton
             android:id="@+id/camera_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginTop="16dp"
+            android:layout_margin="10dp"
+            android:layout_below="@id/fish_image"
+            android:layout_centerHorizontal="true"
             android:src="@drawable/ic_camera" />
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!--
+        <Button
+            android:id="@+id/species_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_margin="10dp"
+            android:layout_below="@id/camera_button"
+            android:text="@string/species_name"/>
 
-            <Button
-                android:id="@+id/species_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:text="@string/species_name" />
+            -->
 
-            <EditText
-                android:id="@+id/species_edit_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:hint="@string/species_hint" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/species_edit_text"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_margin="10dp"
+            android:layout_below="@id/camera_button"
+            android:hint="@string/species_hint"/>
 
-            <Button
-                android:id="@+id/lake_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:text="@string/lake_name"/>
+        <!--
+        <Button
+            android:id="@+id/lake_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_below="@id/species_button"
+            android:text="@string/lake_name"/>
+            -->
 
-            <EditText
-                android:id="@+id/lake_edit_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:hint="@string/lake_hint" />
-        </LinearLayout>
+        <EditText
+            android:id="@+id/lake_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_below="@id/species_edit_text"
+            android:hint="@string/lake_hint"/>
+
+        <EditText
+            android:id="@+id/county_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_below="@id/lake_edit_text"
+            android:hint="@string/county_hint"/>
+
+        <EditText
+            android:id="@+id/length_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_below="@id/county_edit_text"
+            android:hint="@string/length_hint"/>
+
+        <EditText
+            android:id="@+id/weight_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_below="@id/length_edit_text"
+            android:hint="@string/weight_hint"/>
 
         <Button
             android:id="@+id/upload_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/weight_edit_text"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
             android:text="@string/upload"/>
-
-    </LinearLayout>
-
-</LinearLayout>
+    </RelativeLayout>
+</ScrollView>
