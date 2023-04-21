@@ -20,10 +20,11 @@
             android:name=".MainActivity"
             android:exported="false"/>
         <activity
+            android:name=".Register"
+            android:exported="false"/>
+        <activity
             android:name=".LoginPage"
             android:exported="true">
-
-
 
 
 
@@ -33,7 +34,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
 
         </activity>
         <provider
