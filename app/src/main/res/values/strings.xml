@@ -10,4 +10,10 @@
     <string name="county_hint">County</string>
     <string name="length_hint">Length (inches)</string>
     <string name="weight_hint">Weight (lbs)</string>
+    <string name="login">login</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="click_to_register">click to register</string>
+    <string name="register">register</string>
+    <string name="click_to_login">click to login</string>
 </resources>
