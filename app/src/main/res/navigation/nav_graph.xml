@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/fishdex"
-        android:name="com.example.fishbook.FishDexFragment"
+        android:name="com.example.fishbook.fishdex.FishDexFragment"
         android:label="FishDex"
         tools:layout="@layout/fragment_fish_dex">
         <action
@@ -14,17 +14,26 @@
             app:destination="@id/speciesFragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/speciesFragment"
+        android:name="com.example.fishbook.fishdex.SpeciesDetailFragment"
+        android:label="Species"
+        tools:layout="@layout/fragment_species">
+        <argument
+            android:name="fishSpeciesId"
+            app:argType="java.util.UUID" />
+    </fragment>
 
     <fragment
         android:id="@+id/gallery"
-        android:name="com.example.fishbook.Gallery"
+        android:name="com.example.fishbook.gallery.Gallery"
         android:label="Gallery"
         tools:layout="@layout/fragment_gallery">
         <action
-            android:id="@+id/action_galleryFragment_to_addRecordFragment"
+            android:id="@+id/addRecord"
             app:destination="@id/addRecordFragment"/>
         <action
-            android:id="@+id/action_galleryFragment_to_viewRecordFragment"
+            android:id="@+id/showRecord"
             app:destination="@id/viewRecordFragment"/>
     </fragment>
 
@@ -36,18 +45,15 @@
 
     <fragment
         android:id="@+id/viewRecordFragment"
-        android:name="com.example.fishbook.ViewRecordFragment"
+        android:name="com.example.fishbook.gallery.ViewRecordFragment"
         android:label="View Record"
-        tools:layout="@layout/fragment_view_record"/>
-    <fragment
-        android:id="@+id/speciesFragment"
-        android:name="com.example.fishbook.SpeciesDetailFragment"
-        android:label="Species"
-        tools:layout="@layout/fragment_species">
+        tools:layout="@layout/fragment_view_record">
         <argument
-            android:name="fishSpeciesId"
-            app:argType="java.util.UUID" />
-    </fragment>
+        android:name="gridImage"
+        app:argType="com.example.fishbook.gallery.GridImage"
+            />
+</fragment>
+
 
 
     <fragment
