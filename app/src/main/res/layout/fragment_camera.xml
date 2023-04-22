@@ -25,34 +25,24 @@
             android:layout_centerHorizontal="true"
             android:src="@drawable/ic_camera" />
 
-        <!--
-        <Button
-            android:id="@+id/species_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_below="@id/camera_button"
-            android:text="@string/species_name"/>
-
-            -->
-
         <EditText
             android:id="@+id/species_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_below="@id/camera_button"
-            android:hint="@string/species_hint"/>
+            android:hint="@string/species_hint"
+            android:inputType="text" />
 
-        <!--
-        <Button
-            android:id="@+id/lake_button"
+        <EditText
+            android:id="@+id/lure_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:layout_below="@id/species_button"
-            android:text="@string/lake_name"/>
-            -->
+            android:layout_below="@id/camera_button"
+            android:layout_centerHorizontal="true"
+            android:hint="@string/lure_hint"
+            android:inputType="text"/>
 
         <EditText
             android:id="@+id/lake_edit_text"
@@ -60,15 +50,18 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_below="@id/species_edit_text"
-            android:hint="@string/lake_hint"/>
+            android:hint="@string/lake_hint"
+            android:inputType="text"/>
 
         <EditText
             android:id="@+id/county_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:layout_below="@id/lake_edit_text"
-            android:hint="@string/county_hint"/>
+            android:layout_below="@id/lure_edit_text"
+            android:layout_centerHorizontal="true"
+            android:hint="@string/county_hint"
+            android:inputType="text"/>
 
         <EditText
             android:id="@+id/length_edit_text"
@@ -76,21 +69,43 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_below="@id/county_edit_text"
-            android:hint="@string/length_hint"/>
+            android:hint="@string/length_hint"
+            android:inputType="numberDecimal"/>
 
         <EditText
             android:id="@+id/weight_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:layout_below="@id/lake_edit_text"
+            android:layout_centerHorizontal="true"
+            android:hint="@string/weight_hint"
+            android:inputType="numberDecimal"/>
+
+        <EditText
+            android:id="@+id/time_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:layout_below="@id/length_edit_text"
-            android:hint="@string/weight_hint"/>
+            android:hint="@string/time_hint"
+            android:inputType="datetime"/>
+
+        <EditText
+            android:id="@+id/location_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_below="@id/weight_edit_text"
+            android:layout_centerHorizontal="true"
+            android:hint="@string/location_hint"
+            android:inputType="text"/>
 
         <Button
             android:id="@+id/upload_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/weight_edit_text"
+            android:layout_below="@id/location_edit_text"
             android:layout_centerHorizontal="true"
             android:layout_margin="10dp"
             android:text="@string/upload"/>

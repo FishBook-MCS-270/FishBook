@@ -35,20 +35,13 @@ import java.util.*
  */
 //testing
 
-data class CatchDetails(
-    var species: String = "",
-    var lake: String = "",
-    var remoteUri: String = "",
-    var localUri: String = ""
-)
-
 class Camera : Fragment() {
 
     private lateinit var binding: FragmentCameraBinding
 
     private var photoName: String? = null
     private lateinit var photoFile: File
-    lateinit var ImageUri: Uri
+    private lateinit var ImageUri: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,40 +77,6 @@ class Camera : Fragment() {
             )
             takePhotoLauncher.launch(photoUri)
         }
-
-        /*binding.speciesButton.setOnClickListener{
-            // Popup of name of species
-            val popup = PopupMenu(requireContext(), binding.speciesButton)
-
-            // Example names, use species from data
-            val speciesNames = arrayOf("Salmon", "Trout", "Bass")
-
-            for (i in speciesNames.indices) {
-                popup.menu.add(speciesNames[i]).setOnMenuItemClickListener { menuItem ->
-                    // Set the text of the speciesEditText to the selected species
-                    binding.speciesEditText.setText(menuItem.title)
-                    true
-                }
-            }
-            popup.show()
-        }*/
-
-        /*binding.lakeButton.setOnClickListener{
-            // Popup of Lakes
-            val popup = PopupMenu(requireContext(), binding.lakeButton)
-
-            // Example names, use lakes from data
-            val lakeNames = arrayOf("Lake Nokomis", "Lake Vermillion", "Lake Minnetonka")
-
-            for (i in lakeNames.indices) {
-                popup.menu.add(lakeNames[i]).setOnMenuItemClickListener { menuItem ->
-                    // Set the text of the speciesEditText to the selected species
-                    binding.lakeEditText.setText(menuItem.title)
-                    true
-                }
-            }
-            popup.show()
-        }*/
 
         binding.uploadButton.setOnClickListener{
             uploadImage()
@@ -159,6 +118,12 @@ class Camera : Fragment() {
                 val catchDetails = CatchDetails(
                     species = binding.speciesEditText.text.toString(),
                     lake = binding.lakeEditText.text.toString(),
+                    lure = binding.lureEditText.text.toString(),
+                    length = binding.lengthEditText.text.toString().toFloat(),
+                    weight = binding.weightEditText.text.toString().toFloat(),
+                    county = binding.countyEditText.text.toString(),
+                    time = binding.timeEditText.text.toString(),
+                    location = binding.locationEditText.text.toString(),
                     localUri = ImageUri.toString(),
                     remoteUri = remoteUri
                 )
@@ -179,6 +144,12 @@ class Camera : Fragment() {
                 Log.i(TAG, "Successfully added catch details")
                 binding.speciesEditText.text.clear()
                 binding.lakeEditText.text.clear()
+                binding.lureEditText.text.clear()
+                binding.lengthEditText.text.clear()
+                binding.weightEditText.text.clear()
+                binding.countyEditText.text.clear()
+                binding.timeEditText.text.clear()
+                binding.locationEditText.text.clear()
             }
             .addOnFailureListener {
                 Log.e(TAG, "Error adding document")
