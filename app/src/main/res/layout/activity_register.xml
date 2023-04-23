@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="15dp"
     android:gravity="center"
-    tools:context=".Register">
+    tools:context=".auth.Register">
 
     <TextView
         android:text="@string/register"

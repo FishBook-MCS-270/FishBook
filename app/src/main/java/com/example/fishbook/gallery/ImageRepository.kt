@@ -1,5 +1,6 @@
 package com.example.fishbook.gallery
 
+import com.example.fishbook.record.CatchDetails
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -10,18 +11,21 @@ import kotlinx.coroutines.flow.flow
 class ImageRepository {
     private val firestore: FirebaseFirestore = Firebase.firestore
 
-    fun fetchImages(): Flow<List<GridImage>> = flow {
-        val gridImages = mutableListOf<GridImage>()
+    fun fetchImages(userId: String): Flow<List<CatchDetails>> = flow {
+        val catchDetailsList = mutableListOf<CatchDetails>()
         try {
-            val documents = firestore.collection("catchDetails").get().await()
+            val documents = firestore.collection("users")
+                .document(userId)
+                .collection("catchDetails")
+                .get().await()
+
             for (document in documents) {
-                val remoteUri = document.getString("remoteUri") ?: ""
-                val gridImage = GridImage(document.id, remoteUri)
-                gridImages.add(gridImage)
+                val catchDetail = document.toObject(CatchDetails::class.java)
+                catchDetailsList.add(catchDetail)
             }
-            emit(gridImages)
+            emit(catchDetailsList)
         } catch (e: Exception) {
-            emit(emptyList<GridImage>())
+            emit(emptyList<CatchDetails>())
         }
     }
     companion object {

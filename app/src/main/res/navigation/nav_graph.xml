@@ -39,7 +39,7 @@
 
     <fragment
         android:id="@+id/addRecordFragment"
-        android:name="com.example.fishbook.AddRecordFragment"
+        android:name="com.example.fishbook.record.AddRecordFragment"
         android:label="Add Record"
         tools:layout="@layout/fragment_add_record"/>
 
@@ -49,22 +49,14 @@
         android:label="View Record"
         tools:layout="@layout/fragment_view_record">
         <argument
-        android:name="gridImage"
-        app:argType="com.example.fishbook.gallery.GridImage"
+        android:name="catchDetail"
+        app:argType="com.example.fishbook.record.CatchDetails"
             />
 </fragment>
 
-
-
-    <fragment
-        android:id="@+id/camera"
-        android:name="com.example.fishbook.Camera"
-        android:label="Camera"
-        tools:layout="@layout/fragment_camera"/>
-
     <fragment
         android:id="@+id/map"
-        android:name="com.example.fishbook.Map"
+        android:name="com.example.fishbook.map.Map"
         android:label="Map"
         tools:layout="@layout/fragment_map"/>
 

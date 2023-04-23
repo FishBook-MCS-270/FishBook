@@ -10,16 +10,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.example.fishbook.R
 
 import com.example.fishbook.databinding.FragmentGalleryBinding
 import kotlinx.coroutines.launch
 
 
-/**
- * A simple [Fragment] subclass.
- * Use the [Gallery.newInstance] factory method to
- * create an instance of this fragment.
- */
 
 class Gallery : Fragment() {
     private var _binding: FragmentGalleryBinding? = null
@@ -44,19 +40,26 @@ class Gallery : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // create afapter
+        val galleryAdapter = GalleryAdapter(requireContext(), emptyList()) { catchDetail ->
+            findNavController().navigate(GalleryDirections.showRecord(catchDetail))
+        }
+        binding.gridView.adapter = galleryAdapter
+
+        //update from firestore automatically
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                galleryViewModel.GridImages.collect { gridImages ->
-                    binding.gridView.adapter =
-                        GalleryAdapter(requireContext(), gridImages) { gridImage ->
-                            findNavController().navigate(
-                                GalleryDirections.showRecord(gridImage)
-                            )
-                        }
+                galleryViewModel.CatchDetails.collect { catchDetails ->
+                    galleryAdapter.updateData(catchDetails)
                 }
             }
         }
+
+        binding.addRecord.setOnClickListener {
+            findNavController().navigate(R.id.addRecord)
+        }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

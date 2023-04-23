@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="15dp"
     android:gravity="center"
-    tools:context=".LoginPage">
+    tools:context=".auth.LoginPage">
 
     <TextView
         android:text="@string/login"

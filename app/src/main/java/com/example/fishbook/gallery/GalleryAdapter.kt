@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import androidx.navigation.findNavController
 import com.example.fishbook.databinding.ItemImageBinding
+import com.example.fishbook.record.CatchDetails
 import com.squareup.picasso.Picasso
 
 class GalleryAdapter(
     private val context: Context,
-    private val gridImages: List<GridImage>,
-    private val onClick: (GridImage) -> Unit
+    private var gridImages: List<CatchDetails>,
+    private val onClick: (CatchDetails) -> Unit
 ) : BaseAdapter() {
     override fun getCount(): Int {
         return gridImages.size
@@ -37,15 +38,29 @@ class GalleryAdapter(
             binding = convertView.tag as ItemImageBinding
         }
 
-        val gridImage = getItem(position) as GridImage
-        Picasso.get().load(gridImage.url).into(binding.gridImage)
+        val catchDetail = getItem(position) as CatchDetails
 
-        // Handle click event for the grid item
+        //fixes nullexception
+        if (catchDetail.remoteUri.isNotEmpty()) {
+            Picasso.get().load(catchDetail.remoteUri).into(binding.gridImage)
+        } else if (catchDetail.localUri.isNotEmpty()) {
+            Picasso.get().load(catchDetail.localUri).into(binding.gridImage)
+        }
+
+        // Handles click event for the grid item
         binding.root.setOnClickListener {
-            val action = GalleryDirections.showRecord(gridImage)
+            val action = GalleryDirections.showRecord(catchDetail)
             it.findNavController().navigate(action)
         }
 
         return binding.root
     }
+    fun updateData(newData: List<CatchDetails>) {
+        gridImages = newData
+        notifyDataSetChanged()
+    }
 }
+
+
+
+
