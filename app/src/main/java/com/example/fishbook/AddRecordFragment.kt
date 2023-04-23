@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.example.fishbook.databinding.FragmentAddRecordBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -153,22 +154,26 @@ class AddRecordFragment : Fragment() {
     private fun uploadCatchDetails(catchDetails: CatchDetails) {
         val db = Firebase.firestore
         // adds to catchDetails collection
-        db.collection("catchDetails")
-            .add(catchDetails)
-            .addOnSuccessListener {
-                Log.i(ContentValues.TAG, "Successfully added catch details")
-                // clears text boxes if uploaded successfully
-                binding.speciesEditText.text.clear()
-                binding.lakeEditText.text.clear()
-                binding.lureEditText.text.clear()
-                binding.lengthEditText.text.clear()
-                binding.weightEditText.text.clear()
-                binding.countyEditText.text.clear()
-                binding.timeEditText.text.clear()
-                binding.locationEditText.text.clear()
-            }
-            .addOnFailureListener {
-                Log.e(ContentValues.TAG, "Error adding document")
-            }
+        FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
+            db.collection("users")
+                .document(userId)
+                .collection("catchDetails")
+                .add(catchDetails)
+                .addOnSuccessListener {
+                    Log.i(ContentValues.TAG, "Successfully added catch details")
+                    // clears text boxes if uploaded successfully
+                    binding.speciesEditText.text.clear()
+                    binding.lakeEditText.text.clear()
+                    binding.lureEditText.text.clear()
+                    binding.lengthEditText.text.clear()
+                    binding.weightEditText.text.clear()
+                    binding.countyEditText.text.clear()
+                    binding.timeEditText.text.clear()
+                    binding.locationEditText.text.clear()
+                }
+                .addOnFailureListener {
+                    Log.e(ContentValues.TAG, "Error adding document")
+                }
+        }
     }
 }
