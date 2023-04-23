@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.fishbook"
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -25,10 +26,10 @@
             android:name=".MainActivity"
             android:exported="false"/>
         <activity
-            android:name=".Register"
+            android:name=".auth.Register"
             android:exported="false"/>
         <activity
-            android:name=".LoginPage"
+            android:name=".auth.LoginPage"
             android:exported="true">
 
 

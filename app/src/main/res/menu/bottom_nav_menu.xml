@@ -5,10 +5,6 @@
      android:title="FishDex"
      android:icon="@drawable/fish_24"/>
 
- <item android:id="@+id/camera"
-     android:title="Camera"
-     android:icon="@drawable/baseline_camera_outdoor_24"/>
-
  <item android:id="@+id/gallery"
      android:title="Gallery"
      android:icon="@drawable/baseline_grid_view_24"/>

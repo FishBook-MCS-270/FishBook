@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/fishdex"
-        android:name="com.example.fishbook.FishDexFragment"
+        android:name="com.example.fishbook.fishdex.FishDexFragment"
         android:label="FishDex"
         tools:layout="@layout/fragment_fish_dex">
         <action
@@ -14,34 +14,9 @@
             app:destination="@id/speciesFragment" />
     </fragment>
 
-
-    <fragment
-        android:id="@+id/gallery"
-        android:name="com.example.fishbook.Gallery"
-        android:label="Gallery"
-        tools:layout="@layout/fragment_gallery">
-        <action
-            android:id="@+id/action_galleryFragment_to_addRecordFragment"
-            app:destination="@id/addRecordFragment"/>
-        <action
-            android:id="@+id/action_galleryFragment_to_viewRecordFragment"
-            app:destination="@id/viewRecordFragment"/>
-    </fragment>
-
-    <fragment
-        android:id="@+id/addRecordFragment"
-        android:name="com.example.fishbook.AddRecordFragment"
-        android:label="Add Record"
-        tools:layout="@layout/fragment_add_record"/>
-
-    <fragment
-        android:id="@+id/viewRecordFragment"
-        android:name="com.example.fishbook.ViewRecordFragment"
-        android:label="View Record"
-        tools:layout="@layout/fragment_view_record"/>
     <fragment
         android:id="@+id/speciesFragment"
-        android:name="com.example.fishbook.SpeciesDetailFragment"
+        android:name="com.example.fishbook.fishdex.SpeciesDetailFragment"
         android:label="Species"
         tools:layout="@layout/fragment_species">
         <argument
@@ -49,16 +24,52 @@
             app:argType="java.util.UUID" />
     </fragment>
 
+    <fragment
+        android:id="@+id/gallery"
+        android:name="com.example.fishbook.gallery.Gallery"
+        android:label="Gallery"
+        tools:layout="@layout/fragment_gallery">
+        <action
+            android:id="@+id/addRecord"
+            app:destination="@id/addRecordFragment"/>
+        <action
+            android:id="@+id/showRecord"
+            app:destination="@id/viewRecordFragment"/>
+    </fragment>
 
     <fragment
-        android:id="@+id/camera"
-        android:name="com.example.fishbook.Camera"
-        android:label="Camera"
-        tools:layout="@layout/fragment_camera"/>
+        android:id="@+id/addRecordFragment"
+        android:name="com.example.fishbook.record.AddRecordFragment"
+        android:label="Add Record"
+        tools:layout="@layout/fragment_add_record"/>
+
+    <fragment
+        android:id="@+id/viewRecordFragment"
+        android:name="com.example.fishbook.gallery.ViewRecordFragment"
+        android:label="View Record"
+        tools:layout="@layout/fragment_view_record">
+        <argument
+        android:name="catchDetail"
+        app:argType="com.example.fishbook.record.CatchDetails"
+            />
+<action
+        android:id="@+id/editRecord"
+        app:destination="@id/editRecordFragment" />
+</fragment>
+
+<fragment
+android:id="@+id/editRecordFragment"
+android:name="com.example.fishbook.record.EditRecordFragment"
+    android:label="Edit"
+    tools:layout="@layout/fragment_add_record">
+    <argument
+        android:name="catchDetail"
+        app:argType="com.example.fishbook.record.CatchDetails"/>
+</fragment>
 
     <fragment
         android:id="@+id/map"
-        android:name="com.example.fishbook.Map"
+        android:name="com.example.fishbook.map.Map"
         android:label="Map"
         tools:layout="@layout/fragment_map"/>
 
