@@ -1,5 +1,7 @@
 package com.example.fishbook.gallery
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fishbook.record.CatchDetails
@@ -17,6 +19,11 @@ class GalleryViewModel : ViewModel() {
     val CatchDetails: StateFlow<List<CatchDetails>>
         get() = _catchDetails.asStateFlow()
 
+    private val _updatedCatchDetails = MutableLiveData<CatchDetails>()
+    val updatedCatchDetails: LiveData<CatchDetails> = _updatedCatchDetails
+    fun updateCatchDetails(catchDetails: CatchDetails) {
+        _updatedCatchDetails.value = catchDetails
+    }
     init {
         viewModelScope.launch {
             if (userId != null) {

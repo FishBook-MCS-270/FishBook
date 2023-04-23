@@ -52,6 +52,19 @@
         android:name="catchDetail"
         app:argType="com.example.fishbook.record.CatchDetails"
             />
+<action
+        android:id="@+id/editRecord"
+        app:destination="@id/editRecordFragment" />
+</fragment>
+
+<fragment
+android:id="@+id/editRecordFragment"
+android:name="com.example.fishbook.record.EditRecordFragment"
+    android:label="Edit"
+    tools:layout="@layout/fragment_add_record">
+    <argument
+        android:name="catchDetail"
+        app:argType="com.example.fishbook.record.CatchDetails"/>
 </fragment>
 
     <fragment

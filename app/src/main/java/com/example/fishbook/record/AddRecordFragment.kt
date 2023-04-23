@@ -1,4 +1,5 @@
 package com.example.fishbook.record
+import androidx.navigation.fragment.findNavController
 
 import android.app.Activity.RESULT_OK
 import android.app.ProgressDialog
@@ -14,7 +15,10 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import com.example.fishbook.R
 import com.example.fishbook.databinding.FragmentAddRecordBinding
+import com.example.fishbook.gallery.GalleryViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -26,6 +30,7 @@ import java.util.*
 class AddRecordFragment : Fragment() {
 
     private lateinit var binding: FragmentAddRecordBinding
+    private val galleryViewModel: GalleryViewModel by activityViewModels()
 
     private var photoName: String? = null
     private lateinit var photoFile: File
@@ -66,7 +71,9 @@ class AddRecordFragment : Fragment() {
             takePhotoLauncher.launch(photoUri)
         }
 
-        binding.uploadButton.setOnClickListener{
+        binding.submitButton.text = getString(R.string.upload)
+
+        binding.submitButton.setOnClickListener{
             uploadImage()
         }
 
@@ -98,6 +105,7 @@ class AddRecordFragment : Fragment() {
 
         val formatter = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault())
         val now = Date()
+        val placeholderId = UUID.randomUUID().toString()
         val fileName = formatter.format(now)
         val storageReference = FirebaseStorage.getInstance().getReference("images/$fileName")
 
@@ -110,6 +118,7 @@ class AddRecordFragment : Fragment() {
                 if (progressDialog.isShowing) progressDialog.dismiss()
                 // Store info in CatchDetails object
                 val catchDetails = CatchDetails(
+                    id = placeholderId,
                     species = binding.speciesEditText.text.toString(),
                     lake = binding.lakeEditText.text.toString(),
                     lure = binding.lureEditText.text.toString(),
@@ -159,8 +168,20 @@ class AddRecordFragment : Fragment() {
                 .document(userId)
                 .collection("catchDetails")
                 .add(catchDetails)
-                .addOnSuccessListener {
+                .addOnSuccessListener {documentReference ->
                     Log.i(ContentValues.TAG, "Successfully added catch details")
+
+                    val generatedId = documentReference.id
+
+                    // Update the CatchDetails object with the new ID
+                    val updatedCatchDetails = catchDetails.copy(id = generatedId)
+
+                    // Update the document in Firestore with the new ID
+                    documentReference.update("id", generatedId)
+                    galleryViewModel.updateCatchDetails(updatedCatchDetails)
+
+                    // Navigate back to the previous page
+                    findNavController().popBackStack()
                     // clears text boxes if uploaded successfully
                     binding.speciesEditText.text.clear()
                     binding.lakeEditText.text.clear()

@@ -4,6 +4,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class CatchDetails(
+    val id: String = "",
     var species: String = "",
     var lake: String = "",
     var length: Float = 0.0F,
