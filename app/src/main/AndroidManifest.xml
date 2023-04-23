@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,12 +15,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FishBook"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+                android:value="AIzaSyCZ22BsXgWIrskLCS8lcLH5yplpCPS5fsg">
+        </meta-data>
         <activity
             android:name=".storageActivity"
             android:exported="false"/>
         <activity
             android:name=".MainActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".Register"
+            android:exported="false"/>
+        <activity
+            android:name=".LoginPage"
             android:exported="true">
+
 
 
 
