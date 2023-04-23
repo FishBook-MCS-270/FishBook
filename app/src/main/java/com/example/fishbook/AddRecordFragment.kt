@@ -1,24 +1,21 @@
 package com.example.fishbook
 
+import android.app.Activity.RESULT_OK
 import android.app.ProgressDialog
-import android.content.ContentValues.TAG
-import android.content.Context
+import android.content.ContentValues
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.widget.PopupMenu
-import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import com.example.fishbook.databinding.FragmentCameraBinding
+import androidx.fragment.app.Fragment
+import com.example.fishbook.databinding.FragmentAddRecordBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -26,18 +23,9 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+class AddRecordFragment : Fragment() {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [camera.newInstance] factory method to
- * create an instance of this fragment.
- */
-//testing
-
-class Camera : Fragment() {
-
-    private lateinit var binding: FragmentCameraBinding
+    private lateinit var binding: FragmentAddRecordBinding
 
     private var photoName: String? = null
     private lateinit var photoFile: File
@@ -62,7 +50,7 @@ class Camera : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentCameraBinding.inflate(layoutInflater, container, false)
+        binding = FragmentAddRecordBinding.inflate(layoutInflater, container, false)
 
         binding.cameraButton.setOnClickListener {
             photoName = "IMG_${Date()}.JPG"
@@ -81,14 +69,20 @@ class Camera : Fragment() {
         binding.uploadButton.setOnClickListener{
             uploadImage()
         }
+
+        binding.selectImageButton.setOnClickListener{
+            selectImage()
+        }
         return binding.root
     }
+
 
     private var takePhotoLauncher = registerForActivityResult(
         ActivityResultContracts.TakePicture()
     ) { didTakePhoto: Boolean ->
         if (didTakePhoto && photoName != null) {
-            binding.fishImage.setImageURI(FileProvider.getUriForFile(
+            binding.fishImage.setImageURI(
+                FileProvider.getUriForFile(
                 requireContext(),
                 "com.example.fishbook.fileprovider",
                 photoFile
@@ -135,24 +129,51 @@ class Camera : Fragment() {
         }
     }
 
+    // register an activity result launcher to handle the image selection intent
+    private val selectImageLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val imageUri = result.data?.data
+            if (imageUri != null) {
+                ImageUri = imageUri
+                binding.fishImage.setImageURI(imageUri)
+            }
+        }
+    }
 
+    private fun selectImage() {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        // launch the activity result launcher to handle the intent
+        selectImageLauncher.launch(intent)
+    }
+
+    // uploads catchDetails to firebase
     private fun uploadCatchDetails(catchDetails: CatchDetails) {
         val db = Firebase.firestore
-        db.collection("catchDetails")
-            .add(catchDetails)
-            .addOnSuccessListener {
-                Log.i(TAG, "Successfully added catch details")
-                binding.speciesEditText.text.clear()
-                binding.lakeEditText.text.clear()
-                binding.lureEditText.text.clear()
-                binding.lengthEditText.text.clear()
-                binding.weightEditText.text.clear()
-                binding.countyEditText.text.clear()
-                binding.timeEditText.text.clear()
-                binding.locationEditText.text.clear()
-            }
-            .addOnFailureListener {
-                Log.e(TAG, "Error adding document")
-            }
+        // adds to catchDetails collection
+        FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
+            db.collection("users")
+                .document(userId)
+                .collection("catchDetails")
+                .add(catchDetails)
+                .addOnSuccessListener {
+                    Log.i(ContentValues.TAG, "Successfully added catch details")
+                    // clears text boxes if uploaded successfully
+                    binding.speciesEditText.text.clear()
+                    binding.lakeEditText.text.clear()
+                    binding.lureEditText.text.clear()
+                    binding.lengthEditText.text.clear()
+                    binding.weightEditText.text.clear()
+                    binding.countyEditText.text.clear()
+                    binding.timeEditText.text.clear()
+                    binding.locationEditText.text.clear()
+                }
+                .addOnFailureListener {
+                    Log.e(ContentValues.TAG, "Error adding document")
+                }
+        }
     }
 }

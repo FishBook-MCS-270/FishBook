@@ -16,4 +16,7 @@
     <string name="click_to_login">click to login</string>
     <string name="login">login</string>
     <string name="click_to_register">click to register</string>
+    <string name="lure_hint">Lure</string>
+    <string name="time_hint">Time</string>
+    <string name="location_hint">Location</string>
 </resources>
