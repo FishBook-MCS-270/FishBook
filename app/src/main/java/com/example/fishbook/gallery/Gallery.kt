@@ -29,10 +29,6 @@ class Gallery : Fragment() {
     ): View? {
         _binding = FragmentGalleryBinding.inflate(inflater, container, false)
 
-        /*binding.uploadbutton.setOnClickListener {
-            val intent = Intent(activity, storageActivity::class.java)
-            startActivity(intent)
-        }*/
         return binding.root
 
     }
@@ -45,14 +41,11 @@ class Gallery : Fragment() {
             findNavController().navigate(GalleryDirections.showRecord(catchDetail))
         }
         binding.gridView.adapter = galleryAdapter
+        galleryViewModel.fetchCatchDetails()
 
         //update from firestore automatically
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                galleryViewModel.CatchDetails.collect { catchDetails ->
-                    galleryAdapter.updateData(catchDetails)
-                }
-            }
+        galleryViewModel.CatchDetails.observe(viewLifecycleOwner) { catchDetails ->
+            galleryAdapter.updateData(catchDetails)
         }
 
         binding.addRecord.setOnClickListener {
