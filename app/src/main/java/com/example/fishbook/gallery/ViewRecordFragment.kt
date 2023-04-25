@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import com.example.fishbook.databinding.FragmentViewRecordBinding
@@ -13,6 +14,8 @@ import androidx.navigation.fragment.navArgs
 import com.example.fishbook.gallery.ViewRecordFragmentArgs
 import com.example.fishbook.record.CatchDetails
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class ViewRecordFragment : Fragment() {
@@ -42,6 +45,28 @@ class ViewRecordFragment : Fragment() {
         binding.buttonEdit.setOnClickListener {
             val action = ViewRecordFragmentDirections.editRecord(catchDetail)
             findNavController().navigate(action)
+        }
+
+        binding.deleteButton.setOnClickListener{
+            val db = FirebaseFirestore.getInstance()
+            // gets user id for current user
+            FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
+                db.collection("users")
+                    .document(userId)
+                    .collection("catchDetails")
+                    .document(catchDetail.id) // reference to catch detail id
+                    .delete() // deletes current catch detail record
+                    .addOnSuccessListener {
+                        Toast.makeText(requireContext(), "Record deleted", Toast.LENGTH_SHORT).show()
+                        // goes back to gallery when record is deleted
+                        findNavController().popBackStack()
+                    }
+                    .addOnFailureListener {
+                        // error deleting document
+                        Toast.makeText(requireContext(), "Error deleting", Toast.LENGTH_SHORT).show()
+
+                    }
+            }
         }
     }
 

@@ -61,8 +61,8 @@ class EditRecordFragment : Fragment() {
             species = binding.speciesEditText.text.toString(),
             lake = binding.lakeEditText.text.toString(),
             lure = binding.lureEditText.text.toString(),
-            length = binding.lengthEditText.text.toString().toFloat(),
-            weight = binding.weightEditText.text.toString().toFloat(),
+            length = binding.lengthEditText.text.toString(),
+            weight = binding.weightEditText.text.toString(),
             county = binding.countyEditText.text.toString(),
             time = binding.timeEditText.text.toString(),
             location = binding.locationEditText.text.toString()
