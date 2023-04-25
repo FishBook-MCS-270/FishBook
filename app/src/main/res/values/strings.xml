@@ -19,4 +19,5 @@
     <string name="lure_hint">Lure</string>
     <string name="time_hint">Time</string>
     <string name="location_hint">Location</string>
+    <string name="delete">DELETE</string>
 </resources>
