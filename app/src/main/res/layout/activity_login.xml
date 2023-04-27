@@ -34,9 +34,18 @@
             android:id="@+id/password"
             android:hint="@string/password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"/>
     </com.google.android.material.textfield.TextInputLayout>
 
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkBoxRememberMe"
+        android:layout_marginTop="12dp"
+        android:text="@string/remember_login"
+        android:textSize="18sp"
+        android:layout_gravity="left"/>
     <Button
         android:id="@+id/btn_login"
         android:text="@string/login"
