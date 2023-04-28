@@ -26,10 +26,13 @@ interface LocalCatchDetailsDao {
 
     @Query("""
     UPDATE species_table
-    SET caught_flag = 1
-    WHERE species_name IN (
-        SELECT species
-        FROM local_catch_details
-    )
-""") suspend fun updateCaughtFlag()
+    SET caught_flag = CASE
+        WHEN species_name IN (
+            SELECT species
+            FROM local_catch_details
+        ) THEN 1
+        ELSE 0
+    END
+""")
+    suspend fun updateCaughtFlag()
 }

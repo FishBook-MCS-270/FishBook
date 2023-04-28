@@ -30,24 +30,24 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="50dp"
-        android:backgroundTint="@color/purple_500"
+        android:backgroundTint="@color/d_grey"
         android:src="@drawable/baseline_add_24"
         app:tint = "@color/white" />
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/filter_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="false"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="50dp"
-        android:backgroundTint="@color/purple_500"
-        android:src="@drawable/baseline_filter_list_24"
-        app:tint="@color/white" />
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/filter_button"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentStart="true"-->
+<!--        android:layout_alignParentEnd="false"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginStart="50dp"-->
+<!--        android:layout_marginTop="50dp"-->
+<!--        android:layout_marginEnd="50dp"-->
+<!--        android:layout_marginBottom="50dp"-->
+<!--        android:backgroundTint="@color/purple_500"-->
+<!--        android:src="@drawable/baseline_filter_list_24"-->
+<!--        app:tint="@color/white" />-->
 
 </RelativeLayout>

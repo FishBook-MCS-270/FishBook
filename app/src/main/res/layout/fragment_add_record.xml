@@ -95,30 +95,12 @@
             android:hint="@string/weight_hint"
             android:inputType="numberDecimal"/>
 
-        <EditText
-            android:id="@+id/time_edit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_below="@id/length_edit_text"
-            android:hint="@string/time_hint"
-            android:inputType="datetime"/>
-
-        <EditText
-            android:id="@+id/location_edit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_below="@id/weight_edit_text"
-            android:layout_centerHorizontal="true"
-            android:hint="@string/location_hint"
-            android:inputType="text"/>
 
         <Button
             android:id="@+id/submitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/location_edit_text"
+            android:layout_below="@id/weight_edit_text"
             android:layout_centerHorizontal="true"
             android:layout_margin="10dp"
             android:text="@string/upload"/>

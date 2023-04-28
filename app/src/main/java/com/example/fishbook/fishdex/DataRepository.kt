@@ -105,9 +105,129 @@ class DataRepository private constructor(context: Context) {
                 species_name = "Smallmouth Bass",
                 fish_family = "Bass",
                 image = R.drawable.fish_smbass
-                )
-            )
+                ),
+                Species(
+                caught_flag = false,
+                species_name = "Bullhead",
+                fish_family = "Catfish",
+                image = R.drawable.fish_bullheadcat
+                ),
+                Species(
+                caught_flag = false,
+                species_name = "Channel Catfish",
+                fish_family = "Catfish",
+                image = R.drawable.fish_channelcat
+                ),
+                Species(
+                caught_flag = false,
+                species_name = "Flathead Catfish",
+                fish_family = "Catfish",
+                image = R.drawable.fish_flatheadcat
+                ),
+                Species(
+                caught_flag = false,
+                species_name = "Yellow Perch",
+                fish_family = "Perch",
+                image = R.drawable.fish_yellowperch
+                ),
+                Species(
+                caught_flag = false,
+                species_name = "Walleye",
+                fish_family = "Perch",
+                image = R.drawable.fish_walleye
+                ),
+                Species(
+                caught_flag = false,
+                species_name = "Northern Pike",
+                fish_family = "Pike",
+                image = R.drawable.fish_pike
+                ),
+                Species(
+                caught_flag = false,
+                species_name = "Muskellunge",
+                fish_family = "Pike",
+                image = R.drawable.fish_musky
+                ),
+                Species(
+                caught_flag = false,
+                species_name = "Brook Trout",
+                fish_family = "Trout",
+                image = R.drawable.fish_troutbrook
+                ),
+                Species(
+                caught_flag = false,
+                species_name = "Brown Trout",
+                fish_family = "Trout",
+                image = R.drawable.fish_troutbrown
+                ),
+                Species(
+                caught_flag = false,
+                species_name = "Rainbow Trout",
+                fish_family = "Trout",
+                image = R.drawable.fish_troutrainbow
+                ),
+                Species(
+                caught_flag = false,
+                species_name = "Longnose Gar",
+                fish_family = "Gar",
+                image = R.drawable.fish_garln
+                ),
+                Species(
+                caught_flag = false,
+                species_name = "Shortnose Gar",
+                fish_family = "Gar",
+                image = R.drawable.fish_garsn
+                ),
+                Species(
+                caught_flag = false,
+                species_name = "Eelpout",
+                fish_family = "Oddball",
+                image = R.drawable.fish_eelpout
+                ),
+                Species(
+                caught_flag = false,
+                species_name = "Bowfin",
+                fish_family = "Oddball",
+                image = R.drawable.fish_bowfin
+                ),
+                Species(
+                caught_flag = false,
+                species_name = "Buffalo",
+                fish_family = "Oddball",
+                image = R.drawable.fish_buffalo
+                ),
+                Species(
+                caught_flag = false,
+                species_name = "Common Carp",
+                fish_family = "Oddball",
+                image = R.drawable.fish_carp
+                ),
+                Species(
+                caught_flag = false,
+                species_name = "Northern Hogsucker",
+                fish_family = "Oddball",
+                image = R.drawable.fish_hogsucker
+                ),
+                Species(
+                caught_flag = false,
+                species_name = "White Bass",
+                fish_family = "Oddball",
+                image = R.drawable.fish_whitebass
+                ),
+                Species(
+                caught_flag = false,
+                species_name = "White Fish",
+                fish_family = "Oddball",
+                image = R.drawable.fish_whitefish
+                ),
 
+                Species(
+                caught_flag = false,
+                species_name = "Other",
+                fish_family = "Oddball",
+                image = R.drawable.fish_other
+            )
+            )
             database.SpeciesDao().insertSpecies(speciesList) // Wrap the FishSpecies object in a list
         }
     }
@@ -133,124 +253,3 @@ class DataRepository private constructor(context: Context) {
 }
 
 
-//
-//Species(
-//caught_flag = false,
-//species_name = "Bullhead",
-//fish_family = "Catfish",
-//image = R.drawable.fish_bullheadcat
-//),
-//Species(
-//caught_flag = false,
-//species_name = "Channel Catfish",
-//fish_family = "Catfish",
-//image = R.drawable.fish_channelcat
-//),
-//Species(
-//caught_flag = false,
-//species_name = "Flathead Catfish",
-//fish_family = "Catfish",
-//image = R.drawable.fish_flatheadcat
-//),
-//Species(
-//caught_flag = false,
-//species_name = "Yellow Perch",
-//fish_family = "Perch",
-//image = R.drawable.fish_yellowperch
-//),
-//Species(
-//caught_flag = false,
-//species_name = "Walleye",
-//fish_family = "Perch",
-//image = R.drawable.fish_walleye
-//),
-//Species(
-//caught_flag = false,
-//species_name = "Northern Pike",
-//fish_family = "Pike",
-//image = R.drawable.fish_pike
-//),
-//Species(
-//caught_flag = false,
-//species_name = "Muskellunge",
-//fish_family = "Pike",
-//image = R.drawable.fish_musky
-//),
-//Species(
-//caught_flag = false,
-//species_name = "Brook Trout",
-//fish_family = "Trout",
-//image = R.drawable.fish_troutbrook
-//),
-//Species(
-//caught_flag = false,
-//species_name = "Brown Trout",
-//fish_family = "Trout",
-//image = R.drawable.fish_troutbrown
-//),
-//Species(
-//caught_flag = false,
-//species_name = "Rainbow Trout",
-//fish_family = "Trout",
-//image = R.drawable.fish_troutrainbow
-//),
-//Species(
-//caught_flag = false,
-//species_name = "Longnose Gar",
-//fish_family = "Gar",
-//image = R.drawable.fish_garln
-//),
-//Species(
-//caught_flag = false,
-//species_name = "Shortnose Gar",
-//fish_family = "Gar",
-//image = R.drawable.fish_garsn
-//),
-//Species(
-//caught_flag = false,
-//species_name = "Eelpout",
-//fish_family = "Oddball",
-//image = R.drawable.fish_eelpout
-//),
-//Species(
-//caught_flag = false,
-//species_name = "Bowfin",
-//fish_family = "Oddball",
-//image = R.drawable.fish_bowfin
-//),
-//Species(
-//caught_flag = false,
-//species_name = "Buffalo",
-//fish_family = "Oddball",
-//image = R.drawable.fish_buffalo
-//),
-//Species(
-//caught_flag = false,
-//species_name = "Common Carp",
-//fish_family = "Oddball",
-//image = R.drawable.fish_carp
-//),
-//Species(
-//caught_flag = false,
-//species_name = "Northern Hogsucker",
-//fish_family = "Oddball",
-//image = R.drawable.fish_hogsucker
-//),
-//Species(
-//caught_flag = false,
-//species_name = "White Bass",
-//fish_family = "Oddball",
-//image = R.drawable.fish_whitebass
-//),
-//Species(
-//caught_flag = false,
-//species_name = "White Fish",
-//fish_family = "Oddball",
-//image = R.drawable.fish_whitefish
-//),
-//
-//Species(
-//caught_flag = false,
-//species_name = "Other",
-//fish_family = "Oddball",
-//image = R.drawable.fish_other

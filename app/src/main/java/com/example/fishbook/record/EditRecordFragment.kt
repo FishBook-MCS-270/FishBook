@@ -52,8 +52,8 @@ class EditRecordFragment : Fragment() {
             lengthEditText.setText(catchDetail.length.toString())
             weightEditText.setText(catchDetail.weight.toString())
             countyEditText.setText(catchDetail.county)
-            timeEditText.setText(catchDetail.time)
-            locationEditText.setText(catchDetail.location)
+//            timeEditText.setText(catchDetail.time)
+//            locationEditText.setText(catchDetail.location)
         }
     }
 
@@ -67,8 +67,8 @@ class EditRecordFragment : Fragment() {
             length = binding.lengthEditText.text.toString(),
             weight = binding.weightEditText.text.toString(),
             county = binding.countyEditText.text.toString(),
-            time = binding.timeEditText.text.toString(),
-            location = binding.locationEditText.text.toString()
+//            time = binding.timeEditText.text.toString(),
+//            location = binding.locationEditText.text.toString()
         )
 
         val db = FirebaseFirestore.getInstance()

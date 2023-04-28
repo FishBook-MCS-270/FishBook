@@ -14,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.fishbook.gallery.ViewRecordFragmentArgs
 import com.example.fishbook.record.CatchDetails
 import androidx.navigation.fragment.findNavController
+import com.example.fishbook.fishdex.DataRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -23,6 +24,7 @@ class ViewRecordFragment : Fragment() {
     private val binding get() = _binding!!
     private val args: ViewRecordFragmentArgs by navArgs()
     private val galleryViewModel: GalleryViewModel by activityViewModels()
+    private val dataRepository = DataRepository.get()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -85,7 +87,6 @@ class ViewRecordFragment : Fragment() {
             tvCounty.text = catchDetail.county
             tvLake.text = catchDetail.lake
             tvLure.text = catchDetail.lure
-
             tvWeight.text = catchDetail.weight.toString()
             tvLength.text = catchDetail.length.toString()
 

@@ -23,12 +23,11 @@ class GalleryViewModel : ViewModel() {
     val updatedCatchDetails: LiveData<CatchDetails> = _updatedCatchDetails
     fun updateCatchDetails(catchDetails: CatchDetails) {
         Log.d("GalleryViewModel", "Updating LiveData with new catch details")
-
         _catchDetails.value = _catchDetails.value + catchDetails
     }
 
     init {
-        fetchCatchDetails()
+        //fetchCatchDetails()
 
     }
 
@@ -64,6 +63,8 @@ class GalleryViewModel : ViewModel() {
     fun deleteCatchDetail(catchDetail: CatchDetails) {
         viewModelScope.launch {
             dataRepository.deleteCatchDetailById(catchDetail.id)
+            fetchCatchDetails() // Fetch updated catch details after deleting
+
         }
     }
 

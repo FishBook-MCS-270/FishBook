@@ -139,8 +139,8 @@ class AddRecordFragment : Fragment() {
                     length = binding.lengthEditText.text.toString(),
                     weight = binding.weightEditText.text.toString(),
                     county = binding.countyEditText.text.toString(),
-                    time = binding.timeEditText.text.toString(),
-                    location = binding.locationEditText.text.toString(),
+//                    time = binding.timeEditText.text.toString(),
+//                    location = binding.locationEditText.text.toString(),
                     localUri = ImageUri.toString(),
                     remoteUri = remoteUri
                 )
@@ -215,8 +215,8 @@ class AddRecordFragment : Fragment() {
                     binding.lengthEditText.text.clear()
                     binding.weightEditText.text.clear()
                     binding.countyEditText.text.clear()
-                    binding.timeEditText.text.clear()
-                    binding.locationEditText.text.clear()
+//                    binding.timeEditText.text.clear()
+//                    binding.locationEditText.text.clear()
                 }
                 .addOnFailureListener {
                     Log.e(ContentValues.TAG, "Error adding document")

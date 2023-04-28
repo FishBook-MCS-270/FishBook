@@ -23,5 +23,11 @@ class FishDexViewModel : ViewModel() {
             }
         }
     }
+
+    fun updateCaughtFlag() {
+        viewModelScope.launch {
+            dataRepository.updateCaughtFlag()
+        }
+    }
 }
 
