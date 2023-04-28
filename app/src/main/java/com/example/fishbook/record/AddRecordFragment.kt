@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
@@ -19,6 +20,7 @@ import androidx.fragment.app.activityViewModels
 import com.example.fishbook.R
 import com.example.fishbook.databinding.FragmentAddRecordBinding
 import com.example.fishbook.gallery.GalleryViewModel
+import com.example.fishbook.localCatchDetails.LocalCatchDetails
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -26,11 +28,16 @@ import com.google.firebase.storage.FirebaseStorage
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import com.example.fishbook.fishdex.Species
+
 
 class AddRecordFragment : Fragment() {
 
     private lateinit var binding: FragmentAddRecordBinding
     private val galleryViewModel: GalleryViewModel by activityViewModels()
+    private val addRecordViewModel: AddRecordViewModel by viewModels()
 
     private var photoName: String? = null
     private lateinit var photoFile: File
@@ -56,7 +63,10 @@ class AddRecordFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentAddRecordBinding.inflate(layoutInflater, container, false)
-
+        addRecordViewModel.fetchAllSpecies(requireContext())
+        addRecordViewModel.allSpecies.observe(viewLifecycleOwner, { speciesList ->
+            setupAutoCompleteTextView(speciesList)
+        })
         binding.cameraButton.setOnClickListener {
             photoName = "IMG_${Date()}.JPG"
             photoFile = File(
@@ -83,7 +93,11 @@ class AddRecordFragment : Fragment() {
         return binding.root
     }
 
-
+    private fun setupAutoCompleteTextView(speciesList: List<Species>) {
+        val speciesNames = speciesList.map { it.species_name }
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, speciesNames)
+        binding.speciesEditText.setAdapter(adapter)
+    }
     private var takePhotoLauncher = registerForActivityResult(
         ActivityResultContracts.TakePicture()
     ) { didTakePhoto: Boolean ->
@@ -125,8 +139,8 @@ class AddRecordFragment : Fragment() {
                     length = binding.lengthEditText.text.toString(),
                     weight = binding.weightEditText.text.toString(),
                     county = binding.countyEditText.text.toString(),
-                    time = binding.timeEditText.text.toString(),
-                    location = binding.locationEditText.text.toString(),
+//                    time = binding.timeEditText.text.toString(),
+//                    location = binding.locationEditText.text.toString(),
                     localUri = ImageUri.toString(),
                     remoteUri = remoteUri
                 )
@@ -178,9 +192,21 @@ class AddRecordFragment : Fragment() {
 
                     // Update the document in Firestore with the new ID
                     documentReference.update("id", generatedId)
+                    val localCatchDetails = LocalCatchDetails(
+                        id = updatedCatchDetails.id,
+                        userId = userId,
+                        species = updatedCatchDetails.species,
+                        lake = updatedCatchDetails.lake,
+                        length = updatedCatchDetails.length,
+                        weight = updatedCatchDetails.weight,
+                        county = updatedCatchDetails.county,
+                        lure = updatedCatchDetails.lure,
+                        location = updatedCatchDetails.location,
+                        remoteUri = updatedCatchDetails.remoteUri,
+                        localUri = updatedCatchDetails.localUri
+                    )
                     galleryViewModel.updateCatchDetails(updatedCatchDetails)
 
-                    // Navigate back to the previous page
                     findNavController().popBackStack()
                     // clears text boxes if uploaded successfully
                     binding.speciesEditText.text.clear()
@@ -189,8 +215,8 @@ class AddRecordFragment : Fragment() {
                     binding.lengthEditText.text.clear()
                     binding.weightEditText.text.clear()
                     binding.countyEditText.text.clear()
-                    binding.timeEditText.text.clear()
-                    binding.locationEditText.text.clear()
+//                    binding.timeEditText.text.clear()
+//                    binding.locationEditText.text.clear()
                 }
                 .addOnFailureListener {
                     Log.e(ContentValues.TAG, "Error adding document")

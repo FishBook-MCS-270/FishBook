@@ -56,7 +56,7 @@ class GalleryAdapter(
         return binding.root
     }
     fun updateData(newData: List<CatchDetails>) {
-        gridImages = newData
+        gridImages = newData.filter { it.localUri.isNotEmpty() }
         notifyDataSetChanged()
     }
 }

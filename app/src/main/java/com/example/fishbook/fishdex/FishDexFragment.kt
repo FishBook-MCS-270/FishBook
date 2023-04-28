@@ -54,6 +54,8 @@ class FishDexFragment : Fragment() {
                         }
                 }
             }
+            fishDexViewModel.updateCaughtFlag()
+
         }
     }
 
