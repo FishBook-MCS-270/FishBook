@@ -4,6 +4,7 @@ import android.net.Uri
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.auth.FirebaseAuth
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -57,6 +58,8 @@ class EditRecordFragment : Fragment() {
     }
 
     private fun updateCatchDetails(catchDetail: CatchDetails) {
+        Log.d("EditRecordFragment", "Updating catch details")
+
         val updatedCatchDetails = catchDetail.copy(
             species = binding.speciesEditText.text.toString(),
             lake = binding.lakeEditText.text.toString(),
@@ -78,8 +81,11 @@ class EditRecordFragment : Fragment() {
                 .addOnSuccessListener {
                     Toast.makeText(requireContext(), "Record updated successfully", Toast.LENGTH_SHORT).show()
                     galleryViewModel.updateCatchDetails(updatedCatchDetails)
+                    Log.d("EditRecordFragment", "Record updated successfully in Firestore")
 
                     findNavController().popBackStack()
+                    findNavController().popBackStack()
+
                 }
                 .addOnFailureListener {
                     // Error updating document

@@ -11,14 +11,14 @@ import java.util.UUID
 
 class SpeciesDetailViewModel(fishId: UUID) : ViewModel() {
 
-    private val speciesRepository = SpeciesRepository.get()
+    private val dataRepository = DataRepository.get()
 
     private val _Species: MutableStateFlow<Species?> = MutableStateFlow(null)
     val species: StateFlow<Species?> = _Species.asStateFlow()
 
     init {
         viewModelScope.launch {
-            _Species.value = speciesRepository.getSpecies(fishId)
+            _Species.value = dataRepository.getSpecies(fishId)
         }
     }
 }

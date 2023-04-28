@@ -56,9 +56,12 @@ class ViewRecordFragment : Fragment() {
                     .collection("catchDetails")
                     .document(catchDetail.id) // reference to catch detail id
                     .delete() // deletes current catch detail record
+
                     .addOnSuccessListener {
                         Toast.makeText(requireContext(), "Record deleted", Toast.LENGTH_SHORT).show()
                         // goes back to gallery when record is deleted
+                        galleryViewModel.deleteCatchDetail(catchDetail)
+
                         findNavController().popBackStack()
                     }
                     .addOnFailureListener {

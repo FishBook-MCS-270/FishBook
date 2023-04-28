@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 
 
 class FishDexViewModel : ViewModel() {
-    private val speciesRepository = SpeciesRepository.get()
+    private val dataRepository = DataRepository.get()
 
     private val _fishSpecies: MutableStateFlow<List<Species>> = MutableStateFlow(emptyList())
     val fishSpecies: StateFlow<List<Species>>
@@ -17,8 +17,8 @@ class FishDexViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-            speciesRepository.prepopulateDatabase()
-            speciesRepository.getFishSpecies().collect {
+            dataRepository.prepopulateDatabase()
+            dataRepository.getFishSpecies().collect {
                 _fishSpecies.value = it
             }
         }

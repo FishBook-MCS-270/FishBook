@@ -38,7 +38,7 @@
 
         </LinearLayout>
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/species_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
