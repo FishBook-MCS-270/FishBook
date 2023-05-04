@@ -95,6 +95,7 @@ class AddRecordFragment : Fragment() {
         }
 
         addRecordViewModel.fetchCounties(requireContext())
+        //used for the autofill, SQL
         addRecordViewModel.countyList.observe(viewLifecycleOwner) { countyList ->
             setupCountyAutoCompleteTextView(countyList)
         }

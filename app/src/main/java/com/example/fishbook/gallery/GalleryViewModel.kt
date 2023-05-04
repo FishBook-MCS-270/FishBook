@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 class GalleryViewModel : ViewModel() {
     private val imageRepository = ImageRepository.get()
     private val dataRepository = DataRepository.get()
-
     val userId = FirebaseAuth.getInstance().currentUser?.uid
 
     private val _catchDetails: MutableStateFlow<List<CatchDetails>> = MutableStateFlow(emptyList())
@@ -24,10 +23,6 @@ class GalleryViewModel : ViewModel() {
     fun updateCatchDetails(catchDetails: CatchDetails) {
         Log.d("GalleryViewModel", "Updating LiveData with new catch details")
         _catchDetails.value = _catchDetails.value + catchDetails
-    }
-
-    init {
-        //fetchCatchDetails()
     }
 
     fun addCatchDetails(localCatchDetail: LocalCatchDetails) {
@@ -43,6 +38,8 @@ class GalleryViewModel : ViewModel() {
             }
         }
     }
+
+    //maps the remote catchDetails to local
     private fun LocalCatchDetails.toCatchDetails(): CatchDetails {
         return CatchDetails(
             id = this.id,
@@ -52,7 +49,6 @@ class GalleryViewModel : ViewModel() {
             weight = this.weight,
             county = this.county,
             lure = this.lure,
-            // Skipping time...
             location = this.location,
             remoteUri = this.remoteUri,
             localUri = this.localUri
@@ -63,13 +59,13 @@ class GalleryViewModel : ViewModel() {
         viewModelScope.launch {
             dataRepository.deleteCatchDetailById(catchDetail.id)
             fetchCatchDetails() // Fetch updated catch details after deleting
-
         }
     }
 
     fun fetchCatchDetails() {
         viewModelScope.launch {
             if (userId != null) {
+                //try-catch needed for null handling
                 try {
                     val remoteCatchDetailsFlow = imageRepository.fetchImages(userId)
                         .catch { e ->
@@ -77,7 +73,7 @@ class GalleryViewModel : ViewModel() {
                                 "GalleryViewModel",
                                 "Error fetching remote catch details: ${e.message}"
                             )
-                            emit(emptyList<CatchDetails>())
+                            emit(emptyList<CatchDetails>()) //
                         }
 
                     val localCatchDetailsFlow = dataRepository.getLocalCatchDetails(userId)
@@ -87,16 +83,23 @@ class GalleryViewModel : ViewModel() {
                             }
                         }
 
-                    val combinedCatchDetailsFlow =
-                        remoteCatchDetailsFlow.combine(localCatchDetailsFlow) { remote, local ->
-                            Log.d("GalleryViewModel", "Remote catch details count: ${remote.size}")
-                            Log.d("GalleryViewModel", "Local catch details count: ${local.size}")
-                            local
-                        }
+                    //
+                    localCatchDetailsFlow.collect { localCatchDetails ->
+                        Log.d("GalleryViewModel", "Local catch details count: ${localCatchDetails.size}")
+                        _catchDetails.value = localCatchDetails
+                        Log.d("GalleryViewModel", "Updated _catchDetails with ${_catchDetails.value.size} catch details")
+                    }
+//                    val combinedCatchDetailsFlow =
+//                        remoteCatchDetailsFlow.combine(localCatchDetailsFlow) { remote, local ->
+//                            Log.d("GalleryViewModel", "Remote catch details count: ${remote.size}")
+//                            Log.d("GalleryViewModel", "Local catch details count: ${local.size}")
+//                            local
+//                        }
+//
+//                    _catchDetails.value = combinedCatchDetailsFlow.first()
+//                    Log.d("GalleryViewModel", "Updated _catchDetails with ${_catchDetails.value.size} catch details")
 
-                    _catchDetails.value = combinedCatchDetailsFlow.first()
-                    Log.d("GalleryViewModel", "Updated _catchDetails with ${_catchDetails.value.size} catch details")
-                    dataRepository.updateCaughtFlag()
+                    dataRepository.updateCaughtFlag() //updates fishdex with local gallery
 
                 } catch (e: Exception) {
                     Log.e("GalleryViewModel", "Error fetching catch details: ${e.message}")

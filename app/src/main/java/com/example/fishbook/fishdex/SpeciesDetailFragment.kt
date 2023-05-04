@@ -14,7 +14,7 @@ import com.example.fishbook.databinding.FragmentSpeciesDetailBinding
 import kotlinx.coroutines.launch
 
 class SpeciesDetailFragment : Fragment() {
-
+    //Sourced via crimedetail fragment
     private var _binding: FragmentSpeciesDetailBinding? = null
     private val binding
         get() = checkNotNull(_binding) {

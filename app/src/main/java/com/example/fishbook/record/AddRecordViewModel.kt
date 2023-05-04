@@ -28,6 +28,7 @@ class AddRecordViewModel : ViewModel() {
         viewModelScope.launch {
             val repository = DataRepository.get()
 
+
             repository.getCounties().collect { counties ->
                 _countyList.value = counties
             }
