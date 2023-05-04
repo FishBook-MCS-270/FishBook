@@ -1,6 +1,6 @@
 package com.example.fishbook.gallery
 
-import com.example.fishbook.fishdex.DataRepository
+import com.example.fishbook.storage.DataRepository
 import com.example.fishbook.localCatchDetails.LocalCatchDetails
 import com.example.fishbook.record.CatchDetails
 import com.google.firebase.firestore.FirebaseFirestore

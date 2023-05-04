@@ -10,11 +10,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import com.example.fishbook.databinding.FragmentViewRecordBinding
 import com.squareup.picasso.Picasso
-import androidx.navigation.fragment.navArgs
-import com.example.fishbook.gallery.ViewRecordFragmentArgs
 import com.example.fishbook.record.CatchDetails
 import androidx.navigation.fragment.findNavController
-import com.example.fishbook.fishdex.DataRepository
+import com.example.fishbook.storage.DataRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 

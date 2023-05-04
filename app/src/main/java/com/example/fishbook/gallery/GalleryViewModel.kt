@@ -2,7 +2,7 @@ package com.example.fishbook.gallery
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.example.fishbook.fishdex.DataRepository
+import com.example.fishbook.storage.DataRepository
 import com.example.fishbook.localCatchDetails.LocalCatchDetails
 import com.example.fishbook.record.CatchDetails
 import com.google.firebase.auth.FirebaseAuth
@@ -28,7 +28,6 @@ class GalleryViewModel : ViewModel() {
 
     init {
         //fetchCatchDetails()
-
     }
 
     fun addCatchDetails(localCatchDetail: LocalCatchDetails) {
