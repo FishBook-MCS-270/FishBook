@@ -16,6 +16,7 @@ import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 public class Map extends Fragment {
 
@@ -39,6 +40,11 @@ public class Map extends Fragment {
         mapController.setZoom(8.1);
         GeoPoint startPoint = new GeoPoint(46.7296, -94.6859);
         mapController.setCenter(startPoint);
+
+        MyLocationNewOverlay myLocationNewOverlay = new MyLocationNewOverlay(map);
+        myLocationNewOverlay.enableFollowLocation();
+        myLocationNewOverlay.enableMyLocation();
+        map.getOverlays().add(myLocationNewOverlay);
 
         return view;
     }
