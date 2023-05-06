@@ -51,7 +51,6 @@ class LoginPage : AppCompatActivity() {
         textView.setOnClickListener {
             val intent = Intent(this, Register::class.java)
             startActivity(intent)
-
             finish()
         }
 

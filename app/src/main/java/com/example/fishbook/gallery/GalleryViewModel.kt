@@ -51,7 +51,9 @@ class GalleryViewModel : ViewModel() {
             lure = this.lure,
             location = this.location,
             remoteUri = this.remoteUri,
-            localUri = this.localUri
+            localUri = this.localUri,
+            latitude = this.latitude,
+            longitude = this.longitude
         )
     }
 
