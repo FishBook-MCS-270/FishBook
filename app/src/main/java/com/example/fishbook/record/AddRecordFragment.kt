@@ -116,8 +116,13 @@ class AddRecordFragment : Fragment() {
 
         binding.countyEditText.doOnTextChanged { text, _, _, _ ->
             if (text != null) {
-                val selectedCounty = text.toString().trim()
+                val selectedCounty = text.toString()
                 Log.d("AddRecordFragment", "County: $selectedCounty")
+
+                // Clears when the county is changed
+                binding.lakeEditText.text = null
+                binding.lengthEditText.text = null
+                binding.weightEditText.text = null
 
                 addRecordViewModel.fetchLakesByCounty(selectedCounty)
                 addRecordViewModel.lakeList.observe(viewLifecycleOwner) { lakeDataList ->
@@ -127,9 +132,15 @@ class AddRecordFragment : Fragment() {
                     )
 
                     //CHANGE LATER -- Grabs first GPS Value for lake in County
-                    binding.lengthEditText.setText(lakeDataList[0].gps_lat.toString())
-                    binding.weightEditText.setText(lakeDataList[0].gps_long.toString())
-                    setupLakeNameAutoCompleteTextView(lakeDataList)
+                    if (lakeDataList.isNotEmpty()) {
+                        binding.lengthEditText.setText(lakeDataList[0].gps_lat.toString())
+                        binding.weightEditText.setText(lakeDataList[0].gps_long.toString())
+                        setupLakeNameAutoCompleteTextView(lakeDataList)
+
+                    }
+                    else {
+                        setupLakeNameAutoCompleteTextView(lakeDataList)
+                    }
                 }
             }
         }
@@ -140,12 +151,18 @@ class AddRecordFragment : Fragment() {
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, lakeNames)
         binding.lakeEditText.setAdapter(adapter)
 
-        binding.lakeEditText.setOnItemClickListener { _, _, position, _ ->
-            val selectedLakeData = lakeDataList[position]
-            val gpsCoordinates = "${selectedLakeData.gps_lat}, ${selectedLakeData.gps_long}"
-            //presets the GPS Data
-            binding.lengthEditText.setText(selectedLakeData.gps_lat.toString())
-            binding.weightEditText.setText(selectedLakeData.gps_long.toString())
+        binding.lakeEditText.doOnTextChanged { text, _, _, _ ->
+            if (text != null) {
+                val selectedLake = text.toString()
+                val selectedLakeData = lakeDataList.firstOrNull { it.lakeName == selectedLake }
+
+                if (selectedLakeData != null) {
+                    // Update the GPS Data
+                    Log.d("AddRecordFragment", "Lake: ${selectedLakeData.lakeName} Lat: ${selectedLakeData.gps_lat}")
+                    binding.lengthEditText.setText(selectedLakeData.gps_lat.toString())
+                    binding.weightEditText.setText(selectedLakeData.gps_long.toString())
+                }
+            }
         }
     }
 
