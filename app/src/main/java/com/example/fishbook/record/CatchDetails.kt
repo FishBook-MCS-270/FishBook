@@ -12,6 +12,8 @@ data class CatchDetails(
     var county: String = "",
     var lure: String = "",
     var time: String = "",
+    var latitude: String = "",
+    var longitude: String = "",
     var location: String = "",
     var remoteUri: String = "",
     var localUri: String = ""

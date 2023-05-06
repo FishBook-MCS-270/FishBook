@@ -12,6 +12,8 @@ data class LocalCatchDetails(
     val length: String,
     val weight: String,
     val county: String,
+    val latitude: String,
+    val longitude: String,
     val lure: String,
     val location: String,
     val remoteUri: String,

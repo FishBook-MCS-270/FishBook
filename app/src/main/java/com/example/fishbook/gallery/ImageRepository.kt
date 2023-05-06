@@ -35,9 +35,11 @@ class ImageRepository {
                     weight = catchDetail.weight,
                     county = catchDetail.county,
                     lure = catchDetail.lure,
-                    location = catchDetail.location,
+                    latitude = catchDetail.latitude,
                     remoteUri = catchDetail.remoteUri,
-                    localUri = catchDetail.localUri
+                    localUri = catchDetail.localUri,
+                    longitude = catchDetail.longitude,
+                    location = catchDetail.location,
                 )
                 dataRepository.insertCatchDetail(localCatchDetail)
             }

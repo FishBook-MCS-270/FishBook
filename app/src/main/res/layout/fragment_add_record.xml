@@ -38,63 +38,150 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/species_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_below="@id/image_buttons_layout"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:text="Species"/>
+
+
         <AutoCompleteTextView
             android:id="@+id/species_edit_text"
-            android:layout_width="wrap_content"
+            android:layout_width="175dp"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:layout_below="@id/image_buttons_layout"
-            android:hint="@string/species_hint"
+            android:layout_toRightOf="@id/species_text"
             android:inputType="text"/>
 
-        <EditText
-            android:id="@+id/lure_edit_text"
+        <TextView
+            android:id="@+id/lake_text"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_below="@id/image_buttons_layout"
-            android:layout_centerHorizontal="true"
-            android:hint="@string/lure_hint"
-            android:inputType="text"/>
+            android:layout_height="match_parent"
+            android:layout_below="@id/species_text"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="Lake"
+            android:textColor="@color/black"
+            android:textSize="15dp" />
 
-        <EditText
+
+        <AutoCompleteTextView
             android:id="@+id/lake_edit_text"
+            android:layout_width="175dp"
+            android:layout_height="60dp"
+            android:layout_below="@id/species_edit_text"
+            android:layout_alignLeft="@id/species_edit_text"
+            android:layout_toRightOf="@id/lake_text"
+            android:inputType="text" />
+
+        <TextView
+            android:id="@+id/lure_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_below="@id/species_edit_text"
-            android:hint="@string/lake_hint"
+            android:layout_margin="20dp"
+            android:layout_below="@id/lake_text"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:text="Lure"/>
+
+
+        <AutoCompleteTextView
+            android:id="@+id/lure_edit_text"
+            android:layout_width="175dp"
+            android:layout_height="60dp"
+            android:layout_alignLeft="@id/species_edit_text"
+            android:layout_below="@id/lake_edit_text"
+            android:layout_toRightOf="@id/lure_text"
             android:inputType="text"/>
 
-        <EditText
-            android:id="@+id/county_edit_text"
+        <TextView
+            android:id="@+id/county_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="20dp"
+            android:layout_below="@id/lure_text"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:text="County"/>
+
+
+        <AutoCompleteTextView
+            android:id="@+id/county_edit_text"
+            android:layout_width="175dp"
+            android:layout_height="60dp"
+            android:layout_alignLeft="@id/species_edit_text"
             android:layout_below="@id/lure_edit_text"
-            android:layout_centerHorizontal="true"
-            android:hint="@string/county_hint"
+            android:layout_toRightOf="@id/county_text"
+            android:inputType="text"/>
+
+
+        <TextView
+            android:id="@+id/latitude_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_below="@id/county_text"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:text="Latitude"/>
+
+
+        <AutoCompleteTextView
+            android:id="@+id/latitude_edit_text"
+            android:layout_width="175dp"
+            android:layout_height="60dp"
+            android:layout_alignLeft="@id/species_edit_text"
+            android:layout_below="@id/county_edit_text"
+            android:layout_toRightOf="@id/county_text"
+            android:inputType="text"/>
+
+        <TextView
+            android:id="@+id/longitude_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_below="@id/latitude_text"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:text="Longitude"/>
+
+
+        <AutoCompleteTextView
+            android:id="@+id/longitude_edit_text"
+            android:layout_width="175dp"
+            android:layout_height="60dp"
+            android:layout_alignLeft="@id/species_edit_text"
+            android:layout_below="@id/latitude_edit_text"
+            android:layout_toRightOf="@id/county_text"
             android:inputType="text"/>
 
         <EditText
             android:id="@+id/length_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_below="@id/county_edit_text"
+            android:layout_below="@id/longitude_edit_text"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:hint="@string/length_hint"
-            android:inputType="numberDecimal"/>
+            android:inputType="numberDecimal" />
 
         <EditText
             android:id="@+id/weight_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_below="@id/lake_edit_text"
+            android:layout_below="@id/longitude_edit_text"
             android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
             android:hint="@string/weight_hint"
-            android:inputType="numberDecimal"/>
-
+            android:inputType="numberDecimal" />
 
         <Button
             android:id="@+id/submitButton"
@@ -102,7 +189,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/weight_edit_text"
             android:layout_centerHorizontal="true"
-            android:layout_margin="10dp"
-            android:text="@string/upload"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/upload" />
     </RelativeLayout>
 </ScrollView>
