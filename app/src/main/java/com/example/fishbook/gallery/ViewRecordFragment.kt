@@ -87,6 +87,8 @@ class ViewRecordFragment : Fragment() {
             tvCounty.text = catchDetail.county
             tvLake.text = catchDetail.lake
             tvLure.text = catchDetail.lure
+            tvLatitude.text = catchDetail.latitude
+            tvLongitude.text = catchDetail.longitude
             tvWeight.text = catchDetail.weight.toString()
             tvLength.text = catchDetail.length.toString()
 

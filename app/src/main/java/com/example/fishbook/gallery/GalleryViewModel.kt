@@ -56,7 +56,9 @@ class GalleryViewModel : ViewModel() {
             // Skipping time...
             location = this.location,
             remoteUri = this.remoteUri,
-            localUri = this.localUri
+            localUri = this.localUri,
+            latitude = this.latitude,
+            longitude = this.longitude
         )
     }
 
