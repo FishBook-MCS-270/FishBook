@@ -25,6 +25,10 @@ class GalleryViewModel : ViewModel() {
         _catchDetails.value = _catchDetails.value + catchDetails
     }
 
+    init {
+        fetchCatchDetails()
+    }
+
     fun addCatchDetails(localCatchDetail: LocalCatchDetails) {
         viewModelScope.launch {
             if (userId != null) {

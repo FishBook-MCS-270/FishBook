@@ -1,8 +1,8 @@
 package com.example.fishbook.record
 import androidx.navigation.fragment.findNavController
-import androidx.core.widget.doAfterTextChanged
 
 import android.app.Activity.RESULT_OK
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Intent
@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
@@ -33,6 +34,9 @@ import androidx.fragment.app.viewModels
 import com.example.fishbook.LakeData.Lake
 import com.example.fishbook.fishdex.Species
 import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.lifecycleScope
+import com.example.fishbook.MainActivity
+import kotlinx.coroutines.launch
 
 
 class AddRecordFragment : Fragment() {
@@ -40,6 +44,7 @@ class AddRecordFragment : Fragment() {
     private lateinit var binding: FragmentAddRecordBinding
     private val galleryViewModel: GalleryViewModel by activityViewModels()
     private val addRecordViewModel: AddRecordViewModel by viewModels()
+    private var dialogFlag = false //fixes bug to use user-location for gps,
 
     private var photoName: String? = null
     private lateinit var photoFile: File
@@ -93,7 +98,15 @@ class AddRecordFragment : Fragment() {
         binding.selectImageButton.setOnClickListener{
             selectImage()
         }
+        val mainActivity = requireActivity() as MainActivity
 
+        binding.useLocationButton.setOnClickListener {
+            lifecycleScope.launch {
+                mainActivity.findNearestLakes().let { nearestLakes ->
+                    showNearestLakesDialog(nearestLakes)
+                }
+            }
+        }
         addRecordViewModel.fetchCounties(requireContext())
         //used for the autofill, SQL
         addRecordViewModel.countyList.observe(viewLifecycleOwner) { countyList ->
@@ -101,6 +114,54 @@ class AddRecordFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun showNearestLakesDialog(nearestLakes: List<Pair<Lake, Double>>) {
+        val builder = AlertDialog.Builder(requireContext())
+        val inflater = requireActivity().layoutInflater
+        val view = inflater.inflate(R.layout.dialog_nearest_lakes, null)
+
+        val listView = view.findViewById<ListView>(R.id.nearest_lakes_list_view)
+        val lakeNames = nearestLakes.map { "${it.first.lakeName}, ${it.second} miles" }
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, lakeNames)
+        listView.adapter = adapter
+
+        val dialog = builder.setView(view)
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+
+        listView.setOnItemClickListener { _, _, position, _ ->
+            val selectedLake = nearestLakes[position]
+            handleLakeItemClick(selectedLake, dialog)
+        }
+
+        dialog.show()
+    }
+
+    private fun handleLakeItemClick(selectedLake: Pair<Lake, Double>, dialog: AlertDialog) {
+        dialogFlag = true
+        //clearest after each click
+        binding.countyEditText.text = null
+        binding.lakeEditText.text = null
+        binding.latEditText.text = null
+        binding.longEditText.text = null
+
+        binding.countyEditText.setText(selectedLake.first.county)
+
+        //need to nullify the GPS Cords to fix bug of setting county's gps
+        binding.latEditText.text = null
+        binding.longEditText.text = null
+        binding.lakeEditText.setText(selectedLake.first.lakeName)
+
+
+        binding.latEditText.setText(selectedLake.first.gps_lat.toString())
+        binding.longEditText.setText(selectedLake.first.gps_long.toString())
+        dialogFlag = false
+
+        dialog.dismiss()
+
     }
 
     //~~AutoFill Functions
@@ -115,7 +176,7 @@ class AddRecordFragment : Fragment() {
         binding.countyEditText.setAdapter(adapter)
 
         binding.countyEditText.doOnTextChanged { text, _, _, _ ->
-            if (text != null) {
+            if (text != null && !dialogFlag) {
                 val selectedCounty = text.toString()
                 Log.d("AddRecordFragment", "County: $selectedCounty")
 
@@ -126,13 +187,8 @@ class AddRecordFragment : Fragment() {
 
                 addRecordViewModel.fetchLakesByCounty(selectedCounty)
                 addRecordViewModel.lakeList.observe(viewLifecycleOwner) { lakeDataList ->
-                    Log.d(
-                        "AddRecordFragment",
-                        "Fetched ${lakeDataList.size} Lakes"
-                    )
 
-                    //CHANGE LATER -- Grabs first GPS Value for lake in County
-                    if (lakeDataList.isNotEmpty()) {
+                    if (lakeDataList.isNotEmpty() && !dialogFlag) {
                         binding.latEditText.setText(lakeDataList[0].gps_lat.toString())
                         binding.longEditText.setText(lakeDataList[0].gps_long.toString())
                         setupLakeNameAutoCompleteTextView(lakeDataList)
@@ -143,6 +199,7 @@ class AddRecordFragment : Fragment() {
                     }
                 }
             }
+            //dialogFlag = false //TESTING
         }
     }
 
@@ -152,17 +209,20 @@ class AddRecordFragment : Fragment() {
         binding.lakeEditText.setAdapter(adapter)
 
         binding.lakeEditText.doOnTextChanged { text, _, _, _ ->
-            if (text != null) {
+            if (text != null && !dialogFlag) {
+                binding.latEditText.text = null
+                binding.longEditText.text = null
+
                 val selectedLake = text.toString()
-                val selectedLakeData = lakeDataList.firstOrNull { it.lakeName == selectedLake }
+                val selectedLakeData = lakeDataList.firstOrNull { it.lakeName == selectedLake } //allows for non-lakes to be put in
 
                 if (selectedLakeData != null) {
-                    // Update the GPS Data
                     Log.d("AddRecordFragment", "Lake: ${selectedLakeData.lakeName} Lat: ${selectedLakeData.gps_lat}")
                     binding.latEditText.setText(selectedLakeData.gps_lat.toString())
                     binding.longEditText.setText(selectedLakeData.gps_long.toString())
                 }
             }
+            //dialogFlag = false //TESTING
         }
     }
 
@@ -210,8 +270,6 @@ class AddRecordFragment : Fragment() {
                     county = binding.countyEditText.text.toString(),
                     latitude = binding.latEditText.text.toString(),
                     longitude = binding.longEditText.text.toString(),
-//                    time = binding.timeEditText.text.toString(),
-//                    location = binding.locationEditText.text.toString(),
                     localUri = ImageUri.toString(),
                     remoteUri = remoteUri
                 )
@@ -289,8 +347,7 @@ class AddRecordFragment : Fragment() {
                     binding.countyEditText.text.clear()
                     binding.latEditText.text.clear()
                     binding.longEditText.text.clear()
-//                    binding.timeEditText.text.clear()
-//                    binding.locationEditText.text.clear()
+
                 }
                 .addOnFailureListener {
                     Log.e(ContentValues.TAG, "Error adding document")
