@@ -24,6 +24,7 @@ interface LocalCatchDetailsDao {
     suspend fun deleteCatchDetailById(id: String)
 
 
+
     @Query("""
     UPDATE species_table
     SET caught_flag = CASE

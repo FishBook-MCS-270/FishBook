@@ -1,5 +1,6 @@
 package com.example.fishbook.record
 import androidx.navigation.fragment.findNavController
+import androidx.core.widget.doAfterTextChanged
 
 import android.app.Activity.RESULT_OK
 import android.app.ProgressDialog
@@ -29,8 +30,9 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import com.example.fishbook.LakeData.Lake
 import com.example.fishbook.fishdex.Species
+import androidx.core.widget.doOnTextChanged
 
 
 class AddRecordFragment : Fragment() {
@@ -64,9 +66,10 @@ class AddRecordFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentAddRecordBinding.inflate(layoutInflater, container, false)
         addRecordViewModel.fetchAllSpecies(requireContext())
-        addRecordViewModel.allSpecies.observe(viewLifecycleOwner, { speciesList ->
-            setupAutoCompleteTextView(speciesList)
-        })
+        addRecordViewModel.allSpecies.observe(viewLifecycleOwner) { speciesList ->
+            setupSpeciesAutoCompleteTextView(speciesList)
+        }
+
         binding.cameraButton.setOnClickListener {
             photoName = "IMG_${Date()}.JPG"
             photoFile = File(
@@ -90,14 +93,80 @@ class AddRecordFragment : Fragment() {
         binding.selectImageButton.setOnClickListener{
             selectImage()
         }
+
+        addRecordViewModel.fetchCounties(requireContext())
+        //used for the autofill, SQL
+        addRecordViewModel.countyList.observe(viewLifecycleOwner) { countyList ->
+            setupCountyAutoCompleteTextView(countyList)
+        }
+
         return binding.root
     }
 
-    private fun setupAutoCompleteTextView(speciesList: List<Species>) {
+    //~~AutoFill Functions
+    private fun setupSpeciesAutoCompleteTextView(speciesList: List<Species>) {
         val speciesNames = speciesList.map { it.species_name }
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, speciesNames)
         binding.speciesEditText.setAdapter(adapter)
     }
+
+    private fun setupCountyAutoCompleteTextView(countyList: List<String>) {
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, countyList)
+        binding.countyEditText.setAdapter(adapter)
+
+        binding.countyEditText.doOnTextChanged { text, _, _, _ ->
+            if (text != null) {
+                val selectedCounty = text.toString()
+                Log.d("AddRecordFragment", "County: $selectedCounty")
+
+                // Clears when the county is changed
+                binding.lakeEditText.text = null
+                binding.latEditText.text = null
+                binding.longEditText.text = null
+
+                addRecordViewModel.fetchLakesByCounty(selectedCounty)
+                addRecordViewModel.lakeList.observe(viewLifecycleOwner) { lakeDataList ->
+                    Log.d(
+                        "AddRecordFragment",
+                        "Fetched ${lakeDataList.size} Lakes"
+                    )
+
+                    //CHANGE LATER -- Grabs first GPS Value for lake in County
+                    if (lakeDataList.isNotEmpty()) {
+                        binding.latEditText.setText(lakeDataList[0].gps_lat.toString())
+                        binding.longEditText.setText(lakeDataList[0].gps_long.toString())
+                        setupLakeNameAutoCompleteTextView(lakeDataList)
+
+                    }
+                    else {
+                        setupLakeNameAutoCompleteTextView(lakeDataList)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setupLakeNameAutoCompleteTextView(lakeDataList: List<Lake>) {
+        val lakeNames = lakeDataList.map { it.lakeName }
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, lakeNames)
+        binding.lakeEditText.setAdapter(adapter)
+
+        binding.lakeEditText.doOnTextChanged { text, _, _, _ ->
+            if (text != null) {
+                val selectedLake = text.toString()
+                val selectedLakeData = lakeDataList.firstOrNull { it.lakeName == selectedLake }
+
+                if (selectedLakeData != null) {
+                    // Update the GPS Data
+                    Log.d("AddRecordFragment", "Lake: ${selectedLakeData.lakeName} Lat: ${selectedLakeData.gps_lat}")
+                    binding.latEditText.setText(selectedLakeData.gps_lat.toString())
+                    binding.longEditText.setText(selectedLakeData.gps_long.toString())
+                }
+            }
+        }
+    }
+
+
     private var takePhotoLauncher = registerForActivityResult(
         ActivityResultContracts.TakePicture()
     ) { didTakePhoto: Boolean ->
@@ -139,8 +208,8 @@ class AddRecordFragment : Fragment() {
                     length = binding.lengthEditText.text.toString(),
                     weight = binding.weightEditText.text.toString(),
                     county = binding.countyEditText.text.toString(),
-                    latitude = binding.latitudeEditText.text.toString(),
-                    longitude = binding.longitudeEditText.text.toString(),
+                    latitude = binding.latEditText.text.toString(),
+                    longitude = binding.longEditText.text.toString(),
 //                    time = binding.timeEditText.text.toString(),
 //                    location = binding.locationEditText.text.toString(),
                     localUri = ImageUri.toString(),
@@ -192,7 +261,7 @@ class AddRecordFragment : Fragment() {
                     // Update the CatchDetails object with the new ID
                     val updatedCatchDetails = catchDetails.copy(id = generatedId)
 
-                    // Update the document in Firestore with the new ID
+                    // Update the document in Firestore
                     documentReference.update("id", generatedId)
                     val localCatchDetails = LocalCatchDetails(
                         id = updatedCatchDetails.id,
@@ -205,7 +274,6 @@ class AddRecordFragment : Fragment() {
                         lure = updatedCatchDetails.lure,
                         latitude = updatedCatchDetails.latitude,
                         longitude = updatedCatchDetails.longitude,
-                        location = updatedCatchDetails.location,
                         remoteUri = updatedCatchDetails.remoteUri,
                         localUri = updatedCatchDetails.localUri
                     )
@@ -219,8 +287,8 @@ class AddRecordFragment : Fragment() {
                     binding.lengthEditText.text.clear()
                     binding.weightEditText.text.clear()
                     binding.countyEditText.text.clear()
-                    binding.latitudeEditText.text.clear()
-                    binding.longitudeEditText.text.clear()
+                    binding.latEditText.text.clear()
+                    binding.longEditText.text.clear()
 //                    binding.timeEditText.text.clear()
 //                    binding.locationEditText.text.clear()
                 }

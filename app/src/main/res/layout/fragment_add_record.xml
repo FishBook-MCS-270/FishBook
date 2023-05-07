@@ -4,9 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/fish_image"
@@ -17,10 +19,9 @@
 
         <LinearLayout
             android:id="@+id/image_buttons_layout"
+            android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/fish_image"
-            android:layout_centerHorizontal="true">
+            android:layout_height="wrap_content">
 
             <ImageButton
                 android:id="@+id/camera_button"
@@ -33,166 +34,119 @@
                 android:id="@+id/select_image_button"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginTop="10dp"
+                android:layout_margin="10dp"
                 android:src="@drawable/baseline_upload_24"/>
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/species_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:layout_below="@id/image_buttons_layout"
-            android:textColor="@color/black"
-            android:textSize="15dp"
-            android:text="Species"/>
-
-
         <AutoCompleteTextView
             android:id="@+id/species_edit_text"
-            android:layout_width="175dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/image_buttons_layout"
-            android:layout_toRightOf="@id/species_text"
-            android:inputType="text"/>
-
-        <TextView
-            android:id="@+id/lake_text"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_below="@id/species_text"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:text="Lake"
-            android:textColor="@color/black"
-            android:textSize="15dp" />
-
-
-        <AutoCompleteTextView
-            android:id="@+id/lake_edit_text"
-            android:layout_width="175dp"
-            android:layout_height="60dp"
-            android:layout_below="@id/species_edit_text"
-            android:layout_alignLeft="@id/species_edit_text"
-            android:layout_toRightOf="@id/lake_text"
+            android:layout_marginTop="11dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center_horizontal"
+            android:hint="@string/species_hint"
             android:inputType="text" />
-
-        <TextView
-            android:id="@+id/lure_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:layout_below="@id/lake_text"
-            android:textColor="@color/black"
-            android:textSize="15dp"
-            android:text="Lure"/>
-
-
-        <AutoCompleteTextView
-            android:id="@+id/lure_edit_text"
-            android:layout_width="175dp"
-            android:layout_height="60dp"
-            android:layout_alignLeft="@id/species_edit_text"
-            android:layout_below="@id/lake_edit_text"
-            android:layout_toRightOf="@id/lure_text"
-            android:inputType="text"/>
-
-        <TextView
-            android:id="@+id/county_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:layout_below="@id/lure_text"
-            android:textColor="@color/black"
-            android:textSize="15dp"
-            android:text="County"/>
-
 
         <AutoCompleteTextView
             android:id="@+id/county_edit_text"
-            android:layout_width="175dp"
-            android:layout_height="60dp"
-            android:layout_alignLeft="@id/species_edit_text"
-            android:layout_below="@id/lure_edit_text"
-            android:layout_toRightOf="@id/county_text"
-            android:inputType="text"/>
-
-
-        <TextView
-            android:id="@+id/latitude_text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:layout_below="@id/county_text"
-            android:textColor="@color/black"
-            android:textSize="15dp"
-            android:text="Latitude"/>
-
+            android:layout_centerHorizontal="true"
+            android:hint="@string/county_hint"
+            android:inputType="text"/>
 
         <AutoCompleteTextView
-            android:id="@+id/latitude_edit_text"
-            android:layout_width="175dp"
-            android:layout_height="60dp"
-            android:layout_alignLeft="@id/species_edit_text"
-            android:layout_below="@id/county_edit_text"
-            android:layout_toRightOf="@id/county_text"
-            android:inputType="text"/>
-
-        <TextView
-            android:id="@+id/longitude_text"
-            android:layout_width="wrap_content"
+            android:id="@+id/lake_edit_text"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:layout_below="@id/latitude_text"
-            android:textColor="@color/black"
-            android:textSize="15dp"
-            android:text="Longitude"/>
+            android:layout_below="@id/species_edit_text"
+            android:layout_marginTop="11dp"
+            android:layout_gravity="center_horizontal"
+            android:hint="@string/lake_hint"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/lure_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="11dp"
+            android:hint="@string/lure_hint"
+            android:inputType="text" />
+
+        <GridLayout
+            android:layout_gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="3">
+
+            <EditText
+                android:id="@+id/lat_edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_columnWeight="1"
+                android:hint="@string/lat_hint"
+                android:inputType="numberDecimal"/>
+
+            <EditText
+                android:id="@+id/long_edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_columnWeight="1"
+                android:hint="@string/long_hint"
+                android:inputType="numberDecimal"/>
+
+            <ImageButton
+                android:id="@+id/location_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/baseline_my_location_24"/>
+        </GridLayout>
 
 
-        <AutoCompleteTextView
-            android:id="@+id/longitude_edit_text"
-            android:layout_width="175dp"
-            android:layout_height="60dp"
-            android:layout_alignLeft="@id/species_edit_text"
-            android:layout_below="@id/latitude_edit_text"
-            android:layout_toRightOf="@id/county_text"
-            android:inputType="text"/>
+        <GridLayout
+            android:layout_gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2">
 
         <EditText
             android:id="@+id/length_edit_text"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/longitude_edit_text"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_margin="10dp"
+            android:layout_columnWeight="1"
             android:hint="@string/length_hint"
-            android:inputType="numberDecimal" />
+            android:inputType="numberDecimal"/>
 
         <EditText
             android:id="@+id/weight_edit_text"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/longitude_edit_text"
-            android:layout_centerHorizontal="true"
             android:layout_margin="10dp"
+            android:layout_columnWeight="1"
             android:hint="@string/weight_hint"
-            android:inputType="numberDecimal" />
+            android:inputType="numberDecimal"/>
 
+
+        </GridLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
         <Button
             android:id="@+id/submitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/weight_edit_text"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="@string/upload" />
-    </RelativeLayout>
+            android:layout_margin="10dp"
+            android:text="@string/upload"/>
+        </LinearLayout>
+    </LinearLayout>
 </ScrollView>
