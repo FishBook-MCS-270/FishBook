@@ -121,8 +121,8 @@ class AddRecordFragment : Fragment() {
 
                 // Clears when the county is changed
                 binding.lakeEditText.text = null
-                binding.lengthEditText.text = null
-                binding.weightEditText.text = null
+                binding.latEditText.text = null
+                binding.longEditText.text = null
 
                 addRecordViewModel.fetchLakesByCounty(selectedCounty)
                 addRecordViewModel.lakeList.observe(viewLifecycleOwner) { lakeDataList ->
@@ -133,8 +133,8 @@ class AddRecordFragment : Fragment() {
 
                     //CHANGE LATER -- Grabs first GPS Value for lake in County
                     if (lakeDataList.isNotEmpty()) {
-                        binding.lengthEditText.setText(lakeDataList[0].gps_lat.toString())
-                        binding.weightEditText.setText(lakeDataList[0].gps_long.toString())
+                        binding.latEditText.setText(lakeDataList[0].gps_lat.toString())
+                        binding.longEditText.setText(lakeDataList[0].gps_long.toString())
                         setupLakeNameAutoCompleteTextView(lakeDataList)
 
                     }
@@ -159,8 +159,8 @@ class AddRecordFragment : Fragment() {
                 if (selectedLakeData != null) {
                     // Update the GPS Data
                     Log.d("AddRecordFragment", "Lake: ${selectedLakeData.lakeName} Lat: ${selectedLakeData.gps_lat}")
-                    binding.lengthEditText.setText(selectedLakeData.gps_lat.toString())
-                    binding.weightEditText.setText(selectedLakeData.gps_long.toString())
+                    binding.latEditText.setText(selectedLakeData.gps_lat.toString())
+                    binding.longEditText.setText(selectedLakeData.gps_long.toString())
                 }
             }
         }
@@ -208,8 +208,8 @@ class AddRecordFragment : Fragment() {
                     length = binding.lengthEditText.text.toString(),
                     weight = binding.weightEditText.text.toString(),
                     county = binding.countyEditText.text.toString(),
-                    latitude = binding.latitudeEditText.text.toString(),
-                    longitude = binding.longitudeEditText.text.toString(),
+                    latitude = binding.latEditText.text.toString(),
+                    longitude = binding.longEditText.text.toString(),
 //                    time = binding.timeEditText.text.toString(),
 //                    location = binding.locationEditText.text.toString(),
                     localUri = ImageUri.toString(),
@@ -274,7 +274,6 @@ class AddRecordFragment : Fragment() {
                         lure = updatedCatchDetails.lure,
                         latitude = updatedCatchDetails.latitude,
                         longitude = updatedCatchDetails.longitude,
-                        location = updatedCatchDetails.location,
                         remoteUri = updatedCatchDetails.remoteUri,
                         localUri = updatedCatchDetails.localUri
                     )
@@ -288,8 +287,8 @@ class AddRecordFragment : Fragment() {
                     binding.lengthEditText.text.clear()
                     binding.weightEditText.text.clear()
                     binding.countyEditText.text.clear()
-                    binding.latitudeEditText.text.clear()
-                    binding.longitudeEditText.text.clear()
+                    binding.latEditText.text.clear()
+                    binding.longEditText.text.clear()
 //                    binding.timeEditText.text.clear()
 //                    binding.locationEditText.text.clear()
                 }

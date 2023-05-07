@@ -52,8 +52,8 @@ class EditRecordFragment : Fragment() {
             lengthEditText.setText(catchDetail.length.toString())
             weightEditText.setText(catchDetail.weight.toString())
             countyEditText.setText(catchDetail.county)
-            latitudeEditText.setText(catchDetail.latitude.toString())
-            longitudeEditText.setText(catchDetail.longitude.toString())
+            latEditText.setText(catchDetail.latitude.toString())
+            longEditText.setText(catchDetail.longitude.toString())
 //            timeEditText.setText(catchDetail.time)
 //            locationEditText.setText(catchDetail.location)
         }
@@ -69,8 +69,8 @@ class EditRecordFragment : Fragment() {
             length = binding.lengthEditText.text.toString(),
             weight = binding.weightEditText.text.toString(),
             county = binding.countyEditText.text.toString(),
-            latitude = binding.latitudeEditText.text.toString(),
-            longitude = binding.longitudeEditText.text.toString()
+            latitude = binding.latEditText.text.toString(),
+            longitude = binding.longEditText.text.toString()
 //            time = binding.timeEditText.text.toString(),
 //            location = binding.locationEditText.text.toString()
         )

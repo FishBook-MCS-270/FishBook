@@ -39,7 +39,6 @@ class ImageRepository {
                     remoteUri = catchDetail.remoteUri,
                     localUri = catchDetail.localUri,
                     longitude = catchDetail.longitude,
-                    location = catchDetail.location,
                 )
                 dataRepository.insertCatchDetail(localCatchDetail)
             }

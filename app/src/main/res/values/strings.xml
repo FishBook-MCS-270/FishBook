@@ -23,5 +23,7 @@
     <string name="delete">DELETE</string>
     <string name="longitude">Longitude</string>
     <string name="latitude">Latitude</string>
+    <string name="lat_hint">Latitude</string>
+    <string name="long_hint">Longitude</string>
 
 </resources>

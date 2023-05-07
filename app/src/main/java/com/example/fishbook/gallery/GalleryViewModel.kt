@@ -49,7 +49,6 @@ class GalleryViewModel : ViewModel() {
             weight = this.weight,
             county = this.county,
             lure = this.lure,
-            location = this.location,
             remoteUri = this.remoteUri,
             localUri = this.localUri,
             latitude = this.latitude,
@@ -67,7 +66,6 @@ class GalleryViewModel : ViewModel() {
     fun fetchCatchDetails() {
         viewModelScope.launch {
             if (userId != null) {
-                //try-catch needed for null handling
                 try {
                     val remoteCatchDetailsFlow = imageRepository.fetchImages(userId)
                         .catch { e ->
@@ -75,7 +73,7 @@ class GalleryViewModel : ViewModel() {
                                 "GalleryViewModel",
                                 "Error fetching remote catch details: ${e.message}"
                             )
-                            emit(emptyList<CatchDetails>()) //
+                            emit(emptyList<CatchDetails>())
                         }
 
                     val localCatchDetailsFlow = dataRepository.getLocalCatchDetails(userId)
@@ -85,31 +83,25 @@ class GalleryViewModel : ViewModel() {
                             }
                         }
 
-                    //
-                    localCatchDetailsFlow.collect { localCatchDetails ->
-                        Log.d("GalleryViewModel", "Local catch details count: ${localCatchDetails.size}")
-                        _catchDetails.value = localCatchDetails
-                        Log.d("GalleryViewModel", "Updated _catchDetails with ${_catchDetails.value.size} catch details")
-                    }
-//                    val combinedCatchDetailsFlow =
-//                        remoteCatchDetailsFlow.combine(localCatchDetailsFlow) { remote, local ->
-//                            Log.d("GalleryViewModel", "Remote catch details count: ${remote.size}")
-//                            Log.d("GalleryViewModel", "Local catch details count: ${local.size}")
-//                            local
-//                        }
-//
-//                    _catchDetails.value = combinedCatchDetailsFlow.first()
-//                    Log.d("GalleryViewModel", "Updated _catchDetails with ${_catchDetails.value.size} catch details")
+                    //reverted back to previous im. better for errorhachking
+                    val combinedCatchDetailsFlow =
+                        remoteCatchDetailsFlow.combine(localCatchDetailsFlow) { remote, local ->
+                            Log.d("GalleryViewModel", "Remote catch details count: ${remote.size}")
+                            Log.d("GalleryViewModel", "Local catch details count: ${local.size}")
+                            local
+                        }
 
-                    dataRepository.updateCaughtFlag() //updates fishdex with local gallery
+                    _catchDetails.value = combinedCatchDetailsFlow.first()
+                    Log.d("GalleryViewModel", "Updated _catchDetails with ${_catchDetails.value.size} catch details")
+                    dataRepository.updateCaughtFlag()
 
                 } catch (e: Exception) {
                     Log.e("GalleryViewModel", "Error fetching catch details: ${e.message}")
                 }
             }
-            }
         }
     }
+}
 
 
 
