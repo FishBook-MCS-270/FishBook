@@ -1,5 +1,6 @@
 package com.example.fishbook.gallery
 
+import android.util.Log
 import com.example.fishbook.storage.DataRepository
 import com.example.fishbook.localCatchDetails.LocalCatchDetails
 import com.example.fishbook.record.CatchDetails
@@ -16,6 +17,7 @@ class ImageRepository {
 
 
     fun fetchImages(userId: String): Flow<List<CatchDetails>> = flow {
+        Log.d("ImageRepo", "FetchImages")
         val catchDetailsList = mutableListOf<CatchDetails>()
             val documents = firestore.collection("users")
                 .document(userId)

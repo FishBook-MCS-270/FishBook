@@ -1,6 +1,7 @@
 package com.example.fishbook.fishdex
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.fishbook.MainActivity
 import com.example.fishbook.fishdex.FishDexFragmentDirections
 import com.example.fishbook.databinding.FragmentFishDexBinding
 import kotlinx.coroutines.launch
@@ -35,7 +37,11 @@ class FishDexFragment : Fragment() {
         _binding = FragmentFishDexBinding.inflate(inflater, container, false)
 
         binding.fishRecyclerView.layoutManager = LinearLayoutManager(context)
-
+        val mainActivity = requireActivity() as MainActivity
+        Log.d("MainFrag", "Fetch101")
+        lifecycleScope.launch {
+            mainActivity.findNearestLakes()
+        }
         return binding.root
     }
 
