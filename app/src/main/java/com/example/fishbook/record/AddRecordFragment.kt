@@ -147,15 +147,12 @@ class AddRecordFragment : Fragment() {
         binding.lakeEditText.text = null
         binding.latEditText.text = null
         binding.longEditText.text = null
-
         binding.countyEditText.setText(selectedLake.first.county)
 
         //need to nullify the GPS Cords to fix bug of setting county's gps
         binding.latEditText.text = null
         binding.longEditText.text = null
         binding.lakeEditText.setText(selectedLake.first.lakeName)
-
-
         binding.latEditText.setText(selectedLake.first.gps_lat.toString())
         binding.longEditText.setText(selectedLake.first.gps_long.toString())
         dialogFlag = false

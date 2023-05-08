@@ -1,4 +1,5 @@
 package com.example.fishbook.record
+import android.R
 import android.content.ContentValues
 import android.net.Uri
 import com.google.firebase.firestore.FirebaseFirestore
@@ -9,13 +10,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.fishbook.databinding.FragmentAddRecordBinding
 import com.example.fishbook.record.CatchDetails
 import androidx.navigation.fragment.findNavController
 import com.example.fishbook.databinding.FragmentEditRecordBinding
+import com.example.fishbook.fishdex.Species
 import com.example.fishbook.gallery.GalleryViewModel
 
 
@@ -24,12 +28,17 @@ class EditRecordFragment : Fragment() {
     private lateinit var binding: FragmentEditRecordBinding
     private val args: EditRecordFragmentArgs by navArgs()
     private val galleryViewModel: GalleryViewModel by activityViewModels()
+    private val addRecordViewModel: AddRecordViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentEditRecordBinding.inflate(inflater, container, false)
+
+        addRecordViewModel.allSpecies.observe(viewLifecycleOwner) { speciesList ->
+            setupSpeciesAutoCompleteTextView(speciesList)
+        }
         return binding.root
     }
 
@@ -54,7 +63,11 @@ class EditRecordFragment : Fragment() {
 
         }
     }
-
+    private fun setupSpeciesAutoCompleteTextView(speciesList: List<Species>) {
+        val speciesNames = speciesList.map { it.species_name }
+        val adapter = ArrayAdapter(requireContext(), R.layout.simple_dropdown_item_1line, speciesNames)
+        binding.speciesEditText.setAdapter(adapter)
+    }
     private fun updateCatchDetails(catchDetail: CatchDetails) {
         Log.d("EditRecordFragment", "Updating catch details")
 

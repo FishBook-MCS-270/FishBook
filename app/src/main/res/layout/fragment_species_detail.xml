@@ -33,4 +33,14 @@
         android:textAppearance="?attr/textAppearanceBody1"
         tools:text="Fish Family" />
 
+    <Button
+        android:id="@+id/findSpeciesButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/fishFamily"
+
+        android:text="Find Species" />
+
 </RelativeLayout>

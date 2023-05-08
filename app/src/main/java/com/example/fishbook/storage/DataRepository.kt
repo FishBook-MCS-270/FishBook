@@ -227,7 +227,7 @@ class DataRepository private constructor(context: Context) {
                 ),
                 Species(
                     caught_flag = false,
-                    species_name = "Northern Hogsucker",
+                    species_name = "Northern Hog Sucker",
                     fish_family = "Oddball",
                     image = R.drawable.fish_hogsucker
                 ),
@@ -239,7 +239,7 @@ class DataRepository private constructor(context: Context) {
                 ),
                 Species(
                     caught_flag = false,
-                    species_name = "White Fish",
+                    species_name = "Whitefish",
                     fish_family = "Oddball",
                     image = R.drawable.fish_whitefish
                 ),
