@@ -20,10 +20,12 @@ import com.example.fishbook.LakeData.Lake
 import com.example.fishbook.MainActivity
 import com.example.fishbook.R
 import com.example.fishbook.databinding.FragmentSpeciesDetailBinding
+import com.example.fishbook.storage.DataRepository
 import kotlinx.coroutines.launch
 
 class SpeciesDetailFragment : Fragment() {
     //Sourced via crimedetail fragment
+    private val dataRepository = DataRepository.get()
     private var _binding: FragmentSpeciesDetailBinding? = null
     private val binding
         get() = checkNotNull(_binding) {
@@ -94,15 +96,25 @@ class SpeciesDetailFragment : Fragment() {
     }
 
     private fun updateUi(fish: Species) {
+
+
+
         binding.apply {
             if (fish.caught_flag) {
                 fishName.text = fish.species_name
                 fishFamily.text = fish.fish_family
+                lifecycleScope.launch {
+                    val largestLengthFish = dataRepository.getBestFish(fish.species_name)
+                    largestLengthFish?.let {
+                        binding.personalBestData.text = getString(R.string.PersonalBest, it.length, it.weight)
+                    }
+                }
                 fishImage.setImageResource(fish.image)
                 fishImage.clearColorFilter()
             } else {
                 fishName.text = fish.species_name
                 fishFamily.text = "???"
+                personalBestLabel.text = "???"
                 fishImage.setImageResource(fish.image)
                 fishImage.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP)
             }

@@ -37,8 +37,9 @@ class DataRepository private constructor(context: Context) {
         .build()
 
     // ~~Caching Functions
-    fun getLocalCatchDetails(): Flow<List<LocalCatchDetails>> {
-        return database.LocalCatchDetailsDao().getAllCatchDetails()
+    fun getLocalCatchDetails(userId: String): Flow<List<LocalCatchDetails>> {
+        Log.d("DataRepository", "Fetching local catch details for user: $userId")
+        return database.LocalCatchDetailsDao().getAllCatchDetailsByUser(userId)
     }
 
     suspend fun insertCatchDetail(localCatchDetail: LocalCatchDetails) {
@@ -56,8 +57,8 @@ class DataRepository private constructor(context: Context) {
     suspend fun updateCaughtFlag() {
         database.LocalCatchDetailsDao().updateCaughtFlag()
     }
-    suspend fun updateCatchDetail(localCatchDetail: LocalCatchDetails) {
-        database.LocalCatchDetailsDao().updateCatchDetail(localCatchDetail)
+    suspend fun getBestFish(species: String): LocalCatchDetails? {
+        return database.LocalCatchDetailsDao().getBestFish(species)
     }
     // ~~Species Functions
 

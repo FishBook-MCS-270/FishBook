@@ -319,20 +319,7 @@ class AddRecordFragment : Fragment() {
 
                     // Update the document in Firestore
                     documentReference.update("id", generatedId)
-                    val localCatchDetails = LocalCatchDetails(
-                        id = updatedCatchDetails.id,
-                        userId = userId,
-                        species = updatedCatchDetails.species,
-                        lake = updatedCatchDetails.lake,
-                        length = updatedCatchDetails.length,
-                        weight = updatedCatchDetails.weight,
-                        county = updatedCatchDetails.county,
-                        lure = updatedCatchDetails.lure,
-                        latitude = updatedCatchDetails.latitude,
-                        longitude = updatedCatchDetails.longitude,
-                        remoteUri = updatedCatchDetails.remoteUri,
-                        localUri = updatedCatchDetails.localUri
-                    )
+
                     galleryViewModel.updateCatchDetails(updatedCatchDetails)
 
                     findNavController().popBackStack()
