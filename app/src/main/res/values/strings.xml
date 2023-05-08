@@ -27,5 +27,7 @@
     <string name="long_hint">Longitude</string>
     <string name="update">Update</string>
     <string name="new_species_caught">New Species Caught</string>
+    <string name="personal_best_label">Personal Best:</string>
+    <string name="PersonalBest">Length: %1$s inches, Weight: %2$s pounds</string>
 
 </resources>

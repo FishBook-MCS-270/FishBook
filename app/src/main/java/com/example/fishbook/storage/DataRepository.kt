@@ -56,8 +56,8 @@ class DataRepository private constructor(context: Context) {
     suspend fun updateCaughtFlag() {
         database.LocalCatchDetailsDao().updateCaughtFlag()
     }
-    suspend fun updateCatchDetail(localCatchDetail: LocalCatchDetails) {
-        database.LocalCatchDetailsDao().updateCatchDetail(localCatchDetail)
+    suspend fun getBestFish(species: String): LocalCatchDetails? {
+        return database.LocalCatchDetailsDao().getBestFish(species)
     }
     // ~~Species Functions
 

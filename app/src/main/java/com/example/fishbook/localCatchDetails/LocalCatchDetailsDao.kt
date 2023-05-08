@@ -31,4 +31,8 @@ interface LocalCatchDetailsDao {
     END
 """)
     suspend fun updateCaughtFlag()
+
+    @Query("SELECT * FROM local_catch_details WHERE species = :species ORDER BY CAST(length as REAL) DESC LIMIT 1")
+    suspend fun getBestFish(species: String): LocalCatchDetails? //returns nullable single value for catch
+
 }

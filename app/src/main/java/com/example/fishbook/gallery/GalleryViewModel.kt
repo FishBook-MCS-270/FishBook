@@ -63,6 +63,8 @@ class GalleryViewModel : ViewModel() {
         viewModelScope.launch {
             dataRepository.deleteCatchDetailById(catchDetail.id)
             fetchCatchDetails() // Fetch updated catch details after deleting
+            dataRepository.updateCaughtFlag()
+
         }
     }
 

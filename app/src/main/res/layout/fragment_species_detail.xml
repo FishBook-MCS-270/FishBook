@@ -33,13 +33,34 @@
         android:textAppearance="?attr/textAppearanceBody1"
         tools:text="Fish Family" />
 
+    <TextView
+        android:id="@+id/personalBestLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fishFamily"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:textAppearance="?attr/textAppearanceBody1"
+        android:text="@string/personal_best_label"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/personalBestData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/personalBestLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:textAppearance="?attr/textAppearanceBody1" />
+
+
     <Button
         android:id="@+id/findSpeciesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:layout_below="@id/fishFamily"
+        android:layout_below="@id/personalBestData"
 
         android:text="Find Species" />
 
