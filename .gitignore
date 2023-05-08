@@ -4,3 +4,7 @@
 /app/build/
 .idea
 .gradle/
+
+### Gradle ###
+.gradle
+/build/
