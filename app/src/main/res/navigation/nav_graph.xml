@@ -41,7 +41,13 @@
         android:id="@+id/addRecordFragment"
         android:name="com.example.fishbook.record.AddRecordFragment"
         android:label="Add Record"
-        tools:layout="@layout/fragment_add_record"/>
+        tools:layout="@layout/fragment_add_record">
+    <argument
+        android:name="catchDetailArg"
+        app:argType="com.example.fishbook.record.CatchDetails"
+        app:nullable="true" />
+    </fragment>
+
 
     <fragment
         android:id="@+id/viewRecordFragment"
@@ -50,21 +56,10 @@
         tools:layout="@layout/fragment_view_record">
         <argument
         android:name="catchDetail"
-        app:argType="com.example.fishbook.record.CatchDetails"
-            />
-<action
+        app:argType="com.example.fishbook.record.CatchDetails" />
+        <action
         android:id="@+id/editRecord"
-        app:destination="@id/editRecordFragment" />
-</fragment>
-
-<fragment
-android:id="@+id/editRecordFragment"
-android:name="com.example.fishbook.record.EditRecordFragment"
-    android:label="Edit"
-    tools:layout="@layout/fragment_add_record">
-    <argument
-        android:name="catchDetail"
-        app:argType="com.example.fishbook.record.CatchDetails"/>
+        app:destination="@id/addRecordFragment" />
 </fragment>
 
     <fragment
@@ -72,5 +67,15 @@ android:name="com.example.fishbook.record.EditRecordFragment"
         android:name="com.example.fishbook.map.Map"
         android:label="Map"
         tools:layout="@layout/fragment_map"/>
+
+    <fragment
+        android:id="@+id/editRecordFragment"
+        android:name="com.example.fishbook.record.EditRecordFragment"
+        android:label="Edit"
+        tools:layout="@layout/fragment_add_record">
+        <argument
+            android:name="catchDetail"
+            app:argType="com.example.fishbook.record.CatchDetails"/>
+    </fragment>
 
 </navigation>

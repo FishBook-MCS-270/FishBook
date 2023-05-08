@@ -1,4 +1,5 @@
 package com.example.fishbook.record
+import android.annotation.SuppressLint
 import androidx.navigation.fragment.findNavController
 
 import android.app.Activity.RESULT_OK
@@ -35,7 +36,9 @@ import com.example.fishbook.LakeData.Lake
 import com.example.fishbook.fishdex.Species
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import com.example.fishbook.MainActivity
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 
 
@@ -45,6 +48,7 @@ class AddRecordFragment : Fragment() {
     private val galleryViewModel: GalleryViewModel by activityViewModels()
     private val addRecordViewModel: AddRecordViewModel by viewModels()
     private var dialogFlag = false //fixes bug to use user-location for gps,
+    private val args: AddRecordFragmentArgs by navArgs()
 
     private var photoName: String? = null
     private lateinit var photoFile: File
@@ -69,12 +73,12 @@ class AddRecordFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val mainActivity = requireActivity() as MainActivity
         binding = FragmentAddRecordBinding.inflate(layoutInflater, container, false)
         addRecordViewModel.fetchAllSpecies(requireContext())
         addRecordViewModel.allSpecies.observe(viewLifecycleOwner) { speciesList ->
             setupSpeciesAutoCompleteTextView(speciesList)
         }
-
         binding.cameraButton.setOnClickListener {
             photoName = "IMG_${Date()}.JPG"
             photoFile = File(
@@ -90,32 +94,43 @@ class AddRecordFragment : Fragment() {
         }
 
         binding.submitButton.text = getString(R.string.upload)
-
         binding.submitButton.setOnClickListener{
             uploadImage()
         }
-
         binding.selectImageButton.setOnClickListener{
             selectImage()
         }
-        val mainActivity = requireActivity() as MainActivity
-
         binding.useLocationButton.setOnClickListener {
             lifecycleScope.launch {
                 mainActivity.findNearestLakes().let { nearestLakes ->
-                    showNearestLakesDialog(nearestLakes)
-                }
-            }
-        }
+                    showNearestLakesDialog(nearestLakes) } } }
         addRecordViewModel.fetchCounties(requireContext())
         //used for the autofill, SQL
         addRecordViewModel.countyList.observe(viewLifecycleOwner) { countyList ->
             setupCountyAutoCompleteTextView(countyList)
         }
-
         return binding.root
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        args.catchDetailArg?.let { catchDetail ->
+            // Pre-populate fields with data from catchDetail
+            binding.speciesEditText.setText(catchDetail.species)
+            binding.lakeEditText.setText(catchDetail.lake)
+            binding.lureEditText.setText(catchDetail.lure)
+            binding.lengthEditText.setText(catchDetail.length.toString())
+            binding.weightEditText.setText(catchDetail.weight.toString())
+            binding.countyEditText.setText(catchDetail.county)
+            binding.latEditText.setText(catchDetail.latitude)
+            binding.longEditText.setText(catchDetail.longitude)
+            // Load the image from the remoteUri
+            Picasso.get().load(catchDetail.remoteUri).into(binding.fishImage)
+            if (catchDetail.localUri.isNotEmpty()) {
+                ImageUri = Uri.parse(catchDetail.localUri)
+            }
+        }
+    }
     private fun showNearestLakesDialog(nearestLakes: List<Pair<Lake, Double>>) {
         val builder = AlertDialog.Builder(requireContext())
         val inflater = requireActivity().layoutInflater
@@ -140,6 +155,7 @@ class AddRecordFragment : Fragment() {
         dialog.show()
     }
 
+    //used for Lake-dialog
     private fun handleLakeItemClick(selectedLake: Pair<Lake, Double>, dialog: AlertDialog) {
         dialogFlag = true
         //clearest after each click
@@ -240,6 +256,7 @@ class AddRecordFragment : Fragment() {
         }
     }
 
+    @SuppressLint("WrongConstant")
     private fun uploadImage() {
         val progressDialog = ProgressDialog(requireContext())
         progressDialog.setMessage("Uploading File...")
@@ -251,35 +268,43 @@ class AddRecordFragment : Fragment() {
         val placeholderId = UUID.randomUUID().toString()
         val fileName = formatter.format(now)
         val storageReference = FirebaseStorage.getInstance().getReference("images/$fileName")
+        val hasPermission = requireContext().contentResolver.persistedUriPermissions.any { it.uri == ImageUri }
 
-        storageReference.putFile(ImageUri).addOnSuccessListener {
-            // Get the download URL of the uploaded image
-            storageReference.downloadUrl.addOnSuccessListener { uri ->
-                val remoteUri = uri.toString()
-                binding.fishImage.setImageURI(null)
-                Toast.makeText(requireContext(), "Successfully uploaded", Toast.LENGTH_SHORT).show()
-                if (progressDialog.isShowing) progressDialog.dismiss()
-                // Store info in CatchDetails object
-                val catchDetails = CatchDetails(
-                    id = placeholderId,
-                    species = binding.speciesEditText.text.toString(),
-                    lake = binding.lakeEditText.text.toString(),
-                    lure = binding.lureEditText.text.toString(),
-                    length = binding.lengthEditText.text.toString(),
-                    weight = binding.weightEditText.text.toString(),
-                    county = binding.countyEditText.text.toString(),
-                    latitude = binding.latEditText.text.toString(),
-                    longitude = binding.longEditText.text.toString(),
-                    localUri = ImageUri.toString(),
-                    remoteUri = remoteUri
-                )
-                uploadCatchDetails(catchDetails)
-            }
-        }.addOnFailureListener {
-            if (progressDialog.isShowing) progressDialog.dismiss()
-            Toast.makeText(requireContext(), "Failed", Toast.LENGTH_SHORT).show()
+        // If the app doesn't have permission, request it again
+        if (!hasPermission) {
+            val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            requireContext().contentResolver.takePersistableUriPermission(ImageUri, takeFlags)
         }
-    }
+        storageReference.putFile(ImageUri).addOnSuccessListener {
+                // Get the download URL of the uploaded image
+                storageReference.downloadUrl.addOnSuccessListener { uri ->
+                    val remoteUri = uri.toString()
+                    binding.fishImage.setImageURI(null)
+                    Toast.makeText(requireContext(), "Successfully uploaded", Toast.LENGTH_SHORT).show()
+                    if (progressDialog.isShowing) progressDialog.dismiss()
+                    // Store info in CatchDetails object
+                    val catchDetails = CatchDetails(
+                        id = placeholderId,
+                        species = binding.speciesEditText.text.toString(),
+                        lake = binding.lakeEditText.text.toString(),
+                        lure = binding.lureEditText.text.toString(),
+                        length = binding.lengthEditText.text.toString(),
+                        weight = binding.weightEditText.text.toString(),
+                        county = binding.countyEditText.text.toString(),
+                        latitude = binding.latEditText.text.toString(),
+                        longitude = binding.longEditText.text.toString(),
+                        localUri = ImageUri.toString(),
+                        remoteUri = remoteUri
+                    )
+                    uploadCatchDetails(catchDetails)
+                }
+            }.addOnFailureListener {
+                if (progressDialog.isShowing) progressDialog.dismiss()
+                Toast.makeText(requireContext(), "Failed", Toast.LENGTH_SHORT).show()
+            }
+        }
+
 
     // register an activity result launcher to handle the image selection intent
     private val selectImageLauncher = registerForActivityResult(
@@ -288,22 +313,32 @@ class AddRecordFragment : Fragment() {
         if (result.resultCode == RESULT_OK) {
             val imageUri = result.data?.data
             if (imageUri != null) {
+                // Take persistable URI permission for the selected image
+                val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                requireContext().contentResolver.takePersistableUriPermission(
+                    imageUri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
                 ImageUri = imageUri
                 binding.fishImage.setImageURI(imageUri)
             }
         }
     }
-
     private fun selectImage() {
-        val intent = Intent()
-        intent.type = "image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
-        // launch the activity result launcher to handle the intent
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "image/*"
+            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+        }
         selectImageLauncher.launch(intent)
     }
-
     // uploads catchDetails to firebase
     private fun uploadCatchDetails(catchDetails: CatchDetails) {
+        if (!::ImageUri.isInitialized && args.catchDetailArg != null) {
+            // If ImageUri is not initialized and we are editing a record, use the remoteUri from the catchDetailArg
+            ImageUri = Uri.parse(args.catchDetailArg!!.localUri)
+        }
         val db = Firebase.firestore
         // adds to catchDetails collection
         FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->

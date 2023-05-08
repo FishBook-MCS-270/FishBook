@@ -26,9 +26,7 @@ private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity() {
 
     private lateinit var bottomNavigationView: BottomNavigationView
-
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-
     override fun onCreate(savedInstanceState: Bundle?) {
         DataRepository.initialize(this)
 
@@ -36,14 +34,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         bottomNavigationView = findViewById(R.id.bottom_navigation)
-
         // Setup the bottom navigation view with the NavHostFragment
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         bottomNavigationView.setupWithNavController(navController)
-
-
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
     }
@@ -66,20 +60,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
     //used to calculate distance between points
-    fun haversine(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
-        val R = 3958.8 // Radius of the earth in miles
-        val latDistance = Math.toRadians(lat2 - lat1)
-        val lonDistance = Math.toRadians(lon2 - lon1)
-
-        val a = (sin(latDistance / 2) * sin(latDistance / 2)
-                + (cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2))
-                * sin(lonDistance / 2) * sin(lonDistance / 2)))
-        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
-
-        val distanceInMiles = R * c
-        return String.format("%.1f", distanceInMiles).toDouble()
-    }
-
     @Suppress("MemberVisibilityCanBePrivate")
     suspend fun findNearestLakes(topLakes: Int = 5, fishSpecies: String? = null): List<Pair<Lake, Double>> {
         val repository = DataRepository.get()
@@ -104,7 +84,19 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "${lakeDistance.first.lakeName}, ${lakeDistance.first.county}, ${lakeDistance.first.gps_lat}, \"${lakeDistance.first.gps_long},${lakeDistance.second} miles")
         }
         return topNearestLakes
+    }
+    fun haversine(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val R = 3958.8 // Radius of the earth in miles
+        val latDistance = Math.toRadians(lat2 - lat1)
+        val lonDistance = Math.toRadians(lon2 - lon1)
 
+        val a = (sin(latDistance / 2) * sin(latDistance / 2)
+                + (cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2))
+                * sin(lonDistance / 2) * sin(lonDistance / 2)))
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+        val distanceInMiles = R * c
+        return String.format("%.1f", distanceInMiles).toDouble()
     }
 
 }

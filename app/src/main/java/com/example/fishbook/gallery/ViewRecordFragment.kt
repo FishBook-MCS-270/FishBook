@@ -22,8 +22,6 @@ class ViewRecordFragment : Fragment() {
     private val binding get() = _binding!!
     private val args: ViewRecordFragmentArgs by navArgs()
     private val galleryViewModel: GalleryViewModel by activityViewModels()
-    private val dataRepository = DataRepository.get()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,18 +54,15 @@ class ViewRecordFragment : Fragment() {
                     .collection("catchDetails")
                     .document(catchDetail.id) // reference to catch detail id
                     .delete() // deletes current catch detail record
-
                     .addOnSuccessListener {
                         Toast.makeText(requireContext(), "Record deleted", Toast.LENGTH_SHORT).show()
                         // goes back to gallery when record is deleted
                         galleryViewModel.deleteCatchDetail(catchDetail)
-
                         findNavController().popBackStack()
                     }
                     .addOnFailureListener {
                         // error deleting document
                         Toast.makeText(requireContext(), "Error deleting", Toast.LENGTH_SHORT).show()
-
                     }
             }
         }
@@ -77,7 +72,6 @@ class ViewRecordFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
     private fun updateUi(catchDetail: CatchDetails) {
         binding.apply {
             Picasso.get().load(catchDetail.remoteUri).into(largeImage)

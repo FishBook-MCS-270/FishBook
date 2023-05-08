@@ -10,6 +10,9 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class GalleryViewModel : ViewModel() {
+    init {
+        fetchCatchDetails()
+    }
     private val imageRepository = ImageRepository.get()
     private val dataRepository = DataRepository.get()
     val userId = FirebaseAuth.getInstance().currentUser?.uid
@@ -18,29 +21,13 @@ class GalleryViewModel : ViewModel() {
     val CatchDetails: LiveData<List<CatchDetails>>
         get() = _catchDetails.asLiveData()
 
+    //used for View-record Fragment to update
     private val _updatedCatchDetails = MutableLiveData<CatchDetails>()
     val updatedCatchDetails: LiveData<CatchDetails> = _updatedCatchDetails
+    //used in upload_catch_details
     fun updateCatchDetails(catchDetails: CatchDetails) {
         Log.d("GalleryViewModel", "Updating LiveData with new catch details")
         _catchDetails.value = _catchDetails.value + catchDetails
-    }
-
-    init {
-        fetchCatchDetails()
-    }
-
-    fun addCatchDetails(localCatchDetail: LocalCatchDetails) {
-        viewModelScope.launch {
-            if (userId != null) {
-                try {
-                    dataRepository.insertCatchDetail(localCatchDetail)
-                    Log.d("GalleryViewModel", "Successfully inserted catch detail")
-                    fetchCatchDetails() // Fetch updated catch details
-                } catch (e: Exception) {
-                    Log.e("GalleryViewModel", "Error inserting catch detail: ${e.message}")
-                }
-            }
-        }
     }
 
     //maps the remote catchDetails to local
@@ -66,7 +53,6 @@ class GalleryViewModel : ViewModel() {
             fetchCatchDetails() // Fetch updated catch details after deleting
         }
     }
-
     fun fetchCatchDetails() {
         viewModelScope.launch {
             if (userId != null) {
@@ -87,7 +73,7 @@ class GalleryViewModel : ViewModel() {
                             }
                         }
 
-                    //reverted back to previous im. better for errorhachking
+                    //reverted back to previous imp. better for error checking
                     val combinedCatchDetailsFlow =
                         remoteCatchDetailsFlow.combine(localCatchDetailsFlow) { remote, local ->
                             Log.d("GalleryViewModel", "Remote catch details count: ${remote.size}")
