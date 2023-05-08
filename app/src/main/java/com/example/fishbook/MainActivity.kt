@@ -41,8 +41,38 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
-        bottomNavigationView.setupWithNavController(navController)
 
+        // USed to handle nav_bar navigations
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.gallery -> {
+                    if (navController.currentDestination?.id == R.id.editRecordFragment ||
+                        navController.currentDestination?.id == R.id.addRecordFragment ||
+                        navController.currentDestination?.id == R.id.viewRecordFragment
+                    ) {
+                        navController.popBackStack(R.id.gallery, false)
+                    } else if (navController.currentDestination?.id != R.id.gallery) {
+                        navController.navigate(R.id.gallery)
+                    }
+                    true
+                }
+                R.id.fishdex -> {
+                    if (navController.currentDestination?.id == R.id.speciesFragment) {
+                        navController.popBackStack(R.id.fishdex, false)
+                    } else if (navController.currentDestination?.id != R.id.fishdex) {
+                        navController.navigate(R.id.fishdex)
+                    }
+                    true
+                }
+                R.id.map -> {
+                    if (navController.currentDestination?.id != R.id.map) {
+                        navController.navigate(R.id.map)
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
