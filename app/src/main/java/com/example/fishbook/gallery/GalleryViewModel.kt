@@ -94,14 +94,14 @@ class GalleryViewModel : ViewModel() {
                             emit(emptyList<CatchDetails>())
                         }
 
-                    val localCatchDetailsFlow = dataRepository.getLocalCatchDetails(userId)
+                    val localCatchDetailsFlow = dataRepository.getLocalCatchDetails()
                         .map { localCatchDetailsList ->
                             localCatchDetailsList.map { localCatchDetails ->
                                 localCatchDetails.toCatchDetails()
                             }
                         }
 
-                    //reverted back to previous im. better for errorhachking
+                    //reverted back to previous im. better for error-checking
                     val combinedCatchDetailsFlow =
                         remoteCatchDetailsFlow.combine(localCatchDetailsFlow) { remote, local ->
                             Log.d("GalleryViewModel", "Remote catch details count: ${remote.size}")
@@ -109,7 +109,8 @@ class GalleryViewModel : ViewModel() {
                             local
                         }
 
-                    _catchDetails.value = combinedCatchDetailsFlow.first()
+                    //used to sort and maintain order
+                    _catchDetails.value = combinedCatchDetailsFlow.first().sortedBy { it.id }
                     Log.d("GalleryViewModel", "Updated _catchDetails with ${_catchDetails.value.size} catch details")
                     dataRepository.updateCaughtFlag()
 
