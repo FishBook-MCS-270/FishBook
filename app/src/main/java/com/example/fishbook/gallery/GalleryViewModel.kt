@@ -1,14 +1,8 @@
 package com.example.fishbook.gallery
 
-import android.app.Activity
-import android.app.AlertDialog
-import android.content.Context
+
 import android.util.Log
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.lifecycle.*
-import com.example.fishbook.R
-import com.example.fishbook.fishdex.Species
 import com.example.fishbook.storage.DataRepository
 import com.example.fishbook.localCatchDetails.LocalCatchDetails
 import com.example.fishbook.record.CatchDetails
@@ -17,7 +11,6 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class GalleryViewModel : ViewModel() {
-
 
     private val imageRepository = ImageRepository.get()
     private val dataRepository = DataRepository.get()
@@ -30,13 +23,9 @@ class GalleryViewModel : ViewModel() {
     private val _updatedCatchDetails = MutableLiveData<CatchDetails>()
     val updatedCatchDetails: LiveData<CatchDetails> = _updatedCatchDetails
 
-    private val _newSpeciesEvent = MutableLiveData<Species?>()
-    val newSpeciesEvent: MutableLiveData<Species?> = _newSpeciesEvent
+
     fun updateCatchDetails(catchDetails: CatchDetails) {
-        Log.d("GalleryViewModel", "Updating LiveData with new catch details")
-        viewModelScope.launch {
-            checkForNewSpecies(catchDetails.species)
-        }
+        Log.d("GalleryViewModel", "Updating LiveData with new catch details")//    private val _newSpeciesEvent = MutableLiveData<Species?>()
         _catchDetails.value = _catchDetails.value + catchDetails
     }
 
@@ -68,21 +57,6 @@ class GalleryViewModel : ViewModel() {
         }
     }
 
-    private suspend fun checkForNewSpecies(species: String) {
-        val existingSpecies = _catchDetails.value.map { it.species }.distinct()
-        if (species !in existingSpecies) {
-            Log.d("GalleryViewModel", "NEW SPECIES: $species")
-            // Fetch the species object by its name
-            val fetchedSpecies = dataRepository.getSpeciesByName(species)
-            if (fetchedSpecies != null) {
-                // Post the new species event
-                _newSpeciesEvent.postValue(fetchedSpecies)
-            } else {
-                Log.d("GalleryViewModel", "Species not found in the database: $species")
-            }
-        }
-    }
-
     fun fetchCatchDetails() {
         viewModelScope.launch {
             if (userId != null) {
@@ -93,10 +67,10 @@ class GalleryViewModel : ViewModel() {
                                 "GalleryViewModel",
                                 "Error fetching remote catch details: ${e.message}"
                             )
-                            emit(emptyList<CatchDetails>())
+                            emit(emptyList())
                         }
 
-                    val localCatchDetailsFlow = dataRepository.getLocalCatchDetails()
+                    val localCatchDetailsFlow = dataRepository.getLocalCatchDetails(userId)
                         .map { localCatchDetailsList ->
                             localCatchDetailsList.map { localCatchDetails ->
                                 localCatchDetails.toCatchDetails()
@@ -112,7 +86,7 @@ class GalleryViewModel : ViewModel() {
                         }
 
                     //used to sort and maintain order
-                    _catchDetails.value = combinedCatchDetailsFlow.first().sortedBy { it.id }
+                    _catchDetails.value = combinedCatchDetailsFlow.first() //.sortedBy { it.id }
                     Log.d("GalleryViewModel", "Updated _catchDetails with ${_catchDetails.value.size} catch details")
                     dataRepository.updateCaughtFlag()
 
@@ -125,6 +99,24 @@ class GalleryViewModel : ViewModel() {
 }
 
 
+//    val newSpeciesEvent: MutableLiveData<Species?> = _newSpeciesEvent
+//        viewModelScope.launch {
+//            checkForNewSpecies(catchDetails.species)
+//        }
+//    private suspend fun checkForNewSpecies(species: String) {
+//        val existingSpecies = _catchDetails.value.map { it.species }.distinct()
+//        if (species !in existingSpecies) {
+//            Log.d("GalleryViewModel", "NEW SPECIES: $species")
+//            // Fetch the species object by its name
+//            val fetchedSpecies = dataRepository.getSpeciesByName(species)
+//            if (fetchedSpecies != null) {
+//                // Post the new species event
+//                _newSpeciesEvent.postValue(fetchedSpecies)
+//            } else {
+//                Log.d("GalleryViewModel", "Species not found in the database: $species")
+//            }
+//        }
+//    }
 
 
 

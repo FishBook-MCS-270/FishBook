@@ -1,6 +1,7 @@
 package com.example.fishbook.gallery
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +13,10 @@ import com.example.fishbook.databinding.FragmentViewRecordBinding
 import com.squareup.picasso.Picasso
 import com.example.fishbook.record.CatchDetails
 import androidx.navigation.fragment.findNavController
-import com.example.fishbook.storage.DataRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 
 class ViewRecordFragment : Fragment() {
@@ -50,6 +52,7 @@ class ViewRecordFragment : Fragment() {
             val db = FirebaseFirestore.getInstance()
             // gets user id for current user
             FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
+                Log.d("ViewRecordFrag", "delete: ${catchDetail.id}")
                 db.collection("users")
                     .document(userId)
                     .collection("catchDetails")
@@ -57,10 +60,18 @@ class ViewRecordFragment : Fragment() {
                     .delete() // deletes current catch detail record
 
                     .addOnSuccessListener {
+                        Log.d("ViewRecordFrag", "Successdelete")
                         Toast.makeText(requireContext(), "Record deleted", Toast.LENGTH_SHORT).show()
                         // goes back to gallery when record is deleted
                         galleryViewModel.deleteCatchDetail(catchDetail)
                         findNavController().popBackStack()
+
+                        // Delete record from local database maybe not needed
+                        viewLifecycleOwner.lifecycleScope.launch {
+                            galleryViewModel.deleteCatchDetail(catchDetail)
+                            galleryViewModel.fetchCatchDetails()
+                        }
+
                     }
                     .addOnFailureListener {
                         // error deleting document

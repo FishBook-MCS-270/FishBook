@@ -10,7 +10,8 @@ interface LocalCatchDetailsDao {
 
     @Update
     suspend fun updateCatchDetail(localCatchDetails: LocalCatchDetails)
-
+    @Query("SELECT * FROM local_catch_details WHERE userId = :userId")
+    fun getAllCatchDetailsByUser(userId: String): Flow<List<LocalCatchDetails>>
     @Delete
     suspend fun deleteCatchDetail(localCatchDetails: LocalCatchDetails)
 
