@@ -25,5 +25,6 @@
     <string name="latitude">Latitude</string>
     <string name="lat_hint">Latitude</string>
     <string name="long_hint">Longitude</string>
+    <string name="update">Update</string>
 
 </resources>
