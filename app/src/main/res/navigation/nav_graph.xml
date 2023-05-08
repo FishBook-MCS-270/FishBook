@@ -42,6 +42,15 @@
         android:name="com.example.fishbook.record.AddRecordFragment"
         android:label="Add Record"
         tools:layout="@layout/fragment_add_record"/>
+        <action
+            android:id="@+id/setLoc"
+            app:destination="@id/setLocationFragment"/>
+
+    <fragment
+        android:id="@+id/setLocationFragment"
+        android:name="com.example.fishbook.map.SetLocation"
+        android:label="Set Location"
+        tools:layout="@layout/fragment_set_location"/>
 
     <fragment
         android:id="@+id/viewRecordFragment"

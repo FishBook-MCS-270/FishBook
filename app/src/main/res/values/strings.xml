@@ -29,5 +29,6 @@
     <string name="new_species_caught">New Species Caught</string>
     <string name="personal_best_label">Personal Best:</string>
     <string name="PersonalBest">Length: %1$s inches, Weight: %2$s pounds</string>
+    <string name="save_marker_loc">SAVE</string>
 
 </resources>

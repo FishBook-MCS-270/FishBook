@@ -114,6 +114,10 @@ class AddRecordFragment : Fragment() {
             setupCountyAutoCompleteTextView(countyList)
         }
 
+        binding.locationButton.setOnClickListener{
+            findNavController().navigate(R.id.setLoc)
+        }
+
         return binding.root
     }
 
