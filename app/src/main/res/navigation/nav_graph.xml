@@ -18,7 +18,7 @@
         android:id="@+id/speciesFragment"
         android:name="com.example.fishbook.fishdex.SpeciesDetailFragment"
         android:label="Species"
-        tools:layout="@layout/fragment_species">
+        tools:layout="@layout/fragment_species_detail">
         <argument
             android:name="fishSpeciesId"
             app:argType="java.util.UUID" />
@@ -50,12 +50,11 @@
         tools:layout="@layout/fragment_view_record">
         <argument
         android:name="catchDetail"
-        app:argType="com.example.fishbook.record.CatchDetails"
-            />
-<action
-        android:id="@+id/editRecord"
-        app:destination="@id/editRecordFragment" />
-</fragment>
+        app:argType="com.example.fishbook.record.CatchDetails" />
+            <action
+                android:id="@+id/editRecord"
+                app:destination="@id/editRecordFragment" />
+    </fragment>
 
 <fragment
 android:id="@+id/editRecordFragment"

@@ -27,15 +27,7 @@ class FishHolder(
         }
 
         binding.root.setOnClickListener {
-            if (fish.caught_flag) {
                 onFishClicked(fish.id)
-            } else {
-                Toast.makeText(
-                    it.context,
-                    "Fish not caught yet!",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
         }
     }
 }

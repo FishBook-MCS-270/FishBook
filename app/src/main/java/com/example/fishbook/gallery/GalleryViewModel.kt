@@ -1,7 +1,14 @@
 package com.example.fishbook.gallery
 
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.Context
 import android.util.Log
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.lifecycle.*
+import com.example.fishbook.R
+import com.example.fishbook.fishdex.Species
 import com.example.fishbook.storage.DataRepository
 import com.example.fishbook.localCatchDetails.LocalCatchDetails
 import com.example.fishbook.record.CatchDetails
@@ -10,6 +17,8 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class GalleryViewModel : ViewModel() {
+
+
     private val imageRepository = ImageRepository.get()
     private val dataRepository = DataRepository.get()
     val userId = FirebaseAuth.getInstance().currentUser?.uid
@@ -20,29 +29,20 @@ class GalleryViewModel : ViewModel() {
 
     private val _updatedCatchDetails = MutableLiveData<CatchDetails>()
     val updatedCatchDetails: LiveData<CatchDetails> = _updatedCatchDetails
+
+    private val _newSpeciesEvent = MutableLiveData<Species?>()
+    val newSpeciesEvent: MutableLiveData<Species?> = _newSpeciesEvent
     fun updateCatchDetails(catchDetails: CatchDetails) {
         Log.d("GalleryViewModel", "Updating LiveData with new catch details")
+        viewModelScope.launch {
+            checkForNewSpecies(catchDetails.species)
+        }
         _catchDetails.value = _catchDetails.value + catchDetails
     }
 
     init {
         fetchCatchDetails()
     }
-
-    fun addCatchDetails(localCatchDetail: LocalCatchDetails) {
-        viewModelScope.launch {
-            if (userId != null) {
-                try {
-                    dataRepository.insertCatchDetail(localCatchDetail)
-                    Log.d("GalleryViewModel", "Successfully inserted catch detail")
-                    fetchCatchDetails() // Fetch updated catch details
-                } catch (e: Exception) {
-                    Log.e("GalleryViewModel", "Error inserting catch detail: ${e.message}")
-                }
-            }
-        }
-    }
-
     //maps the remote catchDetails to local
     private fun LocalCatchDetails.toCatchDetails(): CatchDetails {
         return CatchDetails(
@@ -59,11 +59,25 @@ class GalleryViewModel : ViewModel() {
             longitude = this.longitude
         )
     }
-
     fun deleteCatchDetail(catchDetail: CatchDetails) {
         viewModelScope.launch {
             dataRepository.deleteCatchDetailById(catchDetail.id)
             fetchCatchDetails() // Fetch updated catch details after deleting
+        }
+    }
+
+    private suspend fun checkForNewSpecies(species: String) {
+        val existingSpecies = _catchDetails.value.map { it.species }.distinct()
+        if (species !in existingSpecies) {
+            Log.d("GalleryViewModel", "NEW SPECIES: $species")
+            // Fetch the species object by its name
+            val fetchedSpecies = dataRepository.getSpeciesByName(species)
+            if (fetchedSpecies != null) {
+                // Post the new species event
+                _newSpeciesEvent.postValue(fetchedSpecies)
+            } else {
+                Log.d("GalleryViewModel", "Species not found in the database: $species")
+            }
         }
     }
 
