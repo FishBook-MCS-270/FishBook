@@ -39,13 +39,22 @@ class GalleryAdapter(
         }
 
         val catchDetail = getItem(position) as CatchDetails
-
+        //trying to lower quality for faster load times
+        val targetWidth = 150
+        val targetHeight = 150
         //fixes nullexception
         if (catchDetail.remoteUri.isNotEmpty()) {
-            Picasso.get().load(catchDetail.remoteUri).into(binding.gridImage)
-        } else if (catchDetail.localUri.isNotEmpty()) {
-            Picasso.get().load(catchDetail.localUri).into(binding.gridImage)
-        }
+            Picasso.get()
+                .load(catchDetail.remoteUri)
+                .resize(targetWidth, targetHeight)
+                .centerCrop()
+                .into(binding.gridImage)        }
+        else if (catchDetail.localUri.isNotEmpty()) {
+            Picasso.get()
+                .load(catchDetail.remoteUri)
+                .resize(targetWidth, targetHeight)
+                .centerCrop()
+                .into(binding.gridImage)        }
 
         // Handles click event for the grid item
         binding.root.setOnClickListener {

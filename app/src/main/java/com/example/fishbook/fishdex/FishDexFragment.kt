@@ -37,11 +37,6 @@ class FishDexFragment : Fragment() {
         _binding = FragmentFishDexBinding.inflate(inflater, container, false)
 
         binding.fishRecyclerView.layoutManager = LinearLayoutManager(context)
-        val mainActivity = requireActivity() as MainActivity
-        Log.d("MainFrag", "Fetch101")
-        lifecycleScope.launch {
-            mainActivity.findNearestLakes()
-        }
         return binding.root
     }
 
@@ -61,11 +56,8 @@ class FishDexFragment : Fragment() {
                 }
             }
             fishDexViewModel.updateCaughtFlag()
-
         }
     }
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()

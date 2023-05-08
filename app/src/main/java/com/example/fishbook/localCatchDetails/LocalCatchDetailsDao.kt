@@ -17,15 +17,8 @@ interface LocalCatchDetailsDao {
     @Query("SELECT * FROM local_catch_details")
     fun getAllCatchDetails(): Flow<List<LocalCatchDetails>>
 
-    @Query("SELECT * FROM local_catch_details WHERE userId = :userId")
-    fun getAllCatchDetailsByUser(userId: String): Flow<List<LocalCatchDetails>>
-
-
-
     @Query("DELETE FROM local_catch_details WHERE id = :id")
     suspend fun deleteCatchDetailById(id: String)
-
-
 
     @Query("""
     UPDATE species_table

@@ -22,7 +22,7 @@ class ViewRecordFragment : Fragment() {
     private val binding get() = _binding!!
     private val args: ViewRecordFragmentArgs by navArgs()
     private val galleryViewModel: GalleryViewModel by activityViewModels()
-    private val dataRepository = DataRepository.get()
+    //private val dataRepository = DataRepository.get()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
