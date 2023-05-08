@@ -66,19 +66,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
     //used to calculate distance between points
-    fun haversine(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
-        val R = 3958.8 // Radius of the earth in miles
-        val latDistance = Math.toRadians(lat2 - lat1)
-        val lonDistance = Math.toRadians(lon2 - lon1)
 
-        val a = (sin(latDistance / 2) * sin(latDistance / 2)
-                + (cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2))
-                * sin(lonDistance / 2) * sin(lonDistance / 2)))
-        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
-
-        val distanceInMiles = R * c
-        return String.format("%.1f", distanceInMiles).toDouble()
-    }
 
     @Suppress("MemberVisibilityCanBePrivate")
     suspend fun findNearestLakes(topLakes: Int = 5, fishSpecies: String? = null): List<Pair<Lake, Double>> {
@@ -105,6 +93,20 @@ class MainActivity : AppCompatActivity() {
         }
         return topNearestLakes
 
+    }
+
+    fun haversine(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val R = 3958.8 // Radius of the earth in miles
+        val latDistance = Math.toRadians(lat2 - lat1)
+        val lonDistance = Math.toRadians(lon2 - lon1)
+
+        val a = (sin(latDistance / 2) * sin(latDistance / 2)
+                + (cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2))
+                * sin(lonDistance / 2) * sin(lonDistance / 2)))
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+        val distanceInMiles = R * c
+        return String.format("%.1f", distanceInMiles).toDouble()
     }
 
 }
