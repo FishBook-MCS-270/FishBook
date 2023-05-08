@@ -37,12 +37,12 @@ class Gallery : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         retainInstance = true
 
-        // create afapter
+        // create adapter
         val galleryAdapter = GalleryAdapter(requireContext(), emptyList()) { catchDetail ->
             findNavController().navigate(GalleryDirections.showRecord(catchDetail))
         }
         binding.gridView.adapter = galleryAdapter
-        //galleryViewModel.fetchCatchDetails()
+        galleryViewModel.fetchCatchDetails()
 
         //update from firestore automatically
         galleryViewModel.CatchDetails.observe(viewLifecycleOwner) { catchDetails ->

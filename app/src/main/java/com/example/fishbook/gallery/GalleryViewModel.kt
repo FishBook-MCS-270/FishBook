@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class GalleryViewModel : ViewModel() {
+
+
     private val imageRepository = ImageRepository.get()
     private val dataRepository = DataRepository.get()
     val userId = FirebaseAuth.getInstance().currentUser?.uid
@@ -24,25 +26,9 @@ class GalleryViewModel : ViewModel() {
         Log.d("GalleryViewModel", "Updating LiveData with new catch details")
         _catchDetails.value = _catchDetails.value + catchDetails
     }
-
     init {
         fetchCatchDetails()
     }
-
-    fun addCatchDetails(localCatchDetail: LocalCatchDetails) {
-        viewModelScope.launch {
-            if (userId != null) {
-                try {
-                    dataRepository.insertCatchDetail(localCatchDetail)
-                    Log.d("GalleryViewModel", "Successfully inserted catch detail")
-                    fetchCatchDetails() // Fetch updated catch details
-                } catch (e: Exception) {
-                    Log.e("GalleryViewModel", "Error inserting catch detail: ${e.message}")
-                }
-            }
-        }
-    }
-
     //maps the remote catchDetails to local
     private fun LocalCatchDetails.toCatchDetails(): CatchDetails {
         return CatchDetails(
@@ -59,7 +45,6 @@ class GalleryViewModel : ViewModel() {
             longitude = this.longitude
         )
     }
-
     fun deleteCatchDetail(catchDetail: CatchDetails) {
         viewModelScope.launch {
             dataRepository.deleteCatchDetailById(catchDetail.id)
