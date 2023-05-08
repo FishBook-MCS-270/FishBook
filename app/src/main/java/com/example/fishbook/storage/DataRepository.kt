@@ -67,6 +67,10 @@ class DataRepository private constructor(context: Context) {
 
     suspend fun getSpecies(id: UUID): Species = database.SpeciesDao().getSpecies(id)
 
+    suspend fun getSpeciesByName(speciesName: String): Species? {
+        return database.SpeciesDao().getSpeciesByName(speciesName)
+    }
+
     // ~~LakeData Functions
 
     fun getAllLakes(): Flow<List<Lake>> = lakeDatabase.lakeDao().getAllLakes()

@@ -43,6 +43,7 @@ class AddRecordFragment : Fragment() {
 
     private lateinit var binding: FragmentAddRecordBinding
     private val galleryViewModel: GalleryViewModel by activityViewModels()
+
     private val addRecordViewModel: AddRecordViewModel by viewModels()
     private var dialogFlag = false //fixes bug to use user-location for gps,
 

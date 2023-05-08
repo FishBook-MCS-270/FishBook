@@ -16,6 +16,8 @@ interface SpeciesDao {
     @Query("SELECT COUNT(*) FROM species_table")
     suspend fun getSpeciesCount(): Int
 
+    @Query("SELECT * FROM species_table WHERE species_name = :speciesName")
+    suspend fun getSpeciesByName(speciesName: String): Species?
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSpecies(species: List<Species>)
 

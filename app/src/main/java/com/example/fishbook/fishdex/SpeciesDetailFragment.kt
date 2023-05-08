@@ -49,7 +49,7 @@ class SpeciesDetailFragment : Fragment() {
                 val fishSpecies = speciesDetailViewModel.species.value?.species_name
                 Log.d("Species", "$fishSpecies")
                 if (fishSpecies != null) {
-                    mainActivity.findNearestLakes(fishSpecies =  fishSpecies.lowercase()).let { nearestLakes ->
+                    mainActivity.findNearestLakes(10, fishSpecies =  fishSpecies.lowercase()).let { nearestLakes ->
                         showNearestLakesDialog(nearestLakes)
                     }
                 }
