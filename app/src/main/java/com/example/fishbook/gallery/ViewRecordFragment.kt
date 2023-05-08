@@ -22,7 +22,6 @@ class ViewRecordFragment : Fragment() {
     private val binding get() = _binding!!
     private val args: ViewRecordFragmentArgs by navArgs()
     private val galleryViewModel: GalleryViewModel by activityViewModels()
-    //private val dataRepository = DataRepository.get()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,7 +60,6 @@ class ViewRecordFragment : Fragment() {
                         Toast.makeText(requireContext(), "Record deleted", Toast.LENGTH_SHORT).show()
                         // goes back to gallery when record is deleted
                         galleryViewModel.deleteCatchDetail(catchDetail)
-
                         findNavController().popBackStack()
                     }
                     .addOnFailureListener {
