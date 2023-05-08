@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        // must be a better way to do this? Quickfix for now
+        // USed to handle nav_bar navigations
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.gallery -> {
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                         navController.currentDestination?.id == R.id.addRecordFragment ||
                         navController.currentDestination?.id == R.id.viewRecordFragment
                     ) {
-                        navController.navigate(R.id.gallery)
+                        navController.popBackStack(R.id.gallery, false)
                     } else if (navController.currentDestination?.id != R.id.gallery) {
                         navController.navigate(R.id.gallery)
                     }
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.fishdex -> {
                     if (navController.currentDestination?.id == R.id.speciesFragment) {
-                        navController.navigate(R.id.fishdex)
+                        navController.popBackStack(R.id.fishdex, false)
                     } else if (navController.currentDestination?.id != R.id.fishdex) {
                         navController.navigate(R.id.fishdex)
                     }
