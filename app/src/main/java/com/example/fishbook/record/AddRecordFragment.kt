@@ -44,15 +44,15 @@ class AddRecordFragment : Fragment() {
     private lateinit var binding: FragmentAddRecordBinding
     private val galleryViewModel: GalleryViewModel by activityViewModels()
 
-    private val addRecordViewModel: AddRecordViewModel by viewModels()
+    private val addRecordViewModel: AddRecordViewModel by activityViewModels()
     private var dialogFlag = false //fixes bug to use user-location for gps,
 
     private var photoName: String? = null
     private lateinit var photoFile: File
-    private lateinit var ImageUri: Uri
+    private var ImageUri: Uri? = null
 
     // bundle to save latitude and longitude info
-    val gpsbundle = Bundle()
+    private val gpsbundle = Bundle()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -126,7 +126,27 @@ class AddRecordFragment : Fragment() {
             findNavController().navigate(R.id.setLoc, gpsbundle)
         }
 
+        // retrieves details from view model and sets text
+        binding.speciesEditText.setText(addRecordViewModel.catchSpecies)
+        binding.lakeEditText.setText(addRecordViewModel.catchLake)
+        binding.countyEditText.setText(addRecordViewModel.catchCounty)
+        binding.lureEditText.setText(addRecordViewModel.catchLure)
+        binding.lengthEditText.setText(addRecordViewModel.catchLength)
+        binding.weightEditText.setText(addRecordViewModel.catchWeight)
+
         return binding.root
+    }
+    override fun onPause() {
+        super.onPause()
+        // stores catch details to view model
+        Log.i("details", "uri: $ImageUri")
+        addRecordViewModel.catchUri = ImageUri
+        addRecordViewModel.catchSpecies = binding.speciesEditText.text?.toString()
+        addRecordViewModel.catchLake = binding.lakeEditText.text?.toString()
+        addRecordViewModel.catchCounty = binding.countyEditText.text?.toString()
+        addRecordViewModel.catchLure = binding.lureEditText.text?.toString()
+        addRecordViewModel.catchLength = binding.lengthEditText.text?.toString()
+        addRecordViewModel.catchWeight = binding.weightEditText.text?.toString()
     }
 
     override fun onResume() {
@@ -273,7 +293,7 @@ class AddRecordFragment : Fragment() {
         val fileName = formatter.format(now)
         val storageReference = FirebaseStorage.getInstance().getReference("images/$fileName")
 
-        storageReference.putFile(ImageUri).addOnSuccessListener {
+        storageReference.putFile(ImageUri!!).addOnSuccessListener {
             // Get the download URL of the uploaded image
             storageReference.downloadUrl.addOnSuccessListener { uri ->
                 val remoteUri = uri.toString()

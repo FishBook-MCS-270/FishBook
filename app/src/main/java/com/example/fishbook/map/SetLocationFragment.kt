@@ -3,7 +3,7 @@ package com.example.fishbook.map
 //import android.R
 
 import android.os.Bundle
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +17,7 @@ import org.osmdroid.config.Configuration
 import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.MapEventsOverlay
 import org.osmdroid.views.overlay.Marker
@@ -46,7 +47,9 @@ class SetLocation : Fragment() {
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx))
         val map = view.findViewById<MapView>(R.id.setLocationMap)
         map.setTileSource(TileSourceFactory.MAPNIK)
-        map.setBuiltInZoomControls(true)
+        //map.setBuiltInZoomControls(true)
+        map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.SHOW_AND_FADEOUT)
+
         map.setMultiTouchControls(true)
         val mapController = map.controller
 
@@ -61,6 +64,7 @@ class SetLocation : Fragment() {
 
         if (latitude != null && longitude != null && latitude != 0.0 && longitude != 0.0) {
             startPoint = GeoPoint(latitude, longitude)
+            mapController.setZoom(15.1)
         }
         Log.i("Map", "Start point latitude: ${startPoint.latitude}, Start point longitude: ${startPoint.longitude}")
 
@@ -69,9 +73,12 @@ class SetLocation : Fragment() {
         map.overlays.add(MapEventsOverlay(object : MapEventsReceiver {
             override fun singleTapConfirmedHelper(point: GeoPoint): Boolean {
                 if (!markerAdded) { // check if marker is already added
+
                     marker = Marker(map)
                     // set position of marker
                     marker!!.position = point
+                    marker!!.icon = resources.getDrawable(R.drawable.baseline_add_location_alt_24)
+
                     // add marker on map
                     map.overlays.add(marker)
                     Toast.makeText(requireContext(), "Tapped", Toast.LENGTH_SHORT).show()
@@ -84,7 +91,6 @@ class SetLocation : Fragment() {
                     marker!!.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
                     Toast.makeText(requireContext(), "Marker updated", Toast.LENGTH_SHORT).show()
                     //Log.i("Map", "Updated--- Latitude: ${point.latitude}, Longitude: ${point.longitude}")
-
                 }
                 // save latest marker position
                 markerLat = point.latitude

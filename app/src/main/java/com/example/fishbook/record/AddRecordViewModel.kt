@@ -1,6 +1,7 @@
 package com.example.fishbook.record
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,8 +15,18 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.net.URI
 
 class AddRecordViewModel : ViewModel() {
+
+    // stores the catch details that have been populated
+    var catchUri: Uri? = null
+    var catchSpecies: String? = null
+    var catchCounty: String? = null
+    var catchLake: String? = null
+    var catchLure: String? = null
+    var catchLength: String? = null
+    var catchWeight: String? = null
 
     //two values to encapsulate data, only access via get
     private val _allSpecies = MutableLiveData<List<Species>>()
