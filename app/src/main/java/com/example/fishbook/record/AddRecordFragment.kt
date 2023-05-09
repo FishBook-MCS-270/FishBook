@@ -51,6 +51,8 @@ class AddRecordFragment : Fragment() {
     private lateinit var photoFile: File
     private lateinit var ImageUri: Uri
 
+    val bundle = Bundle()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -115,7 +117,12 @@ class AddRecordFragment : Fragment() {
         }
 
         binding.locationButton.setOnClickListener{
-            findNavController().navigate(R.id.setLoc)
+            // saves latitude and longitude in a bundle to allow use in different fragment
+            binding.latEditText.text.toString().toDoubleOrNull()
+                ?.let { it1 -> bundle.putDouble("latitude", it1) }
+            binding.longEditText.text.toString().toDoubleOrNull()
+                ?.let { it1 -> bundle.putDouble("longitude", it1) }
+            findNavController().navigate(R.id.setLoc, bundle)
         }
 
         return binding.root

@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.fishbook.R
+import com.example.fishbook.record.AddRecordFragment
 import org.osmdroid.config.Configuration
 import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -25,11 +26,7 @@ class SetLocation : Fragment() {
     private var markerAdded = false // add this variable to track marker
     private var marker: Marker? = null
 
-    // saves gps point
-    val LAT = ""
-    val LONG = ""
-    var lat = ""
-    var long = ""
+    private lateinit var startPoint: GeoPoint
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,9 +41,21 @@ class SetLocation : Fragment() {
         map.setMultiTouchControls(true)
         val mapController = map.controller
 
-        //Set Minnesota Coordinates
+        // fetch latitude and longitude from add record fragment
+        val latitude = arguments?.getDouble("latitude")
+        val longitude = arguments?.getDouble("longitude")
+
+        Log.i("Map", "addLat: $latitude, addLong: $longitude")
+
         mapController.setZoom(8.1)
-        val startPoint = GeoPoint(46.7296, -94.6859)
+        // sets startPoint
+        //Set Minnesota Coordinates
+        startPoint = GeoPoint(46.7296, -94.6859)
+
+        if (latitude != null && longitude != null) {
+            startPoint = GeoPoint(latitude, longitude)
+        }
+
         mapController.setCenter(startPoint)
 
         map.overlays.add(MapEventsOverlay(object : MapEventsReceiver {
@@ -70,8 +79,6 @@ class SetLocation : Fragment() {
 
                 }
 
-                lat = point.latitude.toString()
-                long = point.longitude.toString()
                 return false
             }
 
@@ -81,12 +88,6 @@ class SetLocation : Fragment() {
             }
         }))
         return view
-    }
-
-    override fun onSaveInstanceState(location: Bundle) {
-        super.onSaveInstanceState(location)
-        location.putString(LAT, lat)
-        location.putString(LONG, long)
     }
 
     override fun onResume() {
