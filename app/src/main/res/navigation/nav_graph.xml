@@ -41,10 +41,11 @@
         android:id="@+id/addRecordFragment"
         android:name="com.example.fishbook.record.AddRecordFragment"
         android:label="Add Record"
-        tools:layout="@layout/fragment_add_record"/>
+        tools:layout="@layout/fragment_add_record">
         <action
             android:id="@+id/setLoc"
             app:destination="@id/setLocationFragment"/>
+    </fragment>
 
     <fragment
         android:id="@+id/setLocationFragment"

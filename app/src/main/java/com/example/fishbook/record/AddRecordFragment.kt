@@ -51,7 +51,8 @@ class AddRecordFragment : Fragment() {
     private lateinit var photoFile: File
     private lateinit var ImageUri: Uri
 
-    val bundle = Bundle()
+    // bundle to save latitude and longitude info
+    val gpsbundle = Bundle()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -119,13 +120,24 @@ class AddRecordFragment : Fragment() {
         binding.locationButton.setOnClickListener{
             // saves latitude and longitude in a bundle to allow use in different fragment
             binding.latEditText.text.toString().toDoubleOrNull()
-                ?.let { it1 -> bundle.putDouble("latitude", it1) }
+                ?.let { it1 -> gpsbundle.putDouble("latitude", it1) }
             binding.longEditText.text.toString().toDoubleOrNull()
-                ?.let { it1 -> bundle.putDouble("longitude", it1) }
-            findNavController().navigate(R.id.setLoc, bundle)
+                ?.let { it1 -> gpsbundle.putDouble("longitude", it1) }
+            findNavController().navigate(R.id.setLoc, gpsbundle)
         }
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // retrieves marker latitude and longitude from setLocationFragment
+        val markerLatitude = arguments?.getString("markerLatitude")
+        val markerLongitude = arguments?.getString("markerLongitude")
+
+        Log.i("Map", "Latitude from Marker: $markerLatitude, Longitude from Marker: $markerLongitude")
+        binding.latEditText.setText(markerLatitude)
+        binding.longEditText.setText(markerLongitude)
     }
 
     private fun showNearestLakesDialog(nearestLakes: List<Pair<Lake, Double>>) {
