@@ -4,7 +4,7 @@ import androidx.navigation.fragment.findNavController
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
 import android.app.ProgressDialog
-import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -22,7 +22,6 @@ import androidx.fragment.app.activityViewModels
 import com.example.fishbook.R
 import com.example.fishbook.databinding.FragmentAddRecordBinding
 import com.example.fishbook.gallery.GalleryViewModel
-import com.example.fishbook.localCatchDetails.LocalCatchDetails
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -30,10 +29,10 @@ import com.google.firebase.storage.FirebaseStorage
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import androidx.fragment.app.viewModels
 import com.example.fishbook.LakeData.Lake
 import com.example.fishbook.fishdex.Species
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import com.example.fishbook.MainActivity
 import kotlinx.coroutines.launch
@@ -67,12 +66,13 @@ class AddRecordFragment : Fragment() {
                     photoFile
                 )
                 ImageUri = photoUri // assign photoUri to ImageUri
-                binding.fishImage.setImageURI(photoUri)
+                addRecordViewModel.catchUri = photoUri // update catchUri in the ViewModel
+                binding.fishImage.setImageURI(addRecordViewModel.catchUri) // use catchUri to update fishImage
             }
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentAddRecordBinding.inflate(layoutInflater, container, false)
         addRecordViewModel.fetchAllSpecies(requireContext())
         addRecordViewModel.allSpecies.observe(viewLifecycleOwner) { speciesList ->
@@ -83,7 +83,7 @@ class AddRecordFragment : Fragment() {
             photoName = "IMG_${Date()}.JPG"
             photoFile = File(
                 requireContext().applicationContext.filesDir,
-                photoName
+                photoName.toString()
             )
             val photoUri = FileProvider.getUriForFile(
                 requireContext(),
@@ -127,6 +127,10 @@ class AddRecordFragment : Fragment() {
         }
 
         // retrieves details from view model and sets text
+        //Log.i("details", "uri: $savedUri")
+        if (ImageUri != addRecordViewModel.catchUri) {
+            addRecordViewModel.catchUri = ImageUri
+        }
         binding.speciesEditText.setText(addRecordViewModel.catchSpecies)
         binding.lakeEditText.setText(addRecordViewModel.catchLake)
         binding.countyEditText.setText(addRecordViewModel.catchCounty)
@@ -138,8 +142,8 @@ class AddRecordFragment : Fragment() {
     }
     override fun onPause() {
         super.onPause()
+        Log.d("MyFragment", "uri: $ImageUri")
         // stores catch details to view model
-        Log.i("details", "uri: $ImageUri")
         addRecordViewModel.catchUri = ImageUri
         addRecordViewModel.catchSpecies = binding.speciesEditText.text?.toString()
         addRecordViewModel.catchLake = binding.lakeEditText.text?.toString()
@@ -151,13 +155,22 @@ class AddRecordFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        // retrieves marker latitude and longitude from setLocationFragment
-        val markerLatitude = arguments?.getString("markerLatitude")
-        val markerLongitude = arguments?.getString("markerLongitude")
 
-        Log.i("Map", "Latitude from Marker: $markerLatitude, Longitude from Marker: $markerLongitude")
-        binding.latEditText.setText(markerLatitude)
-        binding.longEditText.setText(markerLongitude)
+        setFragmentResultListener("requestKey") { _, bundle ->
+            val locationBundle = bundle.getBundle("bundleKey")
+            val markerLatitude = locationBundle?.getString("markerLatitude")
+            val markerLongitude = locationBundle?.getString("markerLongitude")
+            binding.latEditText.setText(markerLatitude)
+            binding.longEditText.setText(markerLongitude)
+        }
+
+        Log.d("MyFragment", "on resume view uri: ${addRecordViewModel.catchUri}")
+        binding.fishImage.setImageURI(addRecordViewModel.catchUri)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("MyFragment", "onDestroyView is being called")
     }
 
     private fun showNearestLakesDialog(nearestLakes: List<Pair<Lake, Double>>) {
@@ -272,12 +285,14 @@ class AddRecordFragment : Fragment() {
         ActivityResultContracts.TakePicture()
     ) { didTakePhoto: Boolean ->
         if (didTakePhoto && photoName != null) {
-            binding.fishImage.setImageURI(
-                FileProvider.getUriForFile(
+            val photoUri = FileProvider.getUriForFile(
                 requireContext(),
                 "com.example.fishbook.fileprovider",
                 photoFile
-            ))
+            )
+            ImageUri = photoUri // assign photoUri to ImageUri
+            addRecordViewModel.catchUri = photoUri // update catchUri in the ViewModel
+            binding.fishImage.setImageURI(addRecordViewModel.catchUri) // use catchUri to update fishImage
         }
     }
 
@@ -330,7 +345,8 @@ class AddRecordFragment : Fragment() {
             val imageUri = result.data?.data
             if (imageUri != null) {
                 ImageUri = imageUri
-                binding.fishImage.setImageURI(imageUri)
+                addRecordViewModel.catchUri = imageUri // update catchUri in the ViewModel
+                binding.fishImage.setImageURI(addRecordViewModel.catchUri) // use catchUri to update fishImage
             }
         }
     }
@@ -353,7 +369,7 @@ class AddRecordFragment : Fragment() {
                 .collection("catchDetails")
                 .add(catchDetails)
                 .addOnSuccessListener {documentReference ->
-                    Log.i(ContentValues.TAG, "Successfully added catch details")
+                    Log.i(TAG, "Successfully added catch details")
 
                     val generatedId = documentReference.id
 
@@ -375,10 +391,9 @@ class AddRecordFragment : Fragment() {
                     binding.countyEditText.text.clear()
                     binding.latEditText.text.clear()
                     binding.longEditText.text.clear()
-
                 }
                 .addOnFailureListener {
-                    Log.e(ContentValues.TAG, "Error adding document")
+                    Log.e(TAG, "Error adding document")
                 }
         }
     }
