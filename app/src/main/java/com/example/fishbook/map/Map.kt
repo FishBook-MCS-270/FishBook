@@ -94,15 +94,6 @@ private suspend fun setupMap(view: View) {
     //Support for Map Rotation
     val mRotationGestureOverlay = RotationGestureOverlay(map)
     mRotationGestureOverlay.isEnabled
-    //map.overlays.add(myLocationNewOverlay)
-
-//    //Set Compass
-//    val mCompassOverlay = CompassOverlay(
-//        activity,
-//        InternalCompassOrientationProvider(activity),
-//        map)
-//    map.overlays.add(mCompassOverlay)
-
 
     //Populate Marker for catches
 
@@ -111,7 +102,7 @@ private suspend fun setupMap(view: View) {
 
     if (catches != null) {
         for (catch in catches) {
-            if (catch.latitude != null && catch.longitude != null) {
+            if (catch.latitude != null && catch.longitude != null && catch.latitude.trim().isNotEmpty() && catch.longitude.trim().isNotEmpty()) {
                 var catchMarker = Marker(map) //new marker for each
                 catchMarker.icon = ContextCompat.getDrawable(ctx, R.drawable.fish_24)
                 catchMarker.title = catch.species

@@ -34,6 +34,7 @@ import com.example.fishbook.fishdex.Species
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import com.example.fishbook.MainActivity
 import kotlinx.coroutines.launch
 
@@ -142,7 +143,6 @@ class AddRecordFragment : Fragment() {
     }
     override fun onPause() {
         super.onPause()
-        Log.d("MyFragment", "uri: $ImageUri")
         // stores catch details to view model
         addRecordViewModel.catchUri = ImageUri
         addRecordViewModel.catchSpecies = binding.speciesEditText.text?.toString()
@@ -170,7 +170,6 @@ class AddRecordFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d("MyFragment", "onDestroyView is being called")
     }
 
     private fun showNearestLakesDialog(nearestLakes: List<Pair<Lake, Double>>) {
@@ -313,7 +312,7 @@ class AddRecordFragment : Fragment() {
             storageReference.downloadUrl.addOnSuccessListener { uri ->
                 val remoteUri = uri.toString()
                 binding.fishImage.setImageURI(null)
-                Toast.makeText(requireContext(), "Successfully uploaded", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(requireContext(), "Successfully uploaded", Toast.LENGTH_SHORT).show()
                 if (progressDialog.isShowing) progressDialog.dismiss()
                 // Store info in CatchDetails object
                 val catchDetails = CatchDetails(
@@ -378,8 +377,22 @@ class AddRecordFragment : Fragment() {
 
                     // Update the document in Firestore
                     documentReference.update("id", generatedId)
+                    galleryViewModel.viewModelScope.launch {
+                        val isNewSpecies = galleryViewModel.checkForNewSpecies(catchDetails.species)
+                        if (isNewSpecies) {
+                            Log.i("AddRecordFragment", "isNewSpecies")
 
+                            galleryViewModel._newSpeciesFlag.postValue(true)
+                        }
+                        else {
+                            Log.i("AddRecordFragment", "isNOTNewSpecies")
+
+                            galleryViewModel._newSpeciesFlag.postValue(false)
+                        }
+
+                    }
                     galleryViewModel.updateCatchDetails(updatedCatchDetails)
+
 
                     findNavController().popBackStack()
                     // clears text boxes if uploaded successfully
