@@ -24,13 +24,15 @@ class GalleryViewModel : ViewModel() {
     private val _updatedCatchDetails = MutableLiveData<CatchDetails>()
     val updatedCatchDetails: LiveData<CatchDetails> = _updatedCatchDetails
 
+    var newSpecies: Species? = null
 
     val _newSpeciesFlag = MutableLiveData<Boolean>()
     val newSpeciesFlag: LiveData<Boolean> = _newSpeciesFlag
 
     val _newSpeciesEvent = MutableLiveData<Species?>()
     val newSpeciesEvent: MutableLiveData<Species?> = _newSpeciesEvent
-    var newSpecies: Species? = null
+
+
 
     fun updateCatchDetails(catchDetails: CatchDetails) {
         Log.d("GalleryViewModel", "Updating LiveData with new catch details")//    private val _newSpeciesEvent = MutableLiveData<Species?>()

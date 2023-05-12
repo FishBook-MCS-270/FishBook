@@ -50,7 +50,7 @@ class SetLocation : Fragment() {
         val map = view.findViewById<MapView>(R.id.setLocationMap)
         map.setTileSource(TileSourceFactory.MAPNIK)
         //map.setBuiltInZoomControls(true)
-        map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.SHOW_AND_FADEOUT)
+        //map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.SHOW_AND_FADEOUT)
 
         map.setMultiTouchControls(true)
         val mapController = map.controller
@@ -109,8 +109,8 @@ class SetLocation : Fragment() {
         // saves marker latitude and longitude to location bundle
         binding.saveButton.setOnClickListener {
             locationBundle.apply {
-                putString("markerLatitude", markerLat.toString())
-                putString("markerLongitude", markerLong.toString())
+                putString("markerLatitude", String.format("%.5f", markerLat))
+                putString("markerLongitude", String.format("%.5f", markerLong))
 
                 setFragmentResult("requestKey", bundleOf("bundleKey" to locationBundle))
                 findNavController().popBackStack()

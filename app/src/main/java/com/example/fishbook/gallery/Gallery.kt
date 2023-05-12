@@ -63,6 +63,7 @@ class Gallery : Fragment() {
             findNavController().navigate(R.id.addRecord)
         }
 
+        //observe newSpecies event
         galleryViewModel.newSpeciesEvent.observe(viewLifecycleOwner) { newSpecies ->
             if (newSpecies != null) {
                 showConfetti()
@@ -75,7 +76,6 @@ class Gallery : Fragment() {
     }
 
     fun showNewSpeciesDialog(species: String, imageResource: Int) {
-        Log.d("Gallery", "Showing new species dialog: $species")
         val builder = AlertDialog.Builder(context)
         val inflater = (context as Activity).layoutInflater
         val view = inflater.inflate(R.layout.dialog_new_species, null)

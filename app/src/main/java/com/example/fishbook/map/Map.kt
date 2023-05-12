@@ -80,10 +80,10 @@ private suspend fun setupMap(view: View) {
 
     val myLocationNewOverlay = MyLocationNewOverlay(mGpsMyLocationProvider, map)
     myLocationNewOverlay.enableMyLocation()
-    myLocationNewOverlay.enableFollowLocation()
+    //myLocationNewOverlay.enableFollowLocation()
     myLocationNewOverlay.isDrawAccuracyEnabled
 
-    //map.overlays.add(myLocationNewOverlay)
+    map.overlays.add(myLocationNewOverlay)
 
     //Set Scale Bar
     val mScaleBarOverlay = ScaleBarOverlay(map)
@@ -98,7 +98,8 @@ private suspend fun setupMap(view: View) {
     //Populate Marker for catches
 
     val repository = DataRepository.get()
-    val catches = mapViewModel.userId?.let { repository.getLocalCatchDetails(it).first() }
+    val catches = mapViewModel.userId?.let {
+        repository.getLocalCatchDetails(it).first() }
 
     if (catches != null) {
         for (catch in catches) {
