@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/fishImage"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:textAppearance="?attr/textAppearanceHeadline5"
         tools:text="Fish Name" />
     <TextView
