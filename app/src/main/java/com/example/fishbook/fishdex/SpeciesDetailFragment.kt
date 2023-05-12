@@ -100,9 +100,16 @@ class SpeciesDetailFragment : Fragment() {
 
 
         binding.apply {
+            habitatData.text = fish.habitat
+            baitData.text = fish.bait
+
             if (fish.caught_flag) {
                 fishName.text = fish.species_name
-                fishFamily.text = fish.fish_family
+                SciName.text = fish.sci_name
+                fishFamily.text = "${fish.fish_family} Family"
+
+
+
                 lifecycleScope.launch {
                     val largestLengthFish = dataRepository.getBestFish(fish.species_name)
                     largestLengthFish?.let {
@@ -114,6 +121,8 @@ class SpeciesDetailFragment : Fragment() {
             } else {
                 fishName.text = fish.species_name
                 fishFamily.text = "???"
+                SciName.text = "???"
+
                 personalBestLabel.text = "???"
                 fishImage.setImageResource(fish.image)
                 fishImage.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP)
