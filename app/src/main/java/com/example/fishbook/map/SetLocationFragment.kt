@@ -101,7 +101,6 @@ class SetLocation : Fragment() {
                 return false
             }
 
-
             override fun longPressHelper(p: GeoPoint): Boolean {
                 return false
             }

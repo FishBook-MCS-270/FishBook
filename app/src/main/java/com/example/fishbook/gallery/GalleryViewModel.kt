@@ -97,27 +97,23 @@ class GalleryViewModel : ViewModel() {
             }
         }
     }
+    suspend fun checkForNewSpecies(species: String) {
+        val existingSpecies = _catchDetails.value.map { it.species }.distinct()
+        if (species !in existingSpecies) {
+            Log.d("GalleryViewModel", "NEW SPECIES: $species")
+            // Fetch the species object by its name
+            val fetchedSpecies = dataRepository.getSpeciesByName(species)
+            if (fetchedSpecies != null) {
+                // Post the new species event
+            } else {
+                Log.d("GalleryViewModel", "Species not found in the database: $species")
+            }
+        }
+    }
 }
 
 
-//    val newSpeciesEvent: MutableLiveData<Species?> = _newSpeciesEvent
-//        viewModelScope.launch {
-//            checkForNewSpecies(catchDetails.species)
-//        }
-//    private suspend fun checkForNewSpecies(species: String) {
-//        val existingSpecies = _catchDetails.value.map { it.species }.distinct()
-//        if (species !in existingSpecies) {
-//            Log.d("GalleryViewModel", "NEW SPECIES: $species")
-//            // Fetch the species object by its name
-//            val fetchedSpecies = dataRepository.getSpeciesByName(species)
-//            if (fetchedSpecies != null) {
-//                // Post the new species event
-//                _newSpeciesEvent.postValue(fetchedSpecies)
-//            } else {
-//                Log.d("GalleryViewModel", "Species not found in the database: $species")
-//            }
-//        }
-//    }
+
 
 
 

@@ -20,19 +20,16 @@ import com.example.fishbook.databinding.FragmentGalleryBinding
 class Gallery : Fragment() {
     private var _binding: FragmentGalleryBinding? = null
     private val binding get() = _binding!!
-
+    //new species flag
     private val galleryViewModel: GalleryViewModel by viewModels()
 
+    var newSpeciesFlag = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentGalleryBinding.inflate(inflater, container, false)
-//        galleryViewModel.newSpeciesEvent.observe(viewLifecycleOwner) { species ->
-//            if (species != null) {
-//                showNewSpeciesDialog(requireContext(), species.species_name, species.image)
-//            }
-//        }
+
         return binding.root
 
     }
@@ -57,13 +54,7 @@ class Gallery : Fragment() {
             findNavController().navigate(R.id.addRecord)
         }
 
-        //used for newSpecies
-//        galleryViewModel.newSpeciesEvent.observe(viewLifecycleOwner) { newSpecies ->
-//            newSpecies?.let {
-//                val imageResource = it.image
-//                showNewSpeciesDialog(requireContext(), it.species_name, imageResource)
-//            }
-//        }
+
     }
 
     fun showNewSpeciesDialog(context: Context, species: String, imageResource: Int) {
