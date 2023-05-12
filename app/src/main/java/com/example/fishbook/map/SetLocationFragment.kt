@@ -83,7 +83,7 @@ class SetLocation : Fragment() {
 
                     // add marker on map
                     map.overlays.add(marker)
-                    Toast.makeText(requireContext(), "Tapped", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(requireContext(), "Tapped", Toast.LENGTH_SHORT).show()
                     //Log.i("Map", "Initial--- Latitude: ${point.latitude}, Longitude: ${point.longitude}")
 
                     markerAdded = true

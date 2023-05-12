@@ -12,9 +12,10 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="fontFamily">serif</item>
 
     </style>
-
+// Not working
     <style name="TextAppearance.AppCompat.Widget.ActionBar.Title" parent="@android:style/TextAppearance">
     <item name="android:fontFamily">sans-serif-black</item>
 </style>

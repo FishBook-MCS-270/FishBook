@@ -28,7 +28,7 @@ class GalleryViewModel : ViewModel() {
     val _newSpeciesFlag = MutableLiveData<Boolean>()
     val newSpeciesFlag: LiveData<Boolean> = _newSpeciesFlag
 
-    private val _newSpeciesEvent = MutableLiveData<Species?>()
+    val _newSpeciesEvent = MutableLiveData<Species?>()
     val newSpeciesEvent: MutableLiveData<Species?> = _newSpeciesEvent
     var newSpecies: Species? = null
 
@@ -96,7 +96,7 @@ class GalleryViewModel : ViewModel() {
                         }
 
                     //used to sort and maintain order
-                    _catchDetails.value = combinedCatchDetailsFlow.first() //.sortedBy { it.id }
+                    _catchDetails.value = combinedCatchDetailsFlow.first().sortedBy { it.id }
                     Log.d("GalleryViewModel", "Updated _catchDetails with ${_catchDetails.value.size} catch details")
                     dataRepository.updateCaughtFlag()
 
@@ -106,7 +106,7 @@ class GalleryViewModel : ViewModel() {
             }
         }
     }
-    suspend fun checkForNewSpecies(species: String) {
+    suspend fun checkForNewSpecies(species: String): Boolean {
         Log.d("GalleryViewModel", "Checking for new species: $species")  // Added log statement
         val existingSpecies = _catchDetails.value.map { it.species }.distinct()
         Log.d("GalleryViewModel", "Existing species: $existingSpecies")  // Added log statement
@@ -124,12 +124,14 @@ class GalleryViewModel : ViewModel() {
                 newSpecies = fetchedSpecies
                 _newSpeciesEvent.postValue(fetchedSpecies)
                 Log.d("GalleryViewModel", "Posted new species event: $fetchedSpecies")
-                _newSpeciesFlag.postValue(true)
-
+                return true
             } else {
-                Log.d("GalleryViewModel", "Species not found in the database: $species")
+                Log.d("GalleryViewModel", "Species not found : $species")
+                return false
             }
+            return false
         }
+        return false
     }
 }
 

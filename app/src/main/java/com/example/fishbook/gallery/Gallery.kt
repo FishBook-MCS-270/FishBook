@@ -3,6 +3,7 @@ package com.example.fishbook.gallery
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,21 +12,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.fishbook.R
 import com.example.fishbook.databinding.FragmentGalleryBinding
-
+import nl.dionsegijn.konfetti.core.Angle
+import nl.dionsegijn.konfetti.core.Party
+import nl.dionsegijn.konfetti.core.Position
+import nl.dionsegijn.konfetti.core.Spread
+import nl.dionsegijn.konfetti.core.emitter.Emitter
+import nl.dionsegijn.konfetti.core.models.Shape
+import nl.dionsegijn.konfetti.core.models.Size
+import java.util.concurrent.TimeUnit
 
 
 class Gallery : Fragment() {
     private var _binding: FragmentGalleryBinding? = null
     private val binding get() = _binding!!
-    //new species flag
-    private val galleryViewModel: GalleryViewModel by viewModels()
+    private val galleryViewModel: GalleryViewModel by activityViewModels()
 
-    var newSpeciesFlag = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,11 +63,12 @@ class Gallery : Fragment() {
             findNavController().navigate(R.id.addRecord)
         }
 
-        galleryViewModel.newSpeciesFlag.observe(viewLifecycleOwner) { flag ->
-            if (flag) {
-                Toast.makeText(context, "New species added!", Toast.LENGTH_SHORT).show()
-                // set the flag back to false
-                galleryViewModel._newSpeciesFlag.value = false
+        galleryViewModel.newSpeciesEvent.observe(viewLifecycleOwner) { newSpecies ->
+            if (newSpecies != null) {
+                showConfetti()
+                showNewSpeciesDialog(newSpecies.species_name, newSpecies.image)
+                // Set the _newSpeciesEvent value back to null so the dialog isn't shown again
+                galleryViewModel._newSpeciesEvent.value = null
             }
         }
 
@@ -85,6 +91,22 @@ class Gallery : Fragment() {
         dialog.show()
     }
 
+    //https://github.com/DanielMartinus/Konfetti
+    //Party object used to specify confetti
+    private fun showConfetti() {
+        val party = Party(
+            speed = 0f,
+            maxSpeed = 15f,
+            damping = 0.9f,
+            angle = Angle.BOTTOM,
+            spread = Spread.ROUND,
+            colors = listOf(0xfce18a, 0xff726d, 0xf4306d, 0xb48def),
+            emitter = Emitter(duration = 3, TimeUnit.SECONDS).perSecond(100),
+            position = Position.Relative(0.0, 0.0).between(Position.Relative(1.0, 0.0))
+        )
+        val viewKonfetti = binding.konfettiView
+        viewKonfetti.start(party)
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
