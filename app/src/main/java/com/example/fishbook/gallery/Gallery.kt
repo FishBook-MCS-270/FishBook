@@ -40,7 +40,6 @@ class Gallery : Fragment() {
         return binding.root
 
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         retainInstance = true
@@ -53,22 +52,18 @@ class Gallery : Fragment() {
         binding.gridView.adapter = galleryAdapter
         galleryViewModel.fetchCatchDetails()
 
-
         //update from firestore automatically
         galleryViewModel.CatchDetails.observe(viewLifecycleOwner) { catchDetails ->
             galleryAdapter.updateData(catchDetails)
         }
-
         binding.addRecord.setOnClickListener {
             findNavController().navigate(R.id.addRecord)
         }
-
         //observe newSpecies event
         galleryViewModel.newSpeciesEvent.observe(viewLifecycleOwner) { newSpecies ->
             if (newSpecies != null) {
                 showConfetti()
                 showNewSpeciesDialog(newSpecies.species_name, newSpecies.image)
-                // Set the _newSpeciesEvent value back to null so the dialog isn't shown again
                 galleryViewModel._newSpeciesEvent.value = null
             }
         }
@@ -85,6 +80,7 @@ class Gallery : Fragment() {
 
         val dialog = builder.setView(view)
             .setPositiveButton("OK") { dialog, _ ->
+
                 dialog.dismiss()
             }
             .create()

@@ -91,7 +91,10 @@ class SetLocation : Fragment() {
                     // update position of marker
                     marker!!.position = point
                     marker!!.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                    Toast.makeText(requireContext(), "Marker updated", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(requireContext(), "Marker updated", Toast.LENGTH_SHORT).show()
+                    marker!!.setOnMarkerClickListener { _, _ -> true }
+                    marker!!.infoWindow = null
+
                     //Log.i("Map", "Updated--- Latitude: ${point.latitude}, Longitude: ${point.longitude}")
                 }
                 // save latest marker position

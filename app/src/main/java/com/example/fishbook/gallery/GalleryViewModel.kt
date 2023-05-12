@@ -92,8 +92,8 @@ class GalleryViewModel : ViewModel() {
                         remoteCatchDetailsFlow.combine(localCatchDetailsFlow) { remote, local ->
                             Log.d("GalleryViewModel", "Remote catch details count: ${remote.size}")
                             Log.d("GalleryViewModel", "Local catch details count: ${local.size}")
-                            Log.d("GalleryViewModel", "Remote catch details: $remote") // test
-                            Log.d("GalleryViewModel", "Local catch details: $local") // temp
+                            //Log.d("GalleryViewModel", "Remote catch details: $remote") // test
+                            //Log.d("GalleryViewModel", "Local catch details: $local") // temp
                             local
                         }
 
@@ -126,9 +126,11 @@ class GalleryViewModel : ViewModel() {
                 newSpecies = fetchedSpecies
                 _newSpeciesEvent.postValue(fetchedSpecies)
                 Log.d("GalleryViewModel", "Posted new species event: $fetchedSpecies")
+                fetchCatchDetails()
                 return true
             } else {
                 Log.d("GalleryViewModel", "Species not found : $species")
+                fetchCatchDetails()
                 return false
             }
             return false

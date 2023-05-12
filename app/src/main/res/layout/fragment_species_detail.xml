@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:scrollbars="none">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/fishImage"
@@ -22,12 +29,21 @@
         android:layout_marginTop="16dp"
         android:textAppearance="?attr/textAppearanceHeadline5"
         tools:text="Fish Name" />
+    <TextView
+        android:id="@+id/SciName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fishName"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:textAppearance="?attr/textAppearanceBody1"
+        tools:text="Scientific Name" />
 
     <TextView
         android:id="@+id/fishFamily"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/fishName"
+        android:layout_below="@id/SciName"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
         android:textAppearance="?attr/textAppearanceBody1"
@@ -39,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/fishFamily"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="25dp"
         android:textAppearance="?attr/textAppearanceBody1"
         android:text="@string/personal_best_label"
         android:textStyle="bold" />
@@ -53,6 +69,46 @@
         android:layout_marginTop="4dp"
         android:textAppearance="?attr/textAppearanceBody1" />
 
+    <TextView
+        android:id="@+id/habitatLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/personalBestData"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:textAppearance="?attr/textAppearanceBody1"
+        android:text="@string/habitat_Label"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/habitatData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/habitatLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:textAppearance="?attr/textAppearanceBody1" />
+
+    <TextView
+        android:id="@+id/baitLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/habitatData"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:textAppearance="?attr/textAppearanceBody1"
+        android:text="@string/bait_label"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/baitData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/baitLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:textAppearance="?attr/textAppearanceBody1" />
+
 
     <Button
         android:id="@+id/findSpeciesButton"
@@ -60,8 +116,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:layout_below="@id/personalBestData"
+        android:layout_below="@id/baitData"
 
         android:text="Find Species" />
 
 </RelativeLayout>
+</ScrollView>
