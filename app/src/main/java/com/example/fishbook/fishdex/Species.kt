@@ -10,6 +10,9 @@ data class Species(
     val caught_flag: Boolean,
     val species_name: String,
     val fish_family: String,
-    val image: Int = 0
+    val image: Int = 0,
+    val sci_name: String,
+    val bait: String,
+    val habitat: String
 )
 

@@ -40,8 +40,8 @@ class GalleryAdapter(
 
         val catchDetail = getItem(position) as CatchDetails
         //trying to lower quality for faster load times
-        val targetWidth = 150
-        val targetHeight = 150
+        val targetWidth = 175
+        val targetHeight = 175
         //fixes nullexception
         if (catchDetail.remoteUri.isNotEmpty()) {
             Picasso.get()

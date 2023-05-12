@@ -60,14 +60,14 @@ class LoginPage : AppCompatActivity() {
                 editor = preferences.edit()
                 editor.putString("remember", "true")
                 editor.apply()
-                Toast.makeText(this, "Checked", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this, "Checked", Toast.LENGTH_SHORT).show()
 
             } else if (!checkBox.isChecked()) {
                 preferences = getSharedPreferences("checkbox", MODE_PRIVATE)
                 editor = preferences.edit()
                 editor.putString("remember", "false")
                 editor.apply()
-                Toast.makeText(this, "Unchecked", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this, "Unchecked", Toast.LENGTH_SHORT).show()
 
             }
         }
