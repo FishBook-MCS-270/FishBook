@@ -34,6 +34,7 @@ import com.example.fishbook.fishdex.Species
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import com.example.fishbook.MainActivity
 import kotlinx.coroutines.launch
 
@@ -378,8 +379,11 @@ class AddRecordFragment : Fragment() {
 
                     // Update the document in Firestore
                     documentReference.update("id", generatedId)
-
+                    galleryViewModel.viewModelScope.launch {
+                        galleryViewModel.checkForNewSpecies(catchDetails.species)
+                    }
                     galleryViewModel.updateCatchDetails(updatedCatchDetails)
+
 
                     findNavController().popBackStack()
                     // clears text boxes if uploaded successfully

@@ -4,12 +4,14 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.fishbook.R
@@ -37,6 +39,7 @@ class Gallery : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         retainInstance = true
+        Log.d("Gallery", "creat")
 
         // create adapter
         val galleryAdapter = GalleryAdapter(requireContext(), emptyList()) { catchDetail ->
@@ -44,6 +47,7 @@ class Gallery : Fragment() {
         }
         binding.gridView.adapter = galleryAdapter
         galleryViewModel.fetchCatchDetails()
+
 
         //update from firestore automatically
         galleryViewModel.CatchDetails.observe(viewLifecycleOwner) { catchDetails ->
@@ -54,10 +58,18 @@ class Gallery : Fragment() {
             findNavController().navigate(R.id.addRecord)
         }
 
+        galleryViewModel.newSpeciesFlag.observe(viewLifecycleOwner) { flag ->
+            if (flag) {
+                Toast.makeText(context, "New species added!", Toast.LENGTH_SHORT).show()
+                // set the flag back to false
+                galleryViewModel._newSpeciesFlag.value = false
+            }
+        }
 
     }
 
-    fun showNewSpeciesDialog(context: Context, species: String, imageResource: Int) {
+    fun showNewSpeciesDialog(species: String, imageResource: Int) {
+        Log.d("Gallery", "Showing new species dialog: $species")
         val builder = AlertDialog.Builder(context)
         val inflater = (context as Activity).layoutInflater
         val view = inflater.inflate(R.layout.dialog_new_species, null)
@@ -70,7 +82,6 @@ class Gallery : Fragment() {
                 dialog.dismiss()
             }
             .create()
-
         dialog.show()
     }
 

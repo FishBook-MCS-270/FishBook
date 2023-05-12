@@ -3,6 +3,7 @@ package com.example.fishbook.gallery
 
 import android.util.Log
 import androidx.lifecycle.*
+import com.example.fishbook.fishdex.Species
 import com.example.fishbook.storage.DataRepository
 import com.example.fishbook.localCatchDetails.LocalCatchDetails
 import com.example.fishbook.record.CatchDetails
@@ -11,8 +12,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class GalleryViewModel : ViewModel() {
-    //test commennt
-    val test = 0
+
     private val imageRepository = ImageRepository.get()
     private val dataRepository = DataRepository.get()
     val userId = FirebaseAuth.getInstance().currentUser?.uid
@@ -24,6 +24,13 @@ class GalleryViewModel : ViewModel() {
     private val _updatedCatchDetails = MutableLiveData<CatchDetails>()
     val updatedCatchDetails: LiveData<CatchDetails> = _updatedCatchDetails
 
+
+    val _newSpeciesFlag = MutableLiveData<Boolean>()
+    val newSpeciesFlag: LiveData<Boolean> = _newSpeciesFlag
+
+    private val _newSpeciesEvent = MutableLiveData<Species?>()
+    val newSpeciesEvent: MutableLiveData<Species?> = _newSpeciesEvent
+    var newSpecies: Species? = null
 
     fun updateCatchDetails(catchDetails: CatchDetails) {
         Log.d("GalleryViewModel", "Updating LiveData with new catch details")//    private val _newSpeciesEvent = MutableLiveData<Species?>()
@@ -83,6 +90,8 @@ class GalleryViewModel : ViewModel() {
                         remoteCatchDetailsFlow.combine(localCatchDetailsFlow) { remote, local ->
                             Log.d("GalleryViewModel", "Remote catch details count: ${remote.size}")
                             Log.d("GalleryViewModel", "Local catch details count: ${local.size}")
+                            Log.d("GalleryViewModel", "Remote catch details: $remote") // test
+                            Log.d("GalleryViewModel", "Local catch details: $local") // temp
                             local
                         }
 
@@ -98,13 +107,25 @@ class GalleryViewModel : ViewModel() {
         }
     }
     suspend fun checkForNewSpecies(species: String) {
+        Log.d("GalleryViewModel", "Checking for new species: $species")  // Added log statement
         val existingSpecies = _catchDetails.value.map { it.species }.distinct()
+        Log.d("GalleryViewModel", "Existing species: $existingSpecies")  // Added log statement
+
         if (species !in existingSpecies) {
             Log.d("GalleryViewModel", "NEW SPECIES: $species")
             // Fetch the species object by its name
             val fetchedSpecies = dataRepository.getSpeciesByName(species)
+            val fetchedName = fetchedSpecies?.species_name
+            Log.d("GalleryViewModel", "fetched: $fetchedName")
+
             if (fetchedSpecies != null) {
                 // Post the new species event
+                Log.d("GalleryViewModel", "fetched: $fetchedSpecies")
+                newSpecies = fetchedSpecies
+                _newSpeciesEvent.postValue(fetchedSpecies)
+                Log.d("GalleryViewModel", "Posted new species event: $fetchedSpecies")
+                _newSpeciesFlag.postValue(true)
+
             } else {
                 Log.d("GalleryViewModel", "Species not found in the database: $species")
             }
